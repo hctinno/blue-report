@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>과제 실행보드</title>
+
+<!-- 색·폰트는 blue-report.css, 웹 크기·부품은 blue-web.css. 두 파일을 함께 부른다 -->
+<link rel="stylesheet" href="blue-report.css">
+<link rel="stylesheet" href="blue-web.css">
+</head>
+
+<body class="bw">
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     좌측 레일 — 현재 위치를 aria-current 로 표시한다.
+     색만으로 말하지 않는다. 왼쪽 막대가 함께 선다(.bw-rail a[aria-current])
+     ══════════════════════════════════════════════════════════════════ -->
+<nav class="bw-rail" aria-label="보드 차례">
+  <h1>매장 대기열<br>계측 파일럿</h1>
+  <a href="#s1"><i>01</i>이번 주</a>
+  <a href="#s2"><i>02</i>단계별 진행</a>
+  <a href="#s3"><i>03</i>판정 게이트</a>
+  <a href="#s4"><i>04</i>리스크</a>
+  <a href="#s5"><i>05</i>운영 규칙</a>
+</nav>
+
+<main class="bw-main">
+  <h1>과제 실행보드</h1>
+  <p class="bw-lede">
+    읽고 끝내는 문서가 아니라 <b>상태를 바꾸는 화면</b>. 발표 덱이 못 하는 일 —
+    회차 중간에 바뀐 값을 다음 사람이 이어받는 자리.
+    <span class="bw-where" id="where">저장 위치 확인 중</span>
+  </p>
+
+  <!-- ── 01 이번 주 ─────────────────────────────────────────────────────
+       KPI 스트립. 분모를 첨자로 붙인다 — 34.2% 보다 68/199 가 낫다
+       ────────────────────────────────────────────────────────────────── -->
+  <section class="bw-sec" id="s1">
+    <h2>이번 주<em>WEEK 38</em></h2>
+
+    <div class="bw-strip">
+      <div class="bw-kpi">
+        <b>12<span class="bw-sup">/34</span></b>
+        <span>완료 항목</span>
+        <small>지난주 대비 +4</small>
+      </div>
+      <div class="bw-kpi">
+        <b>3<span class="bw-sup">건</span></b>
+        <span>막힘</span>
+        <small>전부 외부 의존</small>
+      </div>
+      <div class="bw-kpi">
+        <b>D-9</b>
+        <span>다음 게이트</span>
+        <small>10월 2주 · 판정 1차</small>
+      </div>
+      <div class="bw-kpi">
+        <b>6<span class="bw-sup">기</span></b>
+        <span>대상 설비</span>
+        <small>설치 완료 4기</small>
+      </div>
+    </div>
+
+    <div class="bw-grid">
+      <article class="bw-item">
+        <div class="bw-item-h">
+          <b>수집 서버 방화벽 예외</b>
+          <span class="bw-s bw-s--late">막힘</span>
+        </div>
+        <dl class="bw-kv">
+          <dt>담당</dt><dd>정보보안팀</dd>
+          <dt>닫힘 조건</dt><dd>예외 승인서 회신</dd>
+          <dt>기한</dt><dd>09.26 <span class="bw-dd bw-dd--now">D-2</span></dd>
+        </dl>
+      </article>
+
+      <article class="bw-item">
+        <div class="bw-item-h">
+          <b>챔버 3호기 카메라 각도 재조정</b>
+          <span class="bw-s bw-s--warn">진행</span>
+        </div>
+        <dl class="bw-kv">
+          <dt>담당</dt><dd>AX추진팀</dd>
+          <dt>닫힘 조건</dt><dd>동작 인식률 90% 이상</dd>
+          <dt>기한</dt><dd>10.02 <span class="bw-dd bw-dd--soon">D-9</span></dd>
+        </dl>
+      </article>
+
+      <article class="bw-item">
+        <div class="bw-item-h">
+          <b>가동 정의 합의안 회람</b>
+          <span class="bw-s bw-s--ok">완료</span>
+        </div>
+        <dl class="bw-kv">
+          <dt>담당</dt><dd>시험1팀</dd>
+          <dt>닫힘 조건</dt><dd>4개 팀 회신 완료</dd>
+          <dt>기한</dt><dd>09.19 <span class="bw-dd">종료</span></dd>
+        </dl>
+      </article>
+
+      <article class="bw-item">
+        <div class="bw-item-h">
+          <b>교정전산 연계 범위</b>
+          <span class="bw-s bw-s--none">미정</span>
+        </div>
+        <dl class="bw-kv">
+          <dt>담당</dt><dd>미지정</dd>
+          <dt>닫힘 조건</dt><dd>연계 항목 목록 확정</dd>
+          <dt>기한</dt><dd>미정 <span class="bw-dd">—</span></dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 02 단계별 진행 ─────────────────────────────────────────────────
+       열이 여섯이라 좁은 화면에서 잘린다. .bw-scroll 로 감싼다 —
+       그 대신 머리행 고정을 포기한다(blue-web.css 의 표 주석 참조)
+       ────────────────────────────────────────────────────────────────── -->
+  <section class="bw-sec" id="s2">
+    <h2>단계별 진행<em>6기</em></h2>
+
+    <div class="bw-tools">
+      <input type="search" id="q" placeholder="설비명으로 찾기" aria-label="설비명으로 찾기">
+      <button class="bw-chip" aria-pressed="true"  data-f="all">전체</button>
+      <button class="bw-chip" aria-pressed="false" data-f="late">막힘만</button>
+      <button class="bw-chip" aria-pressed="false" data-f="none">미정만</button>
+      <span class="bw-count" id="count">6건</span>
+    </div>
+
+    <div class="bw-scroll">
+      <table class="bw-table" id="tbl">
+        <thead>
+          <tr>
+            <th style="width:20%">설비</th>
+            <th style="width:14%">소속</th>
+            <th style="width:14%">설치</th>
+            <th style="width:14%">수집</th>
+            <th style="width:14%">검증</th>
+            <th style="width:24%">상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-s="ok"><td>내부 챔버 1호기</td><td>측정표준그룹</td><td>완료</td><td>완료</td><td>진행</td><td><span class="bw-s bw-s--ok">정상</span></td></tr>
+          <tr data-s="ok"><td>내부 챔버 2호기</td><td>측정표준그룹</td><td>완료</td><td>완료</td><td>대기</td><td><span class="bw-s bw-s--ok">정상</span></td></tr>
+          <tr data-s="late"><td>내부 챔버 3호기</td><td>측정표준그룹</td><td>완료</td><td>막힘</td><td>대기</td><td><span class="bw-s bw-s--late">막힘</span></td></tr>
+          <tr data-s="warn"><td>C매장 계산대 열</td><td>품질보증팀</td><td>완료</td><td>진행</td><td>대기</td><td><span class="bw-s bw-s--warn">주의</span></td></tr>
+          <tr data-s="late"><td>교정 출장 장비 A</td><td>교정팀</td><td>대기</td><td>대기</td><td>대기</td><td><span class="bw-s bw-s--late">막힘</span></td></tr>
+          <tr data-s="none"><td>교정 출장 장비 B</td><td>교정팀</td><td>미정</td><td>미정</td><td>미정</td><td><span class="bw-s bw-s--none">미정</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── 03 판정 게이트 ───────────────────────────────────────────────── -->
+  <section class="bw-sec" id="s3">
+    <h2>판정 게이트<em>3단</em></h2>
+    <table class="bw-table">
+      <thead>
+        <tr>
+          <th style="width:10%">단계</th>
+          <th style="width:26%">통과 조건</th>
+          <th style="width:20%">판정 주체</th>
+          <th style="width:16%">시점</th>
+          <th style="width:28%">미통과 시</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>G1</td><td>6기 전부 수집 개시</td><td>AX추진팀</td><td>10월 2주</td><td>대상 축소 후 재산정</td></tr>
+        <tr><td>G2</td><td>인식률 90% 4주 유지</td><td>측정표준그룹</td><td>11월 3주</td><td>보정 1회차 추가 · 2주 지연</td></tr>
+        <tr><td>G3</td><td>가동률 산정 기준 합의</td><td>경영위원회</td><td>12월 2주</td><td>파일럿 종료 · 본과제 미착수</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── 04 리스크 ─────────────────────────────────────────────────────── -->
+  <section class="bw-sec" id="s4">
+    <h2>리스크<em>3건</em></h2>
+    <div class="bw-grid">
+      <article class="bw-card">
+        <div class="bw-item-h"><b>방화벽 예외 지연</b><span class="bw-s bw-s--late">높음</span></div>
+        <p style="margin:var(--bw-sp-2) 0 0">수집 서버가 사내망 밖. 예외 없이는 3호기 이후 수집 불가.
+          <b>대안</b> — 중간 파일 수동 반출, 주 1회 · 실시간 포기.</p>
+      </article>
+      <article class="bw-card">
+        <div class="bw-item-h"><b>출장 장비 접근</b><span class="bw-s bw-s--warn">중간</span></div>
+        <p style="margin:var(--bw-sp-2) 0 0">현장 체류 중 전원·통신 미확보. 설치 일정이 출장 일정에 종속.
+          <b>대안</b> — 복귀 주차에만 수집, 표본 축소.</p>
+      </article>
+      <article class="bw-card bw-card--mute">
+        <div class="bw-item-h"><b>가동 정의 미합의</b><span class="bw-s bw-s--none">미정</span></div>
+        <p style="margin:var(--bw-sp-2) 0 0">분모를 무엇으로 잡느냐가 미정. 수집은 진행 가능하나
+          <b>해석이 뒤집힐 수 있음</b> — G3 전까지 합의 필요.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 05 운영 규칙 ───────────────────────────────────────────────────
+       규칙 조항도 개조식으로 적는다. 보드는 화면이지 발표자 노트가 아니다
+       ────────────────────────────────────────────────────────────────── -->
+  <section class="bw-sec" id="s5">
+    <h2>운영 규칙<em>5조</em></h2>
+    <div class="bw-card">
+      <dl class="bw-kv">
+        <dt>01</dt><dd>막힘은 당일 기록 — 다음 회의까지 묵히지 않음</dd>
+        <dt>02</dt><dd>닫힘 조건 없는 항목 등록 금지 — 「진행 중」만으로는 종료 판정 불가</dd>
+        <dt>03</dt><dd>기한 변경은 사유와 함께 — 날짜만 미루지 않음</dd>
+        <dt>04</dt><dd>미정은 미정으로 표시 — 빈칸으로 두지 않음</dd>
+        <dt>05</dt><dd>반려도 정상 판정 — 근거가 있으면 실패가 아님</dd>
+      </dl>
+    </div>
+
+    <div style="margin-top:var(--bw-sp-3)">
+      <label class="bw-where" for="memo">이번 주 메모</label>
+      <textarea class="bw-note" id="memo" placeholder="다음 사람이 이어받을 내용을 적는다"></textarea>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── 레일 스크롤스파이 ────────────────────────────────────────────────
+  // 현재 보고 있는 절을 aria-current 로 표시한다. 색만이 아니라 왼쪽 막대가
+  // 함께 서므로 색각 이상이 있어도 위치를 안다.
+  var links = [].slice.call(document.querySelectorAll('.bw-rail a'));
+  var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = secs.indexOf(e.target);
+        links.forEach(function (a, n) { a.setAttribute('aria-current', n === i ? 'true' : 'false'); });
+      });
+    }, { rootMargin: '-10% 0px -70% 0px' });
+    secs.forEach(function (s) { if (s) io.observe(s); });
+  }
+
+  // ── 필터 ─────────────────────────────────────────────────────────────
+  var rows = [].slice.call(document.querySelectorAll('#tbl tbody tr'));
+  var chips = [].slice.call(document.querySelectorAll('.bw-chip'));
+  var q = document.getElementById('q');
+  var count = document.getElementById('count');
+  var filter = 'all';
+
+  function apply() {
+    var text = (q.value || '').trim();
+    var n = 0;
+    rows.forEach(function (r) {
+      var okF = filter === 'all' || r.dataset.s === filter;
+      var okQ = !text || r.cells[0].textContent.indexOf(text) >= 0;
+      var show = okF && okQ;
+      r.hidden = !show;
+      if (show) n++;
+    });
+    count.textContent = n + '건';
+  }
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      filter = c.dataset.f;
+      chips.forEach(function (o) { o.setAttribute('aria-pressed', String(o === c)); });
+      apply();
+    });
+  });
+  q.addEventListener('input', apply);
+  apply();
+
+  // ── 메모 저장 ─────────────────────────────────────────────────────────
+  // 어디에 저장되는지 화면이 밝힌다. 공유 저장이 없는 곳에서 이 브라우저에만
+  // 남는다는 사실을 사용자가 모르면 다음 사람이 빈 화면을 본다.
+  var memo = document.getElementById('memo');
+  var where = document.getElementById('where');
+  var KEY = 'board-task.memo';
+  try {
+    memo.value = localStorage.getItem(KEY) || '';
+    where.textContent = '메모는 이 브라우저에만 저장됨 — 공유하려면 내용을 옮겨 적음';
+  } catch (e) {
+    where.textContent = '메모 저장 불가 — 브라우저가 저장을 막고 있음';
+    memo.disabled = true;
+  }
+  var t;
+  memo.addEventListener('input', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      try { localStorage.setItem(KEY, memo.value); }
+      catch (e) { where.textContent = '메모 저장 실패 — 내용을 따로 옮겨 적음'; }
+    }, 350);
+  });
+})();
+</script>
+</body>
+</html>

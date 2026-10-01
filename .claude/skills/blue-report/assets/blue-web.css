@@ -1,0 +1,714 @@
+/* ============================================================================
+   블루 리포트 웹판 — 화면에서 읽고 고치는 보드용 파운데이션
+
+   색·폰트 토큰은 blue-report.css 를 그대로 쓴다. 이 파일은 색을 선언하지 않는다.
+   두 파일을 함께 불러야 한다.
+
+     <link rel="stylesheet" href="blue-report.css">
+     <link rel="stylesheet" href="blue-web.css">
+
+   blue-doc.css 와 같은 방식이다 — 규격 토큰을 덮어쓰지 않고 자기 이름공간
+   (--bw-*)을 :root 에 새로 선언한다. 사내 보드 두 벌이 --br-fs-* 를 0.55배로
+   덮어쓰고 있었는데 두 가지가 잘못됐다.
+
+     1. .pm { --br-fs-body: 13.5px } 처럼 컨테이너에 얹으면 부모인 body 의
+        font-size:var(--br-fs-body) 가 그 값을 못 본다. 실측 결과 body 계산값이
+        25px(슬라이드 값) 그대로였다. 눈에 안 띈 이유는 모든 요소가 우연히
+        명시 규칙에 걸려 있었기 때문이고, 규칙 없는 요소를 하나 넣으면 25px 로
+        튄다. :root 에 새 이름으로 선언하면 이 함정이 구조적으로 없다.
+     2. 덮어쓰면 같은 문서에서 슬라이드 조각을 하나도 못 쓴다. 병렬 선언은 공존한다.
+
+   슬라이드·A4 와 다른 점
+     - 지면 크기가 없다. 화면 폭에 따라 흐른다
+     - 읽기만 하는 물건이 아니다. 상태를 바꾸고 메모를 남긴다
+     - 글자 하한이 12.5px 이다 (슬라이드 24px · A4 10.5pt)
+   ========================================================================= */
+
+/* ── 웹 타입 척도 ──────────────────────────────────────────────────────────
+   슬라이드의 14단계를 배율로 환산하지 않는다. 사내 보드 실측 배율이
+   0.469~0.607 로 제각각이었고, 그 결과 서로 다른 두 단계(--br-fs-lede 28 과
+   --br-fs-card-title 32)가 똑같이 17px 로 붕괴했다. 배율이 아니라 단계를
+   다시 설계한다 — 6단계면 보드에 필요한 위계가 전부 나온다. */
+:root {
+  --bw-fs-title:  34px;   /* 보드 제목 — 한 문서에 하나 */
+  --bw-fs-h2:     21px;   /* 절 제목 */
+  --bw-fs-h3:     16px;   /* 카드 제목 · 표 머리행 */
+  --bw-fs-stat:   30px;   /* KPI 수치 */
+  --bw-fs-body: 13.5px;   /* 본문 */
+  --bw-fs-foot: 12.5px;   /* 보조 · 칩 · 각주 — 하한. 이보다 작게 쓰지 않는다 */
+
+  /* 간격. 슬라이드 척도(8/14/22/34/52)를 그대로 쓰면 화면에서 헐겁다 */
+  --bw-sp-1:  5px;
+  --bw-sp-2:  9px;
+  --bw-sp-3: 14px;
+  --bw-sp-4: 20px;
+  --bw-sp-5: 30px;
+
+  /* 형태. 슬라이드용 --br-r-card(28px)를 13.5px 지면에 쓰면 과하게 둥글다.
+     그림자도 슬라이드 값(14px 36px 번짐)은 카드가 떠 보여 목록을 어지럽힌다. */
+  --bw-r-card:  10px;
+  --bw-r-pill: 999px;
+  --bw-pad-card: 16px 18px;
+  --bw-shadow: 0 1px 2px rgba(16,24,40,.04), 0 4px 12px rgba(16,24,40,.06);
+
+  --bw-rail-w: 212px;     /* 좌측 레일 폭 */
+  --bw-max:   1440px;     /* 본문 최대 폭 */
+}
+
+/* ── 셸 ────────────────────────────────────────────────────────────────────
+   레일 + 본문 2열. 레일은 화면 높이에 붙어 따라다닌다. */
+.bw {
+  margin:0; background:var(--br-page); color:var(--br-text);
+  font:400 var(--bw-fs-body)/1.6 var(--br-font-kr);
+  display:grid; grid-template-columns:var(--bw-rail-w) minmax(0, 1fr);
+  align-items:start;
+}
+.bw * { box-sizing:border-box; }
+
+/* 기본 요소. 보드는 제목·문단·코드가 그냥 섞여 들어오는 문서라 클래스 없는
+   요소에도 척도가 닿아야 한다. 브라우저 기본값에 맡기면 h3 가 1.17em,
+   code 가 0.85em 으로 계산돼 12.5px 하한을 소리 없이 깬다. */
+.bw h3 { margin:0 0 var(--bw-sp-1); font:700 var(--bw-fs-h3)/1.4 var(--br-font-kr); }
+.bw p  { margin:0 0 var(--bw-sp-2); }
+.bw code { font-family:var(--br-font-num); font-size:1em; color:var(--br-text-2); }
+.bw a { color:var(--br-mark); }
+.bw :focus-visible { outline:2px solid var(--br-mark); outline-offset:2px; border-radius:4px; }
+/* 격자 안의 카드는 세로로 채운다 — 바닥에 붙는 차단 사유(.bw-blocks)가
+   margin-top:auto 로 내려가려면 부모가 flex 여야 한다 */
+.bw-grid > .bw-card { display:flex; flex-direction:column; gap:var(--bw-sp-1); }
+.bw-grid > .bw-card > p:last-child { margin-bottom:0; }
+
+.bw-rail {
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--br-cover); color:var(--br-on-dark);
+  padding:var(--bw-sp-5) var(--bw-sp-4);
+  display:flex; flex-direction:column; gap:var(--bw-sp-2);
+}
+.bw-rail h1 { margin:0 0 var(--bw-sp-4); font:800 var(--bw-fs-h3)/1.35 var(--br-font-kr); }
+.bw-rail a {
+  display:flex; gap:var(--bw-sp-2); align-items:baseline;
+  padding:var(--bw-sp-2) var(--bw-sp-3); border-radius:var(--bw-r-card);
+  color:var(--br-on-cover-2); text-decoration:none;
+  font:500 var(--bw-fs-foot)/1.4 var(--br-font-kr);
+}
+.bw-rail a:hover { background:rgba(244,246,248,.09); color:var(--br-on-dark); }
+/* 현재 위치는 색만으로 말하지 않는다 — 왼쪽 막대가 함께 선다 */
+.bw-rail a[aria-current="true"] {
+  background:rgba(244,246,248,.13); color:var(--br-on-dark); font-weight:700;
+  box-shadow:inset 3px 0 0 var(--br-accent-on-dark);
+}
+.bw-rail a i { font-style:normal; color:var(--br-on-cover-3); font-variant-numeric:tabular-nums; }
+
+.bw-main { max-width:var(--bw-max); padding:var(--bw-sp-5); min-width:0; }
+.bw-main > h1 {
+  margin:0 0 var(--bw-sp-2); font:800 var(--bw-fs-title)/1.25 var(--br-font-kr);
+  letter-spacing:var(--br-ls-tight);
+}
+.bw-lede { margin:0 0 var(--bw-sp-5); color:var(--br-text-2); max-width:76ch; }
+/* 절 요지 — 제목 바로 아래 한 문장. 본문보다 한 단계 크고 굵다. 절마다 "그래서
+   무엇인가"를 한 줄로 먼저 말하게 강제하는 자리다. 두 문장 이상 쓰지 않는다. */
+.bw-say { margin:0 0 var(--bw-sp-2); font:700 var(--bw-fs-h3)/1.5 var(--br-font-kr); max-width:76ch; }
+
+.bw-sec { margin:0 0 var(--bw-sp-5); scroll-margin-top:var(--bw-sp-4); }
+.bw-sec > h2 {
+  margin:0 0 var(--bw-sp-3); font:800 var(--bw-fs-h2)/1.3 var(--br-font-kr);
+  display:flex; align-items:baseline; gap:var(--bw-sp-3);
+}
+.bw-sec > h2 em {
+  font:700 var(--bw-fs-foot)/1 var(--br-font-num); font-style:normal;
+  color:var(--br-text-3); letter-spacing:.08em;
+}
+
+/* ── KPI 스트립 ────────────────────────────────────────────────────────────
+   수치 · 이름 · 보조 3단. 분모를 첨자로 붙인다 — 34.2% 보다 68/199 가 낫다. */
+.bw-strip {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+  gap:var(--bw-sp-3); margin-bottom:var(--bw-sp-4);
+}
+.bw-kpi {
+  background:var(--br-card); border-radius:var(--bw-r-card);
+  padding:var(--bw-pad-card); box-shadow:var(--bw-shadow);
+}
+.bw-kpi b {
+  display:block; font:800 var(--bw-fs-stat)/1.1 var(--br-font-num);
+  color:var(--br-mark); font-variant-numeric:tabular-nums;
+}
+/* 첨자는 수치 옆에 붙는다. 아래 이름 줄과 같은 span 이므로 직계 자식으로
+   좁히지 않으면 첨자까지 블록이 되어 줄이 갈라진다 — 실제로 그렇게 나왔다. */
+.bw-kpi .bw-sup { display:inline; font-size:.5em; font-weight:700; margin-left:2px; }
+.bw-kpi > span { display:block; font-weight:700; margin-top:var(--bw-sp-1); }
+.bw-kpi small { display:block; font-size:var(--bw-fs-foot); color:var(--br-text-3); }
+
+/* ── 카드 ──────────────────────────────────────────────────────────────── */
+.bw-card {
+  background:var(--br-card); border-radius:var(--bw-r-card);
+  padding:var(--bw-pad-card); box-shadow:var(--bw-shadow);
+}
+.bw-card--mute { background:var(--br-tint); box-shadow:none; }
+.bw-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:var(--bw-sp-3);
+}
+
+/* ── 표 ────────────────────────────────────────────────────────────────────
+   머리행 고정과 가로 스크롤은 **함께 쓸 수 없다.** CSS 규칙상 overflow-x:auto
+   는 overflow-y 를 auto 로 계산시켜 그 상자가 스크롤포트가 된다. 그러면 sticky
+   머리행이 화면이 아니라 그 상자에 붙는데, 상자는 세로로 스크롤하지 않으므로
+   머리행이 영영 따라오지 않는다. 사내 보드에서 실제로 그렇게 죽어 있었다.
+
+   그래서 둘을 클래스로 갈라 놓는다. 기본은 머리행 고정이고, 열이 많아 좁은
+   화면에서 잘리는 표만 .bw-scroll 로 감싸 머리행 고정을 포기한다.
+   check_board.py 가 둘을 같이 쓰면 실패시킨다. */
+.bw-table { width:100%; border-collapse:collapse; font-size:var(--bw-fs-body); }
+.bw-table th, .bw-table td {
+  text-align:left; padding:var(--bw-sp-2) var(--bw-sp-3);
+  border-bottom:1px solid var(--br-card-line); vertical-align:top;
+}
+.bw-table th {
+  position:sticky; top:0; z-index:2;
+  background:var(--br-page); color:var(--br-text-2);
+  font:700 var(--bw-fs-foot)/1.3 var(--br-font-kr); letter-spacing:.04em;
+  border-bottom:2px solid var(--br-navy);
+}
+.bw-table td.num, .bw-table th.num {
+  text-align:right; font-variant-numeric:tabular-nums;
+}
+/* 열이 많은 표 전용. 이 안에서는 머리행이 고정되지 않는다(위 주석 참조). */
+.bw-scroll { overflow-x:auto; }
+.bw-scroll .bw-table { min-width:660px; }
+.bw-scroll .bw-table th { position:static; }
+
+/* ── 도구막대 ──────────────────────────────────────────────────────────────
+   검색 + 필터 칩. 화면 위에 붙어 목록을 훑는 동안 따라온다. */
+.bw-tools {
+  position:sticky; top:0; z-index:3;
+  display:flex; flex-wrap:wrap; gap:var(--bw-sp-2); align-items:center;
+  padding:var(--bw-sp-2) 0 var(--bw-sp-3);
+  background:var(--br-page);
+}
+.bw-tools input {
+  flex:1 1 200px; min-width:0;
+  padding:var(--bw-sp-2) var(--bw-sp-3);
+  border:1px solid var(--br-card-line); border-radius:var(--bw-r-card);
+  background:var(--br-card); color:var(--br-text);
+  font:400 var(--bw-fs-body)/1.4 var(--br-font-kr);
+}
+.bw-chip {
+  padding:var(--bw-sp-1) var(--bw-sp-3); border-radius:var(--bw-r-pill);
+  border:1px solid var(--br-chip-line); background:var(--br-card);
+  color:var(--br-text-2); cursor:pointer; white-space:nowrap;
+  font:600 var(--bw-fs-foot)/1.5 var(--br-font-kr);
+}
+.bw-chip[aria-pressed="true"] {
+  background:var(--br-mark); border-color:var(--br-mark); color:var(--br-on-dark);
+}
+.bw-count { margin-left:auto; color:var(--br-text-3); font-size:var(--bw-fs-foot); }
+
+/* ── 상태 알약 ─────────────────────────────────────────────────────────────
+   슬라이드의 .br-status 를 웹 크기로 덮어쓰지 않는다. 같은 색 토큰을 쓰되
+   따로 선언해 두 계통이 서로를 망가뜨리지 않게 한다.
+
+   색만으로 상태를 말하지 않는다 — 글자가 언제나 함께 온다. 색각 이상이 있는
+   사람에게는 글자가 유일한 단서이고, 인쇄하면 색이 통째로 날아간다.
+
+   슬라이드에 없는 --none 을 더한다. 「아직 정보 없음」은 실무에서 자주 나오는데
+   정상·주의·지연 셋으로는 말할 수 없어 빈칸으로 남기게 된다. 파선 테두리로
+   「값이 안 들어온 자리」임을 형태가 말한다. */
+.bw-s {
+  display:inline-flex; align-items:center; flex:none;
+  padding:2px var(--bw-sp-2); border-radius:var(--bw-r-pill);
+  border:1px solid currentColor; white-space:nowrap;
+  font:700 var(--bw-fs-foot)/1.5 var(--br-font-kr);
+}
+.bw-s--ok   { color:var(--br-ok-text); }
+.bw-s--warn { color:var(--br-warn-text); }
+.bw-s--late { color:var(--br-alert-text); }
+.bw-s--none { color:var(--br-text-3); border-style:dashed; }
+
+/* 남은 날. 임박할수록 색이 올라간다. 색과 함께 「D-3」 글자가 언제나 붙는다 */
+.bw-dd {
+  display:inline-flex; flex:none; padding:2px var(--bw-sp-2);
+  border-radius:var(--bw-r-pill); border:1px solid currentColor;
+  font:700 var(--bw-fs-foot)/1.5 var(--br-font-num);
+  color:var(--br-text-3);
+}
+.bw-dd--soon { color:var(--br-warn-text); }
+.bw-dd--now  { color:var(--br-alert-text); }
+
+/* ── 항목 카드 ─────────────────────────────────────────────────────────────
+   목록이 길어지는 보드용. 제목 줄 + 키·값 줄 + 상태. */
+.bw-item {
+  background:var(--br-card); border-radius:var(--bw-r-card);
+  padding:var(--bw-pad-card); box-shadow:var(--bw-shadow);
+  display:flex; flex-direction:column; gap:var(--bw-sp-2);
+}
+.bw-item-h { display:flex; align-items:baseline; gap:var(--bw-sp-2); }
+.bw-item-h b { font:700 var(--bw-fs-h3)/1.35 var(--br-font-kr); flex:1; min-width:0; }
+/* 목록에서 끝난 항목은 지면에 눕히고 막힌 항목은 테두리를 세운다. 지우지 않는
+   이유는 "무엇이 끝났는가"도 보드가 지는 정보이기 때문이다. */
+.bw-item[data-done] { background:var(--br-tint); box-shadow:none; }
+.bw-item[data-done] .bw-item-h b { color:var(--br-text-3); text-decoration:line-through; }
+.bw-item[data-block] { box-shadow:none; border:1px solid var(--br-alert-line); }
+
+/* 카드도 표도 아닌 그냥 세로 쌓기. 목록 사이 간격을 손으로 주지 않게 한다 */
+.bw-stack { display:flex; flex-direction:column; gap:var(--bw-sp-2); }
+
+.bw-kv { display:grid; grid-template-columns:auto 1fr; gap:var(--bw-sp-1) var(--bw-sp-3); }
+.bw-kv dt { color:var(--br-text-3); font-size:var(--bw-fs-foot); }
+.bw-kv dd { margin:0; }
+
+/* ── 메모 ─────────────────────────────────────────────────────────────────
+   보드는 읽는 물건이 아니라 고치는 물건이다. 저장 위치를 화면이 밝힌다. */
+.bw-note {
+  width:100%; resize:vertical; min-height:64px;
+  padding:var(--bw-sp-2) var(--bw-sp-3);
+  border:1px solid var(--br-card-line); border-radius:var(--bw-r-card);
+  background:var(--br-page); color:var(--br-text);
+  font:400 var(--bw-fs-body)/1.6 var(--br-font-kr);
+}
+.bw-where { color:var(--br-text-3); font-size:var(--bw-fs-foot); }
+
+/* ── 좁은 화면 ─────────────────────────────────────────────────────────────
+   레일을 위로 눕힌다. 화면 높이에 붙이는 것을 풀지 않으면 세로를 다 먹는다. */
+@media (max-width: 860px) {
+  .bw { grid-template-columns:1fr; }
+  .bw-rail {
+    position:static; height:auto; flex-direction:row; flex-wrap:wrap;
+    align-items:center; padding:var(--bw-sp-3) var(--bw-sp-4);
+  }
+  .bw-rail h1 { margin:0 var(--bw-sp-4) 0 0; }
+  .bw-main { padding:var(--bw-sp-4); }
+}
+
+/* ── 인쇄 ──────────────────────────────────────────────────────────────────
+   보드는 인쇄물이 아니지만 회의에 들고 들어가는 일이 있다. 레일과 조작 부품을
+   빼고 본문만 남긴다. 상태 알약은 테두리·글자로 말하므로 색 없이도 읽힌다. */
+@media print {
+  .bw { display:block; }
+  .bw-rail, .bw-tools, .bw-note { display:none; }
+  .bw-main { max-width:none; padding:0; }
+  .bw-card, .bw-kpi, .bw-item { box-shadow:none; border:1px solid var(--br-card-line); }
+  .bw-table th { position:static; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════════
+   보드 부품 확장 — 사내 보드 4벌을 이 계통으로 옮기며 필요해진 것들
+
+   4벌이 각자 만들어 쓰던 부품을 한곳으로 모은다. 같은 일을 하는 상자가
+   `.pm-strip` `.tf-strip` `.branch` 세 이름으로 흩어져 있었고, 크기가 제각각인
+   이유도 이름이 달라서였다. 이름이 하나면 크기도 하나다.
+
+   원칙은 위와 같다.
+     - 색은 blue-report.css 토큰만 쓴다. 이 파일은 색을 선언하지 않는다
+     - 크기는 --bw-fs-* 6단계 안에서만 고른다. 리터럴 px 는 글자에 쓰지 않는다
+     - 채움으로 뜻을 나르는 마크는 뒷배경 대비 2:1 을 넘긴다
+     - 상태는 색만으로 말하지 않는다. 글자가 언제나 함께 온다
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 레일 보강 ─────────────────────────────────────────────────────────────
+   브랜드 마크는 슬라이드에서 우측 상단 모서리에 선다. 보드에는 그 모서리가
+   없다 — 지면이 끝나지 않고 아래로 흐르므로 "한 장의 오른쪽 위"가 성립하지
+   않는다. 그래서 보드에서는 레일 머리가 그 자리다. 스크롤해도 늘 보인다.
+
+   자리표시자는 슬라이드와 같은 .br-mark 계약을 그대로 쓴다. apply_brand.py 가
+   찾는 자리가 하나뿐이어야 보드에도 로고가 자동으로 박힌다. 위치만 여기서 푼다. */
+.bw-rail .br-mark { position:static; margin:0 0 var(--bw-sp-3); }
+.bw-rail .br-logo { height:26px; }
+.bw-rail .br-wordmark { font-size:var(--bw-fs-h3); color:var(--br-on-dark); }
+
+.bw-rail-sub {
+  display:block; margin:calc(-1 * var(--bw-sp-3)) 0 var(--bw-sp-3);
+  color:var(--br-on-cover-3); font:700 var(--bw-fs-foot)/1.4 var(--br-font-label);
+  letter-spacing:var(--br-ls-label); text-transform:uppercase;
+}
+.bw-rail-foot {
+  margin-top:auto; padding-top:var(--bw-sp-4);
+  color:var(--br-on-cover-3); font-size:var(--bw-fs-foot); line-height:1.55;
+}
+.bw-rail-foot b { display:block; color:var(--br-on-dark-2); font-weight:700; }
+
+/* ── 문서 머리 ─────────────────────────────────────────────────────────────
+   보드 제목 + 메타 줄. 메타는 라벨과 값을 붙여 한 줄에 여럿 늘어놓는다 —
+   표로 만들면 네 칸짜리 표가 되어 제목보다 무거워진다. */
+.bw-top { padding-bottom:var(--bw-sp-4); border-bottom:2px solid var(--br-navy); margin-bottom:var(--bw-sp-5); }
+.bw-top > h1 { margin:0 0 var(--bw-sp-2); font:800 var(--bw-fs-title)/1.2 var(--br-font-kr); letter-spacing:var(--br-ls-tight); }
+.bw-meta {
+  display:flex; flex-wrap:wrap; gap:var(--bw-sp-1) var(--bw-sp-4);
+  color:var(--br-text-2); font-size:var(--bw-fs-foot);
+}
+.bw-meta b { color:var(--br-text); font-weight:700; }
+
+.bw-foot {
+  margin-top:var(--bw-sp-5); padding-top:var(--bw-sp-3);
+  border-top:1px solid var(--br-hairline);
+  color:var(--br-text-3); font-size:var(--bw-fs-foot); line-height:1.7;
+}
+.bw-foot b { color:var(--br-text-2); font-weight:700; }
+
+/* ── 절 안의 구분 머리 ─────────────────────────────────────────────────────
+   한 절이 여러 묶음으로 나뉠 때(단계·주차·분류) 쓴다. 절 제목을 또 쓰면
+   위계가 무너지므로 괘선 하나로 가른다. */
+.bw-phase {
+  margin:var(--bw-sp-5) 0 var(--bw-sp-3); padding-bottom:var(--bw-sp-2);
+  border-bottom:1px solid var(--br-card-line);
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--bw-sp-3);
+  font:700 var(--bw-fs-h3)/1.3 var(--br-font-kr);
+}
+.bw-phase:first-child { margin-top:0; }
+.bw-phase em {
+  font:700 var(--bw-fs-foot)/1 var(--br-font-label); font-style:normal;
+  letter-spacing:var(--br-ls-label); text-transform:uppercase; color:var(--br-text-3);
+}
+
+/* ── 글 ────────────────────────────────────────────────────────────────── */
+/* 숫자·경로·식별자. --br-num 과 달리 굵기를 올리지 않는다 — 본문 사이에 섞이는
+   파일 경로를 700 으로 쓰면 그 줄에서 경로가 주인공이 된다. */
+.bw-mono { font-family:var(--br-font-num); font-variant-numeric:tabular-nums; }
+.bw-src  { color:var(--br-text-3); font-size:var(--bw-fs-foot); }
+
+.bw-ul, .bw-ol { margin:0; padding-left:1.2em; color:var(--br-text-2); }
+.bw-ul > li, .bw-ol > li { margin-bottom:var(--bw-sp-1); }
+.bw-ul > li > b, .bw-ol > li > b { color:var(--br-text); font-weight:700; }
+
+/* 대시 목록 — 번호도 점도 아닌 나열. 금지 조항은 부호를 바꿔 형태가 말하게 한다 */
+.bw-list { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:var(--bw-sp-2); }
+.bw-list > li { position:relative; padding-left:1.1em; color:var(--br-text-2); font-size:var(--bw-fs-foot); line-height:1.55; }
+.bw-list > li::before { content:"—"; position:absolute; left:0; color:var(--br-text-3); }
+.bw-list--deny > li::before { content:"\00d7"; color:var(--br-alert-text); font-weight:700; }
+.bw-list > li b { color:var(--br-text); font-weight:700; }
+
+.bw-empty {
+  padding:var(--bw-sp-5) 0; text-align:center;
+  color:var(--br-text-3); border:1px dashed var(--br-card-line); border-radius:var(--bw-r-card);
+}
+
+/* ── 상자 ──────────────────────────────────────────────────────────────── */
+/* 주의 콜아웃. 슬라이드 .br-callout 을 덮어쓰지 않고 따로 선언한다 */
+.bw-callout {
+  border:1px solid var(--br-warn-line); background:var(--br-warn-bg); color:var(--br-warn-text);
+  border-radius:var(--bw-r-card); padding:var(--bw-pad-card); line-height:1.6;
+}
+.bw-callout b { color:var(--br-warn-text); font-weight:700; }
+/* 결론 상자 — 경고가 아니라 요점. 왼쪽 굵은 선이 "여기가 답"을 말한다 */
+.bw-callout--key {
+  border:1px solid var(--br-card-line); border-left:3px solid var(--br-mark);
+  background:var(--br-tint); color:var(--br-text-2);
+}
+.bw-callout--key b, .bw-callout--key strong { color:var(--br-text); font-weight:700; }
+
+/* 다크 정리 상자 — 한 절에 하나까지. 둘이 붙으면 지면이 어두워져 위계가 죽는다 */
+.bw-dark {
+  background:var(--br-dark); color:var(--br-on-dark);
+  border-radius:var(--bw-r-card); padding:var(--bw-pad-card);
+}
+.bw-dark h3 { margin:0 0 var(--bw-sp-2); font:700 var(--bw-fs-h3)/1.35 var(--br-font-kr); color:var(--br-on-dark); }
+.bw-dark p, .bw-dark li { color:var(--br-on-dark-2); }
+.bw-dark b { color:var(--br-amber); font-weight:700; }
+.bw-dark .bw-ol > li > b { color:var(--br-on-dark); display:block; }
+
+/* 왼쪽 모서리로 갈래를 표시하는 카드 */
+.bw-card--edge { border-left:3px solid var(--br-warn-line); }
+.bw-card--ok   { border-left:3px solid var(--br-ok-line); }
+.bw-card--late { border-left:3px solid var(--br-alert-line); }
+
+/* 머리 달린 상자 — 표나 행 묶음을 담는다. 카드와 달리 머리줄이 개수를 진다 */
+.bw-box { background:var(--br-card); border:1px solid var(--br-card-line); border-radius:var(--bw-r-card); overflow:hidden; }
+.bw-box-h {
+  display:flex; justify-content:space-between; align-items:baseline; gap:var(--bw-sp-3);
+  padding:var(--bw-sp-3); background:var(--br-tint); border-bottom:1px solid var(--br-card-line);
+}
+.bw-box-h > b { font:700 var(--bw-fs-h3)/1.35 var(--br-font-kr); }
+.bw-box-h > span { color:var(--br-text-3); font-size:var(--bw-fs-foot); }
+.bw-rows > div {
+  display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--bw-sp-3);
+  padding:var(--bw-sp-2) var(--bw-sp-3); border-bottom:1px solid var(--br-card-line);
+}
+.bw-rows > div:last-child { border-bottom:0; }
+.bw-rows .bw-src { display:block; margin-top:2px; }
+
+/* ── 격자 ──────────────────────────────────────────────────────────────── */
+.bw-grid--2 { grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); }
+.bw-grid--4 { grid-template-columns:repeat(auto-fill, minmax(222px, 1fr)); }
+
+/* ── KPI 변형 ──────────────────────────────────────────────────────────────
+   수치 색으로 "이것이 나쁜 수인가"를 말한다. 색만으로 말하지 않으므로 보조줄이
+   언제나 분모나 내역을 함께 진다. */
+.bw-kpi--hot b { color:var(--br-alert-text); }
+.bw-kpi--key b { color:var(--br-mark); }
+
+/* ── 항목 카드 보강 ────────────────────────────────────────────────────────
+   트랙·과제 카드. 머리줄에 분류와 상태, 바닥에 식별자와 차단 사유가 붙는다. */
+.bw-tno {
+  font:700 var(--bw-fs-foot)/1 var(--br-font-label);
+  letter-spacing:var(--br-ls-label); text-transform:uppercase; color:var(--br-text-3);
+}
+.bw-ids { color:var(--br-text-3); font-family:var(--br-font-num); font-size:var(--bw-fs-foot); }
+.bw-blocks {
+  margin-top:auto; padding-top:var(--bw-sp-2); border-top:1px solid var(--br-card-line);
+  color:var(--br-alert-text); font-size:var(--bw-fs-foot); line-height:1.5;
+}
+.bw-blocks b { font-weight:700; }
+
+/* 체크 표식 — 눌러서 상태를 바꾸는 네모. 글자(빈칸·진행·완료)가 함께 온다 */
+.bw-mk {
+  flex:none; width:26px; height:26px; padding:0;
+  border:2px solid var(--br-chip-line); border-radius:6px;
+  background:transparent; color:var(--br-text-3); cursor:pointer;
+  font:700 var(--bw-fs-foot)/1 var(--br-font-kr);
+}
+.bw-mk:hover { border-color:var(--br-mark); color:var(--br-mark); }
+.bw-mk[data-s="진행"] { background:var(--br-mark); border-color:var(--br-mark); color:var(--br-on-dark); }
+.bw-mk[data-s="완료"] { background:var(--br-navy); border-color:var(--br-navy); color:var(--br-on-dark); }
+
+/* ── 상태 알약 보강 ────────────────────────────────────────────────────────
+   확정·제안은 정상·주의·지연과 다른 축이다. 저쪽이 "어떤가"라면 이쪽은
+   "정해졌는가"다. blue-report.css 의 .br-conf--* 와 같은 뜻을 웹 크기로 쓴다. */
+.bw-s--fixed { color:var(--br-ok-text); }
+.bw-s--plan  { color:var(--br-mark); border-style:dashed; }
+/* 눌러서 바꾸는 알약. 눌림 상태는 채워서 알린다 — 글자는 그대로 남는다 */
+.bw-s--btn { cursor:pointer; user-select:none; background:var(--br-card); }
+.bw-s--btn:hover { background:var(--br-tint); }
+.bw-s--btn[aria-pressed="true"] { background:currentColor; }
+.bw-s--btn[aria-pressed="true"] > span { color:var(--br-card); }
+
+/* 네 상태를 돌려 쓰는 알약. 누를 때마다 대기 → 진행 → 완료 → 막힘 으로 넘어간다.
+   글자가 상태 그 자체이므로 색을 못 읽어도 값이 남는다. */
+.bw-s--btn[data-s="대기"] { color:var(--br-text-3); border-style:dashed; }
+.bw-s--btn[data-s="진행"] { color:var(--br-mark); }
+.bw-s--btn[data-s="완료"] { color:var(--br-ok-text); }
+.bw-s--btn[data-s="막힘"] { color:var(--br-alert-text); background:var(--br-alert-bg); }
+
+/* 꼬리표 — 상태가 아니라 사건을 붙인다(신규 · 해결 · 갱신일) */
+.bw-tag {
+  display:inline-block; flex:none; padding:1px var(--bw-sp-2); border-radius:4px;
+  background:var(--br-tint); color:var(--br-text-2);
+  font:700 var(--bw-fs-foot)/1.5 var(--br-font-kr); white-space:nowrap;
+}
+.bw-tag--new  { background:var(--br-mark);     color:var(--br-on-dark); }
+.bw-tag--done { background:var(--br-ok-text);  color:var(--br-on-dark); }
+.bw-tag--now  { background:var(--br-alert-text); color:var(--br-on-dark); }
+.bw-tag--line { background:transparent; border:1px solid var(--br-mark); color:var(--br-mark); }
+
+/* ── 입력 ──────────────────────────────────────────────────────────────── */
+.bw-sel {
+  flex:none; max-width:230px; padding:var(--bw-sp-1) var(--bw-sp-3);
+  border:1px solid var(--br-chip-line); border-radius:var(--bw-r-pill);
+  background:var(--br-card); color:var(--br-text);
+  font:700 var(--bw-fs-foot)/1.6 var(--br-font-kr);
+}
+/* 저장 알림 — 화면 구석에 잠깐 떴다 사라진다. 글자가 무엇이 저장됐는지 말한다 */
+.bw-toast {
+  position:fixed; right:16px; bottom:16px; z-index:9; pointer-events:none;
+  padding:var(--bw-sp-1) var(--bw-sp-3); border-radius:var(--bw-r-pill);
+  background:var(--br-dark); color:var(--br-on-dark-2);
+  font-size:var(--bw-fs-foot); opacity:0; transition:opacity .25s;
+}
+.bw-toast[aria-hidden="false"] { opacity:1; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   데이터 마크 — 채움으로 뜻을 나르므로 전부 뒷배경 대비 2:1 을 넘긴다.
+   채널(--br-track) 위에 놓이는 막대는 지면이 아니라 채널 기준으로 잰다.
+   check_board.py 의 PROBE 가 아래 클래스를 모두 걷어 검산한다.
+   ═════════════════════════════════════════════════════════════════════ */
+
+/* 가로 막대 — 이름 / 채널 / 값을 각각 다른 열에 둔다. 막대가 이름을 덮지 않는다 */
+.bw-bars { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:var(--bw-sp-2) var(--bw-sp-3); }
+.bw-bar-name { font-weight:700; }
+/* 채널은 그릇이지 데이터가 아니다. 다만 막대의 실제 뒷배경이 지면이 아니라 이
+   채널이므로, 채널 안에 6단 이상 램프를 깔 때는 --br-chan-* 를 쓴다.
+   --br-bar-* 는 지면 대비로 잡은 값이라 밝은 쪽이 채널 위에서 2:1 을 못 넘긴다. */
+.bw-bar-track { height:16px; background:var(--br-track); border-radius:2px; overflow:hidden; }
+.bw-bar { height:100%; background:var(--br-mark); border-radius:2px; }
+.bw-bar--mute { background:var(--br-mark-mute); }
+.bw-bar-val { font:700 var(--bw-fs-body)/1 var(--br-font-num); color:var(--br-navy); text-align:right; font-variant-numeric:tabular-nums; }
+.bw-bar-val small { font-weight:400; font-size:var(--bw-fs-foot); color:var(--br-text-3); }
+
+/* 비율 띠 — 합이 100 인 구성. 도넛을 쓸 만큼 크지 않은 자리에 쓴다.
+   각 칸에 수가 들어가므로 색을 못 읽어도 구성이 읽힌다. */
+.bw-meter { display:flex; height:26px; border-radius:3px; overflow:hidden; }
+.bw-meter > span {
+  display:flex; align-items:center; justify-content:center; min-width:0;
+  color:var(--br-on-dark); font:700 var(--bw-fs-foot)/1 var(--br-font-num);
+}
+.bw-meter .bw-m--ok   { background:var(--br-ok-text); }
+.bw-meter .bw-m--part { background:var(--br-warn-text); }
+.bw-meter .bw-m--gap  { background:var(--br-alert-text); }
+.bw-meter-key { display:flex; flex-wrap:wrap; gap:var(--bw-sp-2) var(--bw-sp-4); margin-top:var(--bw-sp-2); color:var(--br-text-2); font-size:var(--bw-fs-foot); }
+.bw-meter-key > div { display:flex; align-items:center; gap:var(--bw-sp-1); }
+.bw-meter-key b { color:var(--br-text); font-family:var(--br-font-num); }
+.bw-dot { display:inline-block; width:9px; height:9px; border-radius:2px; flex:none; }
+/* 범례 점이 .bw-wk 의 색 규칙을 빌려 쓸 때 그 높이까지 따라오지 않게 한다 */
+.bw-dot.bw-wk { height:9px; }
+.bw-dot.bw-m--ok   { background:var(--br-ok-text); }
+.bw-dot.bw-m--part { background:var(--br-warn-text); }
+.bw-dot.bw-m--gap  { background:var(--br-alert-text); }
+
+/* 주차 격자 — 한 칸이 1주. 단계별로 색이 갈리고 현재 주는 테두리가 선다.
+   색이 아니라 테두리가 "지금"을 말하므로 인쇄해도 남는다. */
+.bw-weeks { display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:3px; }
+.bw-wk { height:14px; border-radius:2px; background:var(--br-track); }
+.bw-wk[data-s="0"] { background:var(--br-data-1); }
+.bw-wk[data-s="1"] { background:var(--br-data-2); }
+.bw-wk[data-s="2"] { background:var(--br-data-3); }
+.bw-wk[data-s="3"] { background:var(--br-data-4); }
+.bw-wk[data-now]   { outline:2px solid var(--br-text); outline-offset:2px; }
+
+/* 단계 진행판 — 설비·과제 하나가 거치는 단계를 한 줄에 늘어놓는다.
+   지난 단계와 남은 단계를 채움으로 가르고, 막힌 단계는 글자까지 바꾼다. */
+.bw-stage { display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:3px; }
+.bw-stage-s {
+  padding:var(--bw-sp-1) 2px; border-radius:6px; text-align:center;
+  background:var(--br-tint); border:1px solid var(--br-card-line);
+  color:var(--br-text-3); font:700 var(--bw-fs-foot)/1.4 var(--br-font-kr);
+}
+.bw-stage-s[data-on="1"] { background:var(--br-data-2); border-color:var(--br-data-2); color:var(--br-on-dark); }
+.bw-stage-s[data-on="2"] { background:var(--br-data-1); border-color:var(--br-data-1); color:var(--br-on-dark); }
+.bw-stage-s[data-on="x"] { background:var(--br-alert-bg); border-color:var(--br-alert-line); color:var(--br-alert-text); }
+
+/* 일정 타임라인 — 이름 열과 기간 격자를 분리한다. 마일스톤은 막대와 겹치지
+   않도록 트랙 아래 별도 줄에 둔다. */
+.bw-tl { display:flex; flex-direction:column; gap:var(--bw-sp-2); }
+.bw-tl-row { display:grid; grid-template-columns:190px minmax(0,1fr); align-items:center; gap:var(--bw-sp-3); }
+.bw-tl-name { font-weight:700; }
+.bw-tl-name small { display:block; font-weight:400; font-size:var(--bw-fs-foot); color:var(--br-text-3); }
+.bw-tl-track { display:grid; align-items:center; position:relative; min-height:26px; }
+.bw-tl-head { text-align:center; color:var(--br-text-3); font:700 var(--bw-fs-foot)/1 var(--br-font-label); letter-spacing:.1em; text-transform:uppercase; }
+/* 막대 안에 글자를 넣지 않는다 — 짧은 구간에서 라벨이 막대 밖으로 삐져나가고,
+   밝은 램프 위 흰 글자는 본문 대비 4.5:1 을 못 넘긴다. 기간 문구는 이름 열의
+   보조줄(.bw-tl-name small)이 진다. */
+.bw-tl-bar { height:18px; border-radius:2px; background:var(--br-mark); }
+.bw-tl-mile { display:flex; align-items:center; gap:var(--bw-sp-1); color:var(--br-navy); font-size:var(--bw-fs-foot); font-weight:700; }
+.bw-tl-dot { width:10px; height:10px; border-radius:50%; background:var(--br-alert-text); flex:none; }
+.bw-miles { display:flex; flex-wrap:wrap; gap:var(--bw-sp-2) var(--bw-sp-5); }
+
+/* 주차 진행 줄 — 타임라인과 달리 한 주가 한 행이다. 주차가 많을 때 세로로 쌓는다 */
+.bw-trow {
+  display:grid; grid-template-columns:96px 68px minmax(0,1fr) 44px; gap:var(--bw-sp-3); align-items:center;
+  padding:var(--bw-sp-2) var(--bw-sp-3); border:1px solid var(--br-card-line);
+  border-radius:var(--bw-r-card); background:var(--br-card);
+}
+.bw-trow[data-now] { border-color:var(--br-mark); }
+.bw-trow > b { font:700 var(--bw-fs-foot)/1.4 var(--br-font-num); color:var(--br-text-2); white-space:nowrap; }
+.bw-trow[data-now] > b { color:var(--br-mark); }
+.bw-trow > i { font-style:normal; text-align:right; color:var(--br-text-3); font:700 var(--bw-fs-foot)/1 var(--br-font-num); }
+
+/* ── 요일 카드 ─────────────────────────────────────────────────────────────
+   한 주를 다섯 칸으로 벌린다. 날짜와 요일을 같이 쓴다 — 「수요일」만으로는
+   다음 주 수요일과 구분되지 않는다. */
+.bw-week { display:grid; grid-template-columns:repeat(auto-fit, minmax(196px, 1fr)); gap:var(--bw-sp-3); }
+.bw-week > .bw-card { display:flex; flex-direction:column; gap:var(--bw-sp-2); }
+.bw-week header { display:flex; align-items:baseline; justify-content:space-between; gap:var(--bw-sp-2); }
+.bw-dnum { font:700 var(--bw-fs-h3)/1 var(--br-font-num); letter-spacing:var(--br-ls-tight); }
+.bw-dow { color:var(--br-text-3); font-size:var(--bw-fs-foot); }
+.bw-week h3 { margin:0; font:700 var(--bw-fs-h3)/1.4 var(--br-font-kr); }
+.bw-week p { margin:0; color:var(--br-text-2); font-size:var(--bw-fs-foot); line-height:1.55; }
+.bw-week label {
+  display:flex; gap:var(--bw-sp-2); align-items:flex-start; margin-top:auto;
+  padding-top:var(--bw-sp-2); border-top:1px solid var(--br-card-line);
+  color:var(--br-text-2); font-size:var(--bw-fs-foot); cursor:pointer;
+}
+.bw-week input { margin:2px 0 0; accent-color:var(--br-mark); flex:none; }
+.bw-week .is-done h3 { color:var(--br-text-3); text-decoration:line-through; }
+
+/* ── 칸반 ──────────────────────────────────────────────────────────────────
+   단계가 열이고 항목이 칸이다. 열 수가 넷을 넘으면 칸이 좁아 제목이 세로로
+   쪼개지므로, 넷까지만 열로 두고 그 이상은 절을 나눈다. */
+.bw-kan { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:var(--bw-sp-3); align-items:start; }
+.bw-kan-col { background:var(--br-card); border-radius:var(--bw-r-card); box-shadow:var(--bw-shadow); padding:var(--bw-pad-card); }
+.bw-kan-h { display:flex; align-items:baseline; gap:var(--bw-sp-2); margin-bottom:var(--bw-sp-3); }
+.bw-kan-h > b { font:700 var(--bw-fs-h3)/1.35 var(--br-font-kr); }
+.bw-kan-h > span { margin-left:auto; color:var(--br-text-3); font-family:var(--br-font-num); font-size:var(--bw-fs-foot); }
+.bw-kan-list { display:flex; flex-direction:column; gap:var(--bw-sp-2); }
+/* 칸 하나. 목록 안이라 카드 그림자를 주지 않는다 — 겹치면 지면이 울퉁불퉁해진다 */
+.bw-tile {
+  display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--bw-sp-2); align-items:start;
+  padding:var(--bw-sp-2); border:1px solid var(--br-card-line); border-radius:8px; background:var(--br-page);
+}
+.bw-tile[data-go]   { border-color:var(--br-mark); }
+.bw-tile[data-late] { border-color:var(--br-alert-line); background:var(--br-alert-bg); }
+.bw-tile[data-done] { opacity:.55; }
+.bw-tile[data-done] .bw-tile-t { text-decoration:line-through; }
+.bw-tile-t { text-align:left; border:0; background:transparent; padding:0; cursor:pointer; font:700 var(--bw-fs-body)/1.4 var(--br-font-kr); color:var(--br-text); }
+.bw-tile-m { display:flex; flex-wrap:wrap; gap:var(--bw-sp-1); margin-top:var(--bw-sp-1); align-items:center; }
+
+/* ── 공백 카드 ─────────────────────────────────────────────────────────────
+   부모(공백) 하나에 자식(대응 항목) 여럿이 붙는 형태. 부모와 자식을 각각
+   목록으로 만들면 "부족한 게 17개냐 21개냐"가 되므로 한 카드 안에 묶는다. */
+.bw-gap {
+  display:grid; grid-template-columns:52px minmax(0,1fr) minmax(0,210px); gap:var(--bw-sp-3); align-items:start;
+  background:var(--br-card); border:1px solid var(--br-card-line);
+  border-radius:var(--bw-r-card); padding:var(--bw-pad-card);
+}
+.bw-gap--done { border-left:3px solid var(--br-ok-line); }
+.bw-gap--now  { border-left:3px solid var(--br-alert-line); background:var(--br-alert-bg); }
+.bw-gap-id { font:700 var(--bw-fs-body)/1.4 var(--br-font-num); color:var(--br-mark); }
+.bw-gap-t  { margin:0 0 var(--bw-sp-1); font:700 var(--bw-fs-h3)/1.35 var(--br-font-kr); display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--bw-sp-2); }
+.bw-gap-w  { margin:0; color:var(--br-text-2); line-height:1.55; }
+.bw-gap-w b { color:var(--br-text); font-weight:700; }
+.bw-gap-where { margin:var(--bw-sp-1) 0 0; color:var(--br-text-3); font-size:var(--bw-fs-foot); }
+.bw-gap-items { display:flex; flex-direction:column; gap:var(--bw-sp-1); }
+.bw-gap-items > div { display:flex; align-items:center; gap:var(--bw-sp-1); flex-wrap:wrap; color:var(--br-text-2); font-size:var(--bw-fs-foot); }
+
+/* ── 단계 목록 ─────────────────────────────────────────────────────────────
+   순서가 정보인 목록. 번호 · 할 일 · 근거 · 소요를 각각 다른 열에 둔다. */
+.bw-steps { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; background:var(--br-card-line); border:1px solid var(--br-card-line); border-radius:var(--bw-r-card); overflow:hidden; }
+.bw-steps > li { display:grid; grid-template-columns:26px minmax(0,1fr) minmax(0,150px) 80px; gap:var(--bw-sp-3); align-items:baseline; background:var(--br-card); padding:var(--bw-sp-3); }
+.bw-steps b { font-weight:700; }
+.bw-steps .bw-stn { font:700 var(--bw-fs-body)/1.4 var(--br-font-num); color:var(--br-mark); }
+.bw-steps small { display:block; margin-top:2px; color:var(--br-text-3); font-size:var(--bw-fs-foot); line-height:1.5; }
+.bw-steps .bw-stg { color:var(--br-mark); font:700 var(--bw-fs-foot)/1.5 var(--br-font-num); }
+.bw-steps .bw-stt { text-align:right; color:var(--br-text-3); font-size:var(--bw-fs-foot); }
+
+/* ── 대조표 ────────────────────────────────────────────────────────────────
+   두 문서가 같은 항목을 다르게 말할 때 어느 쪽이 기준인지 행 단위로 보인다.
+   표로 만들면 머리행이 두 출처를 대등하게 세우므로 기준 쪽에 색을 준다. */
+.bw-cmp { display:grid; gap:1px; background:var(--br-card-line); border:1px solid var(--br-card-line); border-radius:var(--bw-r-card); overflow:hidden; }
+.bw-cmp > div { display:grid; grid-template-columns:minmax(88px,.8fr) minmax(0,1fr) minmax(0,1fr); gap:var(--bw-sp-3); background:var(--br-card); padding:var(--bw-sp-2) var(--bw-sp-3); }
+.bw-cmp > .bw-cmp-h { background:var(--br-tint); color:var(--br-text-3); font:700 var(--bw-fs-foot)/1.4 var(--br-font-label); letter-spacing:var(--br-ls-label); text-transform:uppercase; }
+.bw-cmp .bw-cmp-a { color:var(--br-ok-text); font-weight:700; }
+.bw-cmp .bw-cmp-b { color:var(--br-warn-text); }
+/* 첫 열이 라벨이 아니라 설명문인 대조표 */
+.bw-cmp--lead > div { grid-template-columns:1.6fr 88px 1.4fr; }
+
+/* ── 접기 ──────────────────────────────────────────────────────────────────
+   길어지는 부록을 접는다. 화살표 대신 +/− 를 쓴다 — 회전 애니메이션 없이
+   열림 여부가 글자로 남으므로 인쇄해도 상태가 읽힌다. */
+.bw-fold { background:var(--br-card); border:1px solid var(--br-card-line); border-radius:var(--bw-r-card); margin-bottom:var(--bw-sp-2); }
+.bw-fold > summary { cursor:pointer; padding:var(--bw-sp-3); list-style:none; display:flex; align-items:baseline; gap:var(--bw-sp-2); font:700 var(--bw-fs-h3)/1.35 var(--br-font-kr); }
+.bw-fold > summary::-webkit-details-marker { display:none; }
+.bw-fold > summary::before { content:"+"; color:var(--br-text-3); font-family:var(--br-font-num); }
+.bw-fold[open] > summary::before { content:"\2212"; }
+.bw-fold > summary span { margin-left:auto; color:var(--br-text-3); font:400 var(--bw-fs-foot)/1.5 var(--br-font-num); }
+.bw-fold-in { padding:0 var(--bw-sp-3) var(--bw-sp-3); }
+
+/* ── 상세 겹칩 ─────────────────────────────────────────────────────────────
+   목록에서 한 건을 눌렀을 때 전문을 띄운다. 새 화면으로 넘기지 않는 이유는
+   목록의 스크롤 위치를 잃지 않기 위해서다. */
+.bw-ov { position:fixed; inset:0; z-index:60; display:flex; align-items:center; justify-content:center; padding:4vh 4vw; background:rgba(7,27,69,.72); }
+/* display:flex 는 브라우저 기본 [hidden] 규칙(display:none)을 이긴다. 이 한 줄이
+   없으면 hidden 을 붙여도 겹칩이 덮은 채로 뜬다 — 실제로 그렇게 떴다. */
+.bw-ov[hidden] { display:none; }
+.bw-ov-in { width:100%; max-width:980px; max-height:92vh; overflow:auto; padding:var(--bw-sp-5); border-radius:var(--bw-r-card); background:var(--br-card); }
+.bw-ov-in > h3 { margin:0 0 var(--bw-sp-2); font:800 var(--bw-fs-h2)/1.3 var(--br-font-kr); }
+
+/* ── 좁은 화면 보강 ──────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .bw-gap { grid-template-columns:44px minmax(0,1fr); }
+  .bw-gap-items { grid-column:2; }
+  .bw-steps > li { grid-template-columns:26px minmax(0,1fr); }
+  .bw-steps .bw-stg, .bw-steps .bw-stt { grid-column:2; text-align:left; }
+  .bw-cmp > div { grid-template-columns:1fr; gap:var(--bw-sp-1); }
+  .bw-cmp--lead > div { grid-template-columns:1fr; }
+  .bw-cmp > .bw-cmp-h { display:none; }
+  .bw-tl-row { grid-template-columns:1fr; gap:var(--bw-sp-1); }
+  .bw-trow { grid-template-columns:88px minmax(0,1fr); }
+  .bw-trow > .bw-stage, .bw-trow > i { display:none; }
+  .bw-mark { display:none; }
+}
+
+@media print {
+  .bw-box, .bw-gap, .bw-kan-col, .bw-steps, .bw-cmp { break-inside:avoid; }
+  .bw-toast, .bw-ov, .bw-sel { display:none; }
+  .bw-fold[open] > summary::before { content:""; }
+}

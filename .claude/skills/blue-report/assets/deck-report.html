@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사내 AI 도구 전사 확대 보고</title>
+
+<!-- 폰트는 blue-report.css 의 @font-face 가 assets/fonts/ 에서 불러온다. 바깥 링크 없음 -->
+<link rel="stylesheet" href="blue-report.css">
+
+<link rel="stylesheet" href="deck-viewer.css">
+</head>
+
+<body class="br-deck">
+<div id="stage" data-deck-title="사내 AI 도구 전사 확대 보고">
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     01. 표지
+     제목 두 줄 — 가는 줄에 수식, 굵은 줄에 문서 종류. 다른 덱과 같은 규칙
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="표지" data-notes="표지. 시범이 끝났고 확대 여부를 묻는 자리라는 것만 말한다. 결론은 3부에 있다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-rule br-rule--a"></div>
+    <div class="br-rule br-rule--b"></div>
+
+    <p class="a" style="font:500 30px/1 var(--br-font-kr);color:var(--br-soft-2);margin:0 0 40px;letter-spacing:-.01em">
+      시범 6개월 종료 &middot; 전사 확대 여부 결정 요청
+    </p>
+    <h1 class="a d2" style="font:300 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">사내 AI 도구</h1>
+    <h1 class="a d3" style="font:900 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">전사 확대 보고</h1>
+
+    <div class="a d5" style="align-self:flex-start;margin-top:44px;padding:14px 26px;border:1px solid rgba(244,246,248,.32)">
+      <span style="font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-soft-2)">보고 시점</span>
+      <span class="br-num" style="font-size:var(--br-fs-foot);line-height:1;margin-left:14px;color:var(--br-on-dark)">2026.09</span>
+    </div>
+
+    <div class="f d8" style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:auto">
+      <div>
+        <div style="font:500 30px/1 var(--br-font-kr);color:var(--br-on-dark)">AX추진팀</div>
+        <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-soft-2);margin-top:14px">contact@company.co.kr</div>
+      </div>
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">&copy; 2026 COMPANY NAME &middot; All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     02. 목차
+     파트 3개 + 부록. 각 파트의 한 줄 요지와 쪽 범위를 함께 적는다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="목차" data-notes="목차. 3부에 결론이 있다는 것만 말하고 바로 넘어간다. 부록은 질문 나올 때 편다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-1)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Contents</p>
+    <h2 class="a br-title br-title--light">읽는 순서와 <strong>쪽 범위</strong></h2>
+    <p class="a d2 br-lede">결론은 <span class="br-key">3부</span>에 있음 — 시간이 없으면 12쪽부터</p>
+
+    <div class="a d3" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;margin-top:26px">
+      <div class="a d3" style="display:grid;grid-template-columns:120px 1fr 140px;align-items:baseline;gap:30px;padding:30px 0;border-bottom:1px solid var(--br-card-line)">
+        <span class="br-num" style="font-weight:700;font-size:38px;line-height:1;color:var(--br-mark-mute)">01</span>
+        <div>
+          <div style="font:800 38px/1.2 var(--br-font-kr);color:var(--br-text)">지금 무엇이 막혀 있나</div>
+          <div style="font:500 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text-2);margin-top:8px">시범 6개월의 실제 사용 실태와 확대를 막는 조건</div>
+        </div>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-text-3);text-align:right">03~06</span>
+      </div>
+      <div class="a d4" style="display:grid;grid-template-columns:120px 1fr 140px;align-items:baseline;gap:30px;padding:30px 0;border-bottom:1px solid var(--br-card-line)">
+        <span class="br-num" style="font-weight:700;font-size:38px;line-height:1;color:var(--br-mark-mute)">02</span>
+        <div>
+          <div style="font:800 38px/1.2 var(--br-font-kr);color:var(--br-text)">무엇을 제안하나</div>
+          <div style="font:500 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text-2);margin-top:8px">세 가지 안의 비교와 비용, 실행 순서</div>
+        </div>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-text-3);text-align:right">07~11</span>
+      </div>
+      <div class="a d5" style="display:grid;grid-template-columns:120px 1fr 140px;align-items:baseline;gap:30px;padding:30px 0;border-bottom:1px solid var(--br-card-line)">
+        <span class="br-num" style="font-weight:700;font-size:38px;line-height:1;color:var(--br-mark-mute)">03</span>
+        <div>
+          <div style="font:800 38px/1.2 var(--br-font-kr);color:var(--br-text)">무엇을 결정해 주셔야 하나</div>
+          <div style="font:500 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text-2);margin-top:8px">결정 4건과 각 건의 미결 시 영향</div>
+        </div>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-text-3);text-align:right">12~14</span>
+      </div>
+      <div class="a d6" style="display:grid;grid-template-columns:120px 1fr 140px;align-items:baseline;gap:30px;padding:30px 0;border-bottom:1px solid var(--br-card-line)">
+        <span class="br-num" style="font-weight:700;font-size:38px;line-height:1;color:var(--br-mark-mute)">부록</span>
+        <div>
+          <div style="font:800 38px/1.2 var(--br-font-kr);color:var(--br-text)">근거 자료</div>
+          <div style="font:500 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text-2);margin-top:8px">용어 · 부서별 상세 · 산출 근거 · 예상 질문</div>
+        </div>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-text-3);text-align:right">부록 1~5</span>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     03. 파트 간지 Part 01
+     파트 시작. 이 파트에서 답할 질문 하나만 말하고 넘어간다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="파트 간지 Part 01" data-notes="1부 시작. 「깔렸다」와 「쓰인다」는 다른 말이라는 것을 먼저 못 박는다.">
+  <section class="br-slide br-slide--cover" style="display:grid;grid-template-columns:460px 1fr;gap:60px;padding:110px 120px 90px">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div>
+      <h2 class="a" style="font:700 var(--br-fs-part)/1 var(--br-font-label);color:var(--br-accent-on-dark);margin:0;letter-spacing:.01em">Part 01</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;min-height:0">
+      <h3 class="a d2" style="font:900 74px/1.24 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">도구는 깔렸고<br>쓰이지는 않음</h3>
+      <p class="a d4 br-lede" style="margin-top:38px">전 직원 계정 발급 완료 · 주 1회 이상 사용 34.2%<br>부서별 사용 격차는 시범 시작 때보다 확대</p>
+      <div style="margin-top:auto;display:flex;flex-direction:column">
+        <div class="a d5" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:700 30px/1 var(--br-font-kr)">인식 대조 — 오해와 실제</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">p.04</span>
+        </div>
+        <div class="a d6" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:500 30px/1 var(--br-font-kr)">하루 중 실제 사용 시간대</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">p.05</span>
+        </div>
+        <div class="a d7" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:500 30px/1 var(--br-font-kr)">확대 판정 4관문</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">p.06</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     04. 인식 대조
+     비교 2열. 왼쪽 틴트 카드가 대조군, 오른쪽 흰 카드가 요점
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="인식 대조" data-notes="인식 대조. 네 줄을 다 읽지 말고 2번만 짚는다. 확대의 근거가 여기서 나온다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Part 01. 인식</p>
+    <h2 class="a br-title br-title--light">지금까지의 오해와 <strong>실제로 확인된 것</strong></h2>
+    <p class="a d2 br-lede">시범 참여 <span class="br-key">142명</span> 면담 · 오해 4건이 반복 확인</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 26px">
+        <div style="font:700 var(--br-fs-label)/1 var(--br-font-kr);color:var(--br-text-3)">지금까지의 오해</div>
+        <div style="font:700 var(--br-fs-label)/1 var(--br-font-kr);color:var(--br-mark)">실제로 확인된 것</div>
+          <div class="br-card br-card--mute" style="padding:24px 28px">
+            <div style="font:600 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text-2)">도구를 주면 알아서 씀</div>
+          </div>
+          <div class="br-card" style="padding:24px 28px">
+            <div style="font:700 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text)">쓰는 법이 아니라 쓸 일을 못 찾음</div>
+          </div>
+          <div class="br-card br-card--mute" style="padding:24px 28px">
+            <div style="font:600 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text-2)">잘하는 사람만 쓰면 됨</div>
+          </div>
+          <div class="br-card" style="padding:24px 28px">
+            <div style="font:700 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text)">한 명이 쓰면 옆자리가 더 바빠짐</div>
+          </div>
+          <div class="br-card br-card--mute" style="padding:24px 28px">
+            <div style="font:600 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text-2)">교육 한 번이면 충분</div>
+          </div>
+          <div class="br-card" style="padding:24px 28px">
+            <div style="font:700 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text)">3회차부터 질문의 성격이 바뀜</div>
+          </div>
+          <div class="br-card br-card--mute" style="padding:24px 28px">
+            <div style="font:600 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text-2)">효과는 바로 나타남</div>
+          </div>
+          <div class="br-card" style="padding:24px 28px">
+            <div style="font:700 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text)">6개월째부터 재사용이 시작</div>
+          </div>
+      </div>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>네 건 모두 「사람 문제」가 아니라 「일 설계 문제」</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     05. 사용 시간대
+     구간 블록. 일정 타임라인이 못 하는 「언제부터 언제까지 얼마나」
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="사용 시간대" data-notes="사용 시간대. 오후가 빈 것이 도구 탓이 아니라는 점을 분명히 말한다. 질문이 여기서 가장 많이 나온다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-3)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Part 01. 실태</p>
+    <h2 class="a br-title br-title--light">하루 중 <strong>실제 사용 시간대</strong></h2>
+    <p class="a d2 br-lede">집중 사용은 <span class="br-key">오전 2시간</span>에 몰림 — 오후에는 회의로 끊김</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+        <div class="br-iv" style="--br-iv-gap:42px">
+          <div class="br-iv-axis"><span>8시</span><span>10시</span><span>12시</span><span>14시</span><span>16시</span><span>18시</span></div>
+          <div class="br-iv-row">
+            <div class="br-iv-name">기획·관리직</div>
+            <div class="br-iv-track">
+            <div class="br-iv-seg" style="left:10.000%;width:20.000%;background:var(--br-data-1)"><span style="font:700 24px/1 var(--br-font-kr);color:var(--br-on-dark)">문서 초안</span></div>
+            <div class="br-iv-seg" style="left:30.000%;width:10.000%;background:var(--br-data-2)"><span style="position:absolute;left:0;bottom:calc(100% + 6px);white-space:nowrap;font:700 24px/1 var(--br-font-kr);color:var(--br-text-2)">검토 회신</span></div>
+            <div class="br-iv-seg" style="left:60.000%;width:10.000%;background:var(--br-data-1)"><span style="position:absolute;left:0;bottom:calc(100% + 6px);white-space:nowrap;font:700 24px/1 var(--br-font-kr);color:var(--br-text-2)">회의록 정리</span></div>
+            <div class="br-iv-seg" style="left:90.000%;width:10.000%;background:var(--br-data-2)"><span style="position:absolute;left:0;bottom:calc(100% + 6px);white-space:nowrap;font:700 24px/1 var(--br-font-kr);color:var(--br-text-2)">일일 정리</span></div>
+            </div>
+          </div>
+          <div class="br-iv-row">
+            <div class="br-iv-name">현장·기술직</div>
+            <div class="br-iv-track">
+            <div class="br-iv-seg" style="left:0.000%;width:10.000%;background:var(--br-data-2)"><span style="position:absolute;left:0;bottom:calc(100% + 6px);white-space:nowrap;font:700 24px/1 var(--br-font-kr);color:var(--br-text-2)">작업 지시 확인</span></div>
+            <div class="br-iv-seg" style="left:50.000%;width:30.000%;background:var(--br-data-1)"><span style="font:700 24px/1 var(--br-font-kr);color:var(--br-on-dark)">보고서 작성</span></div>
+            </div>
+          </div>
+          <div class="br-legend br-legend--row"><div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-1)"></span>작성</div></div><div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-2)"></span>검토</div></div></div>
+        </div>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>오후 사용이 적은 까닭은 도구가 아니라 회의 배치 — 확대와 함께 회의 시간대 조정 필요</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     06. 확대 판정
+     통과 관문. 직렬 조건임을 형태로 말한다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="확대 판정" data-notes="확대 판정. 우리가 지금 어디까지 왔는지 먼저 말하고 쟁점이 3관문임을 짚는다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-4)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Part 01. 판정</p>
+    <h2 class="a br-title br-title--light">넷 모두 통과해야 <strong>전사 확대</strong></h2>
+    <p class="a d2 br-lede">현재 <span class="br-key">2관문까지 통과</span> — 3관문 비용 회수가 이번 결정의 쟁점</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <svg class="br-dg" viewBox="0 0 1728 350" style="width:100%;height:auto" role="img" aria-label="통과 관문">
+        <path d="M284.0 210 A75 75 0 0 1 434.0 210" fill="none" stroke="var(--br-data-1)" stroke-width="14" stroke-linecap="round"/>
+        <text x="359.0" y="113" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-text)">1</text>
+        <text x="359.0" y="252" text-anchor="middle" font-size="25" font-weight="600" fill="var(--br-text-2)">사용률 30%</text>
+        <path d="M524.0 210 A75 75 0 0 1 674.0 210" fill="none" stroke="var(--br-data-2)" stroke-width="14" stroke-linecap="round"/>
+        <text x="599.0" y="113" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-text)">2</text>
+        <text x="599.0" y="252" text-anchor="middle" font-size="25" font-weight="600" fill="var(--br-text-2)">업무 재설계</text>
+        <path d="M764.0 210 A75 75 0 0 1 914.0 210" fill="none" stroke="var(--br-data-3)" stroke-width="14" stroke-linecap="round"/>
+        <text x="839.0" y="113" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-text)">3</text>
+        <text x="839.0" y="252" text-anchor="middle" font-size="25" font-weight="600" fill="var(--br-text-2)">비용 회수</text>
+        <path d="M1004.0 210 A75 75 0 0 1 1154.0 210" fill="none" stroke="var(--br-data-4)" stroke-width="14" stroke-linecap="round"/>
+        <text x="1079.0" y="113" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-text)">4</text>
+        <text x="1079.0" y="252" text-anchor="middle" font-size="25" font-weight="600" fill="var(--br-text-2)">평가 반영</text>
+        <line x1="0" y1="210" x2="1170.0" y2="210" stroke="var(--br-card-line)" stroke-width="2"/>
+        <rect x="1194.0" y="156" width="250" height="108" rx="16" fill="var(--br-mark)"></rect>
+        <text x="1319.0" y="221" text-anchor="middle" font-size="30" font-weight="800" fill="var(--br-on-dark)">전사 확대</text>
+        <path d="M250.0 210 L250.0 302 L276.0 302" fill="none" stroke="var(--br-coral)" stroke-width="3" stroke-dasharray="7 6"/>
+        <text x="288.0" y="311" font-size="25" font-weight="600" fill="var(--br-coral)">미통과 시 시범 연장</text>
+      </svg>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>1·2관문은 시범으로 확인 완료 · 3관문은 확대 규모에 따라 달라짐</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     07. 파트 간지 Part 02
+     파트 시작. 이 파트에서 답할 질문 하나만 말하고 넘어간다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="파트 간지 Part 02" data-notes="2부 시작. 세 안을 같은 기준으로 놓고 본다는 것을 먼저 말한다.">
+  <section class="br-slide br-slide--cover" style="display:grid;grid-template-columns:460px 1fr;gap:60px;padding:110px 120px 90px">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div>
+      <h2 class="a" style="font:700 var(--br-fs-part)/1 var(--br-font-label);color:var(--br-accent-on-dark);margin:0;letter-spacing:.01em">Part 02</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;min-height:0">
+      <h3 class="a d2" style="font:900 74px/1.24 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">세 가지 안과<br>비용의 차이</h3>
+      <p class="a d4 br-lede" style="margin-top:38px">전면 확대 · 단계 확대 · 시범 연장 세 안을 같은 기준으로 비교<br>1인당 연 비용은 규모에 반비례</p>
+      <div style="margin-top:auto;display:flex;flex-direction:column">
+        <div class="a d5" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:700 30px/1 var(--br-font-kr)">세 가지 안 비교</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">p.08</span>
+        </div>
+        <div class="a d6" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:500 30px/1 var(--br-font-kr)">1인당 연간 비용</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">p.09</span>
+        </div>
+        <div class="a d7" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:500 30px/1 var(--br-font-kr)">실행 로드맵</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">p.10</span>
+        </div>
+        <div class="a d8" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:500 30px/1 var(--br-font-kr)">운영 회차 구조</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">p.11</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     08. 세 안 비교
+     지표 표 + 확신도 칩. 근거의 굳기를 함께 표시한다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="세 안 비교" data-notes="세 안 비교. C안은 비교군으로 둔 것이지 권고안이 아니다. 물어보면 그렇게 답한다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-5)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Part 02. 대안</p>
+    <h2 class="a br-title br-title--light">같은 기준으로 본 <strong>세 가지 안</strong></h2>
+    <p class="a d2 br-lede">판정 기준은 <span class="br-key">1인당 연 비용</span>과 <span class="br-key">정착까지 걸리는 기간</span> 둘</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <table class="br-table">
+        <thead>
+          <tr>
+            <th style="width:14%">안</th>
+            <th style="width:22%">범위</th>
+            <th class="num" style="width:14%">연 비용</th>
+            <th class="num" style="width:13%">1인당</th>
+            <th style="width:22%">정착까지</th>
+            <th style="width:15%">확신도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>A안</td><td>전 직원 즉시</td><td class="num">2억 8,800만원</td><td class="num">32<span class="br-sup">만원</span></td><td>12개월 · 교육 부하 집중</td><td><span class="br-conf br-conf--plan">제안</span></td></tr>
+          <tr><td>B안</td><td>3단계 확대</td><td class="num">1억 9,200만원</td><td class="num">38<span class="br-sup">만원</span></td><td>18개월 · 부하 분산</td><td><span class="br-conf br-conf--open">협의필요</span></td></tr>
+          <tr><td>C안</td><td>시범 6개월 연장</td><td class="num">4,800만원</td><td class="num">57<span class="br-sup">만원</span></td><td>판정 불가 · 재논의</td><td><span class="br-conf br-conf--none">미정</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>A안이 1인당 비용은 가장 낮으나 교육 부하가 1분기에 몰림 — B안을 권고</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     09. 1인당 비용
+     단일 수치 강조. 한 슬라이드 = 한 주장
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="1인당 비용" data-notes="비용. 총액과 1인당을 반드시 함께 말한다. 총액만 보면 A안이 가장 비싸 보인다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-6)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Part 02. 비용</p>
+    <h2 class="a br-title br-title--light">규모가 커질수록 <strong>1인당 비용 하락</strong></h2>
+    <p class="a d2 br-lede">고정비(구축·교육 설계)가 <span class="br-key">인원에 나뉘기</span> 때문</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <div style="display:flex;align-items:baseline;gap:34px;margin-bottom:40px">
+        <div class="br-num" style="font-weight:900;font-size:var(--br-fs-stat-hero);line-height:.9;color:var(--br-mark)">32<span class="br-sup" style="font-size:.32em">만원</span></div>
+        <div style="font:600 var(--br-fs-lede)/1.5 var(--br-font-kr);color:var(--br-text-2)">A안 1인당 연간 비용<br>C안 대비 <b style="color:var(--br-text)">44% 낮음</b></div>
+      </div>
+      <div class="br-bars-h" style="gap:30px 24px">
+        <div class="br-bar-name">A안 전 직원</div>
+        <div class="br-bar-track"><div class="bx d5 br-bar-h" style="width:56.1%;"></div></div>
+        <div class="br-bar-val">32<span class="br-sup">만원</span></div>
+
+        <div class="br-bar-name">B안 3단계</div>
+        <div class="br-bar-track"><div class="bx d6 br-bar-h br-bar-h--mute" style="width:66.7%;"></div></div>
+        <div class="br-bar-val" style="color:var(--br-text-2)">38<span class="br-sup">만원</span></div>
+
+        <div class="br-bar-name">C안 시범 연장</div>
+        <div class="br-bar-track"><div class="bx d7 br-bar-h br-bar-h--mute" style="width:100%;"></div></div>
+        <div class="br-bar-val" style="color:var(--br-text-2)">57<span class="br-sup">만원</span></div>
+      </div>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>총액은 A안이 가장 크나 1인당으로 보면 가장 쌈 — 두 수치를 같이 봐야 함</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     10. 실행 로드맵
+     연표. 실적과 계획이 갈리는 지점을 파선으로 못 박는다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="실행 로드맵" data-notes="로드맵. 2025년까지는 실적이고 그 뒤는 이번 결정에 달렸다는 것을 분명히 한다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-1)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Part 02. 실행</p>
+    <h2 class="a br-title br-title--light">실적과 계획의 <strong>분기점</strong></h2>
+    <p class="a d2 br-lede">2026년부터는 <span class="br-key">확정이 아닌 계획</span> — 이번 결정에 달림</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <svg class="br-dg" viewBox="0 0 1728 210" style="width:100%;height:auto" role="img" aria-label="연표">
+        <line x1="130.0" y1="120" x2="619.3" y2="120" stroke="var(--br-mark)" stroke-width="4"/>
+        <line x1="619.3" y1="120" x2="1598.0" y2="120" stroke="var(--br-mark-mute)" stroke-width="4" stroke-dasharray="12 10"/>
+        <line x1="864.0" y1="54" x2="864.0" y2="172" stroke="var(--br-coral)" stroke-width="3" stroke-dasharray="7 6"/>
+        <text x="864.0" y="42" text-anchor="middle" font-size="25" font-weight="700" fill="var(--br-coral)">현재</text>
+        <circle cx="130.0" cy="120" r="15" fill="var(--br-mark)" stroke="var(--br-mark)" stroke-width="4"/>
+        <text x="130.0" y="178" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-text)">2024년</text>
+        <circle cx="619.3" cy="120" r="15" fill="var(--br-mark)" stroke="var(--br-mark)" stroke-width="4"/>
+        <text x="619.3" y="178" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-text)">2025년</text>
+        <circle cx="1108.7" cy="120" r="15" fill="var(--br-card)" stroke="var(--br-mark-mute)" stroke-width="4"/>
+        <text x="1108.7" y="178" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-text)">2026년</text>
+        <circle cx="1598.0" cy="120" r="15" fill="var(--br-card)" stroke="var(--br-mark-mute)" stroke-width="4"/>
+        <text x="1598.0" y="178" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-text)">2027년</text>
+      </svg>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>현재선 오른쪽은 전부 전제가 붙은 값 — 예산 확정 전</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     11. 운영 회차
+     순환 고리. 3단계 로드맵이 못 하는 「되돌아옴」을 말한다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="운영 회차" data-notes="운영 회차. 8주 한 회차라는 것과 자산화가 빠지면 안 된다는 것만 말한다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Part 02. 운영</p>
+    <h2 class="a br-title br-title--light">한 회차의 <strong>되돌아옴</strong></h2>
+    <p class="a d2 br-lede">자산화 산출물이 <span class="br-key">다음 회차 선정의 입력</span> — 회차가 쌓일수록 선정이 빨라짐</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <svg class="br-dg" viewBox="0 0 1728 260" style="width:100%;height:auto" role="img" aria-label="순환 고리">
+        <defs><marker id="br-dg-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--br-coral)"/></marker></defs>
+        <rect x="0.0" y="0" width="323.2" height="150" rx="18" fill="var(--br-data-1)"></rect>
+        <text x="161.6" y="86" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-on-dark)">과제 선정</text>
+        <path d="M328.2 66 L345.2 75 L328.2 84" fill="none" stroke="var(--br-text-3)" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="351.2" y="0" width="323.2" height="150" rx="18" fill="var(--br-data-2)"></rect>
+        <text x="512.8" y="86" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-on-dark)">사례 제작</text>
+        <path d="M679.4 66 L696.4 75 L679.4 84" fill="none" stroke="var(--br-text-3)" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="702.4" y="0" width="323.2" height="150" rx="18" fill="var(--br-data-3)"></rect>
+        <text x="864.0" y="86" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-on-dark)">현장 코칭</text>
+        <path d="M1030.6 66 L1047.6 75 L1030.6 84" fill="none" stroke="var(--br-text-3)" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="1053.6" y="0" width="323.2" height="150" rx="18" fill="var(--br-data-4)"></rect>
+        <text x="1215.2" y="86" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-on-dark)">사내 공유</text>
+        <path d="M1381.8 66 L1398.8 75 L1381.8 84" fill="none" stroke="var(--br-text-3)" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="1404.8" y="0" width="323.2" height="150" rx="18" fill="var(--br-data-5)"></rect>
+        <text x="1566.4" y="86" text-anchor="middle" font-size="30" font-weight="700" fill="var(--br-on-dark)">자산화</text>
+        <path d="M1566.4 158 C1566.4 226 161.6 226 161.6 158" fill="none" stroke="var(--br-coral)" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#br-dg-a)"/>
+        <text x="864" y="244" text-anchor="middle" font-size="25" font-weight="600" fill="var(--br-coral)">한 회차 8주</text>
+      </svg>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>자산화를 건너뛰면 다음 회차가 처음부터 다시 시작</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     12. 핵심 정리
+     다크 요약. 파트 끝에서만 쓴다. 카드 6개가 상한
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="핵심 정리" data-notes="핵심 정리. 여섯 개를 다 읽지 말고 2/4 와 4건만 짚는다. 나머지는 앞에서 이미 말했다.">
+  <section class="br-slide br-slide--dark">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow" style="color:var(--br-accent-on-dark)">Summary</p>
+    <h2 class="a br-title">여섯 숫자로 <strong>다시 읽기</strong></h2>
+
+    <div class="br-sumgrid" style="flex:1;min-height:0;margin-top:44px">
+        <div class="a d2 br-sumcard">
+          <span class="br-sumcard-n">01</span>
+          <div class="br-sumcard-t">주 1회 이상 사용<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">시범 142명 기준 · 목표 60%</span></div>
+          <span class="br-sumcard-v">34.2<span class="br-sup">%</span></span>
+        </div>
+        <div class="a d3 br-sumcard">
+          <span class="br-sumcard-n">02</span>
+          <div class="br-sumcard-t">통과한 관문<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">3관문 비용 회수가 쟁점</span></div>
+          <span class="br-sumcard-v">2<span class="br-sup">/4</span></span>
+        </div>
+        <div class="a d4 br-sumcard">
+          <span class="br-sumcard-n">03</span>
+          <div class="br-sumcard-t">A안 1인당 연 비용<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">C안 대비 44% 낮음</span></div>
+          <span class="br-sumcard-v">32<span class="br-sup">만원</span></span>
+        </div>
+        <div class="a d5 br-sumcard">
+          <span class="br-sumcard-n">04</span>
+          <div class="br-sumcard-t">운영 한 회차<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">자산화까지 포함한 기간</span></div>
+          <span class="br-sumcard-v">8<span class="br-sup">주</span></span>
+        </div>
+        <div class="a d6 br-sumcard">
+          <span class="br-sumcard-n">05</span>
+          <div class="br-sumcard-t">B안 정착 기간<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">부하 분산 대신 기간 증가</span></div>
+          <span class="br-sumcard-v">18<span class="br-sup">개월</span></span>
+        </div>
+        <div class="a d7 br-sumcard">
+          <span class="br-sumcard-n">06</span>
+          <div class="br-sumcard-t">지금 필요한 결정<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">가장 이른 시점 10월 2주</span></div>
+          <span class="br-sumcard-v">4<span class="br-sup">건</span></span>
+        </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     13. 결정 요청
+     결정 요청 표. 「미결 시 영향」 열이 핵심이다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="결정 요청" data-notes="결정 요청. 1번부터 말한다. 나머지 셋은 1번이 정해져야 논의가 된다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-3)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">Part 03. 결정</p>
+    <h2 class="a br-title br-title--light">지금 결정이 필요한 <strong>4건</strong></h2>
+    <p class="a d2 br-lede">가장 이른 시점은 <span class="br-key">10월 2주</span> — 그 전에 답이 없으면 착수가 한 분기 밀림</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <table class="br-table">
+        <thead>
+          <tr>
+            <th style="width:5%">No</th>
+            <th style="width:22%">결정 항목</th>
+            <th style="width:13%">주관</th>
+            <th style="width:13%">필요 시점</th>
+            <th style="width:32%">미결 시 영향</th>
+            <th style="width:15%">확신도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td>확대 안 선택 (A/B/C)</td><td>경영위원회</td><td>10월 2주</td><td>착수 한 분기 지연 · 시범 인원 이탈</td><td><span class="br-conf br-conf--open">협의필요</span></td></tr>
+          <tr><td class="num">2</td><td>교육 시간 업무 인정</td><td>경영지원</td><td>10월 3주</td><td>사용률 목표 미달 · 관문 1 재판정</td><td><span class="br-conf br-conf--plan">제안</span></td></tr>
+          <tr><td class="num">3</td><td>평가 항목 신설 여부</td><td>인사팀</td><td>11월 1주</td><td>관문 4 미통과 · 확대 후 정착 실패</td><td><span class="br-conf br-conf--none">미정</span></td></tr>
+          <tr><td class="num">4</td><td>2027 예산 반영</td><td>경영지원</td><td>11월 3주</td><td>차년도 이월 · 계약 단가 상승</td><td><span class="br-conf br-conf--none">미정</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>1번이 나머지 셋의 선행 조건 — 안이 정해져야 시간·평가·예산이 확정</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     14. 마무리
+     행동 하나만 남긴다. 연락처는 우하단 고정
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="마무리" data-notes="마무리. B안 권고와 10월 2주 시한 둘만 남기고 끝낸다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-rule br-rule--a"></div>
+
+    <h2 class="a" style="font:900 var(--br-fs-display)/1.18 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">
+      <span style="color:var(--br-soft-2)">확대 안 선택,</span><br>10월 2주까지
+    </h2>
+    <p class="a d3 br-lede" style="margin-top:40px;max-width:1100px">
+      B안 3단계 확대를 권고 &middot; 나머지 결정 3건은 안이 정해진 뒤 순차 상정
+    </p>
+
+    <div class="f d6" style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:auto">
+      <div>
+        <div style="font:500 30px/1 var(--br-font-kr);color:var(--br-on-dark)">AX추진팀</div>
+        <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-soft-2);margin-top:14px">contact@company.co.kr</div>
+      </div>
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">&copy; 2026 COMPANY NAME &middot; All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     15. 부록 간지
+     파트 시작. 이 파트에서 답할 질문 하나만 말하고 넘어간다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-apx data-label="부록 간지" data-notes="부록 시작. 넘기지 말고 무엇이 들어 있는지만 읽는다.">
+  <section class="br-slide br-slide--cover" style="display:grid;grid-template-columns:460px 1fr;gap:60px;padding:110px 120px 90px">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div>
+      <h2 class="a" style="font:700 var(--br-fs-part)/1 var(--br-font-label);color:var(--br-accent-on-dark);margin:0;letter-spacing:.01em">APPENDIX</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;min-height:0">
+      <h3 class="a d2" style="font:900 74px/1.24 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">근거는<br>여기부터</h3>
+      <p class="a d4 br-lede" style="margin-top:38px">본문에서 인용한 수치의 출처와 산출 과정<br>질문이 나오면 해당 항목으로 바로 이동</p>
+      <div style="margin-top:auto;display:flex;flex-direction:column">
+        <div class="a d5" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:700 30px/1 var(--br-font-kr)">A0 &middot; 용어 정의</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">부록 2</span>
+        </div>
+        <div class="a d6" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:500 30px/1 var(--br-font-kr)">A1 &middot; 부서별 사용 상세</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">부록 3</span>
+        </div>
+        <div class="a d7" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:500 30px/1 var(--br-font-kr)">A2 &middot; 비용 산출 근거</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">부록 4</span>
+        </div>
+        <div class="a d8" style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+          <span style="font:500 30px/1 var(--br-font-kr)">B &middot; 예상 질문과 답변</span>
+          <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2)">부록 5</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     16. A0 용어 정의
+     부록 첫 장에 용어를 둔다 — 질문 도중 가장 자주 펴는 장
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-apx data-label="A0 용어 정의" data-notes="용어 정의. 질문이 나오면 여기를 편다. 「주 1회 이상 사용」의 정의가 가장 자주 걸린다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-1)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">APPENDIX A0</p>
+    <h2 class="a br-title br-title--light">본문에 쓴 말의 <strong>정의</strong></h2>
+    <p class="a d2 br-lede">정의가 다르면 <span class="br-key">같은 수치가 다른 뜻</span>이 됨 — 여섯 개만 고정</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <table class="br-table">
+        <thead><tr><th style="width:22%">용어</th><th style="width:63%">정의</th><th class="num" style="width:15%">본문</th></tr></thead>
+        <tbody>
+          <tr><td><b>주 1회 이상 사용</b></td><td>달력 주 기준 1회 이상 도구에 로그인하고 결과를 문서에 반영한 경우</td><td class="num">p.04</td></tr>
+          <tr><td><b>업무 재설계</b></td><td>도구를 쓰기 전후로 담당·순서·산출물 형식이 바뀐 업무</td><td class="num">p.06</td></tr>
+          <tr><td><b>비용 회수</b></td><td>도구 비용 대비 절감된 인건비 환산액이 1.0 이상</td><td class="num">p.06</td></tr>
+          <tr><td><b>1인당 연 비용</b></td><td>총액 ÷ 대상 인원. 고정비를 포함한 값</td><td class="num">p.09</td></tr>
+          <tr><td><b>한 회차</b></td><td>과제 선정부터 자산화까지 8주</td><td class="num">p.11</td></tr>
+          <tr><td><b>자산화</b></td><td>사례를 사내 저장소에 등록하고 다음 회차가 참조 가능한 상태</td><td class="num">p.11</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     17. A1 부서별 상세
+     본문 34.2% 의 분해. 부서별로 갈리는 지점을 드러낸다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-apx data-label="A1 부서별 상세" data-notes="부서별 상세. 분모가 다르다는 지적이 반드시 나온다. 결론 띠에 적어 두었다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">APPENDIX A1</p>
+    <h2 class="a br-title br-title--light">부서별 <strong>사용 상세</strong></h2>
+    <p class="a d2 br-lede">전사 평균 <span class="br-key">34.2%</span> — 부서 간 격차 65.0%p</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <table class="br-table">
+        <thead><tr><th style="width:28%">부서</th><th class="num" style="width:16%">대상</th><th class="num" style="width:16%">주 1회 이상</th><th class="num" style="width:20%">사용률</th><th style="width:20%">상태</th></tr></thead>
+        <tbody>
+          <tr><td>기획본부</td><td class="num">28</td><td class="num">24</td><td class="num">85.7<span class="br-sup">%</span></td><td><span class="br-status br-status--ok">정상</span></td></tr>
+          <tr><td>기술본부</td><td class="num">46</td><td class="num">21</td><td class="num">45.7<span class="br-sup">%</span></td><td><span class="br-status br-status--ok">정상</span></td></tr>
+          <tr><td>영업본부</td><td class="num">32</td><td class="num">9</td><td class="num">28.1<span class="br-sup">%</span></td><td><span class="br-status br-status--warn">주의</span></td></tr>
+          <tr><td>생산관리</td><td class="num">24</td><td class="num">5</td><td class="num">20.8<span class="br-sup">%</span></td><td><span class="br-status br-status--warn">주의</span></td></tr>
+          <tr><td>경영지원</td><td class="num">12</td><td class="num">9</td><td class="num">75.0<span class="br-sup">%</span></td><td><span class="br-status br-status--ok">정상</span></td></tr>
+          <tr><td><b>합계</b></td><td class="num"><b>142</b></td><td class="num"><b>68</b></td><td class="num"><b>47.9<span class="br-sup">%</span></b></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="a d8 br-ribbon"><b>읽을 것</b>합계 47.9% 와 본문 34.2% 가 다른 까닭 — 본문은 전 직원 분모, 이 표는 시범 참여자 분모</div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     18. A2 비용 산출 근거
+     본문 2억 8,800만원의 구성비. 도넛은 donut.py 가 각도를 계산한다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-apx data-label="A2 비용 산출 근거" data-notes="비용 산출 근거. 고정비 비중이 높다는 것이 규모 확대의 근거다. 질문 나오면 이 장으로 온다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-4)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">APPENDIX A2</p>
+    <h2 class="a br-title br-title--light">A안 연 비용 <strong>2억 8,800만원의 구성</strong></h2>
+    <p class="a d2 br-lede">고정비(교육 설계 · 코칭)가 <span class="br-key">45.9%</span> — 인원이 늘어도 증가하지 않는 부분</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:60px;align-items:center">
+        <div>
+        <svg class="br-donut" viewBox="0 0 272 272" style="width:272px;height:272px" role="img" aria-label="비율 분포">
+          <g transform="translate(136,136)">
+            <circle class="dsh d5" r="110.0" stroke="var(--br-data-1)" stroke-width="48.0" stroke-dasharray="285.3 691.2" transform="rotate(-90.00)"></circle>
+            <circle class="dsh d6" r="110.0" stroke="var(--br-data-2)" stroke-width="48.0" stroke-dasharray="189.3 691.2" transform="rotate(60.12)"></circle>
+            <circle class="dsh d7" r="110.0" stroke="var(--br-data-3)" stroke-width="48.0" stroke-dasharray="122.2 691.2" transform="rotate(160.20)"></circle>
+            <circle class="dsh d8" r="110.0" stroke="var(--br-data-4)" stroke-width="48.0" stroke-dasharray="82.8 691.2" transform="rotate(225.36)"></circle>
+          </g>
+        </svg>
+        <div class="br-legend">
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-1)"></span>계정·라이선스</div><div class="br-legend-val">41.7<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-2)"></span>교육 설계·운영</div><div class="br-legend-val">27.8<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-3)"></span>사내 코칭</div><div class="br-legend-val">18.1<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-4)"></span>운영 인건비</div><div class="br-legend-val">12.4<span class="br-sup">%</span></div></div>
+        </div>
+        </div>
+        <div>
+          <div class="br-callout"><b>1인당 비용이 규모에 반비례하는 까닭</b><br>교육 설계와 코칭은 인원과 무관하게 한 번 만들면 됨. 900명에 나누면 1인당 14.7만원, 300명에 나누면 44.1만원.</div>
+        </div>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     19. B 예상 질문과 답변
+     답마다 근거 쪽번호를 붙인다. 인쇄본에서 링크가 죽어도 찾아갈 수 있다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-apx data-label="B 예상 질문과 답변" data-notes="예상 질문. 네 건 모두 시범 보고회에서 실제로 나온 질문이다. 답변의 근거 쪽을 먼저 펴 둔다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-5)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">APPENDIX B</p>
+    <h2 class="a br-title br-title--light">예상 질문과 <strong>답변 4건</strong></h2>
+    <p class="a d2 br-lede">답변 끝의 <span class="br-key">쪽번호</span>가 근거가 있는 자리</p>
+
+    <div class="a d4" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+      <div style="display:flex;flex-direction:column">
+        <div class="a d4" style="padding:26px 0;border-bottom:1px solid var(--br-card-line)">
+          <div style="display:flex;align-items:baseline;gap:16px">
+            <span class="br-num" style="font-weight:800;font-size:30px;line-height:1;color:var(--br-mark-mute);flex:none">Q1</span>
+            <span style="font:800 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text)">사용률 34.2% 는 낮은 것 아닌가</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-top:12px">
+            <span class="br-num" style="font-weight:800;font-size:30px;line-height:1;color:var(--br-mark);flex:none">A</span>
+            <span style="font:500 var(--br-fs-body)/1.5 var(--br-font-kr);color:var(--br-text-2)">시범 6개월 기준으로는 동종 도입 사례 평균(28%)을 웃도는 수준. 다만 목표 60% 에는 미달 <span class="br-num" style="color:var(--br-text-3)">&rarr; p.04</span></span>
+          </div>
+        </div>
+        <div class="a d5" style="padding:26px 0;border-bottom:1px solid var(--br-card-line)">
+          <div style="display:flex;align-items:baseline;gap:16px">
+            <span class="br-num" style="font-weight:800;font-size:30px;line-height:1;color:var(--br-mark-mute);flex:none">Q2</span>
+            <span style="font:800 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text)">B안 18개월은 너무 길지 않나</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-top:12px">
+            <span class="br-num" style="font-weight:800;font-size:30px;line-height:1;color:var(--br-mark);flex:none">A</span>
+            <span style="font:500 var(--br-fs-body)/1.5 var(--br-font-kr);color:var(--br-text-2)">1분기 교육 부하를 3개 분기로 나눈 결과. A안은 12개월이나 1분기에 교육이 몰림 <span class="br-num" style="color:var(--br-text-3)">&rarr; p.08</span></span>
+          </div>
+        </div>
+        <div class="a d6" style="padding:26px 0;border-bottom:1px solid var(--br-card-line)">
+          <div style="display:flex;align-items:baseline;gap:16px">
+            <span class="br-num" style="font-weight:800;font-size:30px;line-height:1;color:var(--br-mark-mute);flex:none">Q3</span>
+            <span style="font:800 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text)">C안 시범 연장은 왜 권고하지 않나</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-top:12px">
+            <span class="br-num" style="font-weight:800;font-size:30px;line-height:1;color:var(--br-mark);flex:none">A</span>
+            <span style="font:500 var(--br-fs-body)/1.5 var(--br-font-kr);color:var(--br-text-2)">6개월을 더 써도 관문 3(비용 회수) 판정이 불가. 분모가 늘지 않기 때문 <span class="br-num" style="color:var(--br-text-3)">&rarr; p.06</span></span>
+          </div>
+        </div>
+        <div class="a d7" style="padding:26px 0;border-bottom:1px solid var(--br-card-line)">
+          <div style="display:flex;align-items:baseline;gap:16px">
+            <span class="br-num" style="font-weight:800;font-size:30px;line-height:1;color:var(--br-mark-mute);flex:none">Q4</span>
+            <span style="font:800 var(--br-fs-body)/1.4 var(--br-font-kr);color:var(--br-text)">평가 반영이 꼭 필요한가</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-top:12px">
+            <span class="br-num" style="font-weight:800;font-size:30px;line-height:1;color:var(--br-mark);flex:none">A</span>
+            <span style="font:500 var(--br-fs-body)/1.5 var(--br-font-kr);color:var(--br-text-2)">관문 4 의 조건. 시범에서 평가 미반영 부서의 3개월 후 사용률이 절반으로 하락 <span class="br-num" style="color:var(--br-text-3)">&rarr; p.06</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+</div><!-- /#stage -->
+
+<div id="hud">
+  <button id="prev">◀ 이전</button>
+  <span id="pos">1 / 10</span>
+  <span id="name">표지</span>
+  <button id="next">다음 ▶</button>
+  <button id="present">발표 F</button>
+  <button id="notes-btn">노트 N</button>
+  <button id="script-btn">대본 S</button>
+  <button id="all">목록</button>
+</div>
+<div id="notes" hidden><b>발표자 노트</b><span id="notes-text"></span></div>
+<div id="jump" hidden aria-hidden="true"></div>
+
+<script src="deck-viewer.js"></script>
+</body>
+</html>

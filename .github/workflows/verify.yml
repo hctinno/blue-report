@@ -1,0 +1,95 @@
+# 블루 리포트 저장소 점검
+#
+# 로컬에서 돌리는 명령과 같다. 갈라지지 않게 하려고 한 줄로 맞춰 뒀다.
+#
+#     python3 scripts/verify_repo.py
+#
+# 덱 12종을 check_deck.py 17항목, A4 문서 4종을 check_doc.py 9항목, 웹 보드 5종을
+# check_board.py 11항목으로 판정하고, PPTX 11종 생성과 무결성, dist/ 재생성 대조,
+# 한국어 인코딩, 배포 매니페스트, 내용 동기화, 버전 올림을 함께 본다.
+# `실패` 가 하나라도 있으면 이 워크플로가 빨간불이 된다. `주의` 는 통과다.
+
+name: 저장소 점검
+
+# push 는 기본 브랜치만 본다. 작업 브랜치는 PR 쪽에서 보므로,
+# 양쪽을 다 걸면 같은 커밋에 두 번 돈다.
+#
+# 기본 브랜치는 main 이다.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      shots:
+        description: '슬라이드별 PNG 를 남긴다 (아티팩트로 내려받는다)'
+        type: boolean
+        default: false
+
+# 같은 브랜치에 연달아 밀어 넣으면 앞의 실행을 접는다.
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: 덱 12종 · A4 문서 4종 · 웹 보드 5종 · PPTX · dist · 인코딩 · 배포 · 버전
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # 버전 올림 검사가 main 과의 갈라진 지점을 봐야 한다. 얕은 클론이면 못 찾는다.
+          fetch-depth: 0
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Chromium 은 150MB 다. 캐시가 맞으면 내려받지 않는다.
+      - name: Chromium 캐시
+        id: chromium-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1
+
+      - name: 렌더 점검 준비
+        run: |
+          python -m pip install --quiet --upgrade pip
+          python -m pip install --quiet playwright pillow jsonschema
+          python -m playwright install --with-deps chromium
+
+      - name: PPTX 생성기 준비
+        run: npm install --silent --prefix .claude/skills/blue-report/pptx
+
+      # 스크립트가 스스로 설치하러 나가지 않게 막는다.
+      # 위에서 이미 갖췄으므로, 빠진 것이 있으면 조용히 받지 말고 실패해야 한다.
+      - name: 점검
+        env:
+          BLUE_REPORT_NO_INSTALL: '1'
+        run: |
+          if [ "${{ inputs.shots }}" = "true" ]; then
+            python3 scripts/verify_repo.py --shots shots
+          else
+            python3 scripts/verify_repo.py
+          fi
+
+      - name: 슬라이드 PNG 올리기
+        if: ${{ inputs.shots == true && always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: slide-shots
+          path: shots/
+          retention-days: 7
+          if-no-files-found: ignore

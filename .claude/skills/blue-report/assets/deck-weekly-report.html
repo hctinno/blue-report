@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>조직 주간보고 템플릿</title>
+
+<!-- 폰트는 blue-report.css 의 @font-face 가 assets/fonts/ 에서 불러온다. 바깥 링크 없음 -->
+<link rel="stylesheet" href="blue-report.css">
+<link rel="stylesheet" href="deck-viewer.css">
+</head>
+
+<body class="br-deck">
+<div id="stage" data-no-anim data-deck-title="2026년 8월 5주 차 조직 주간보고">
+
+<!-- 01 표지 ─────────────────────────────────────────────────────────── -->
+<div class="br-frame" data-label="표지" data-notes="표지. 주차와 대상 기간만 확인하고 요약으로 넘어간다. 주간보고는 표지에서 시간을 쓰지 않는다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-rule br-rule--a"></div>
+    <div class="br-rule br-rule--b"></div>
+    <p class="a" style="font:500 30px/1 var(--br-font-kr);color:var(--br-soft-2);margin:0 0 40px;letter-spacing:-.01em">
+      시험·인증 운영 조직 현황
+    </p>
+    <h1 class="a d2" style="font:300 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">2026년 8월 5주 차</h1>
+    <h1 class="a d3" style="font:900 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">조직 주간보고</h1>
+    <div class="a d5" style="align-self:flex-start;margin-top:44px;padding:14px 26px;border:1px solid rgba(244,246,248,.32)">
+      <span style="font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-soft-2)">대상 기간</span>
+      <span class="br-num" style="font-size:var(--br-fs-foot);line-height:1;margin-left:14px;color:var(--br-on-dark)">2026.08.24 ~ 08.28</span>
+    </div>
+    <div class="f d8" style="display:flex;align-items:flex-end;justify-content:flex-end;margin-top:auto">
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">© 2026 COMPANY NAME · All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+<!-- 02 이번 주 요약 (다크) ──────────────────────────────────────────── -->
+<div class="br-frame" data-label="이번 주 요약" data-notes="주간보고의 본체다. 네 카드 중 지연 5건과 이월 34건만 말하고 나머지는 넘긴다. 이월이 늘어난 것이 이번 주 핵심 신호다.">
+  <section class="br-slide br-slide--dark" style="padding:84px 96px 56px">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">2026.08.24 ~ 08.28</p>
+    <h2 class="a br-title">이번 주 요약</h2>
+    <!-- 다크 요약장 — 짙은 지면에 짙은 카드를 얹지 않는다. 상단 괘선으로 구획한다. -->
+    <div class="br-sumgrid" style="margin-top:52px;flex:1;min-height:0">
+      <div class="a d2 br-sumcard">
+        <span class="br-sumcard-n">01</span>
+        <div class="br-sumcard-t">시험 의뢰 접수<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">전주 131건 대비 11건 증가 · 8월 들어 4주 연속 증가</span></div>
+        <span class="br-sumcard-v">142<span class="br-sup">건</span></span>
+      </div>
+      <div class="a d3 br-sumcard">
+        <span class="br-sumcard-n">02</span>
+        <div class="br-sumcard-t">처리 완료<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">달성률 90.1% — 전주 85.5%에서 개선 · 6개 부서 전원 80% 이상</span></div>
+        <span class="br-sumcard-v">128<span class="br-sup">건</span></span>
+      </div>
+      <div class="a d4 br-sumcard">
+        <span class="br-sumcard-n">03</span>
+        <div class="br-sumcard-t">기한 초과 지연<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">전량 생산관리 — 교정 장비 1대 정지 · 전주 9건에서 감소</span></div>
+        <span class="br-sumcard-v br-sumcard-v--warn">5<span class="br-sup">건</span></span>
+      </div>
+      <div class="a d5 br-sumcard">
+        <span class="br-sumcard-n">04</span>
+        <div class="br-sumcard-t">차주 이월 잔량<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">전주 20건에서 14건 증가 · 완료율 개선에도 접수 증가분이 더 큼</span></div>
+        <span class="br-sumcard-v br-sumcard-v--warn">34<span class="br-sup">건</span></span>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 03 조직별 진행 현황 (표) ────────────────────────────────────────── -->
+<div class="br-frame" data-label="조직별 현황" data-notes="표를 처음부터 읽지 않는다. 생산관리 80.8% 한 줄만 짚고 나머지는 질문받을 때 답한다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">조직별 현황</p>
+    <h2 class="a br-title br-title--light">6개 부서 중 <strong>생산관리만 미달</strong></h2>
+    <!-- 개수는 아래 아이소타입이 말한다. 리드는 그 까닭만 적는다 — 같은 말을
+         두 번 하면 지면만 먹고 표가 꼬리말로 밀린다. -->
+    <p class="a d2 br-lede">생산관리 <span class="br-key">80.8%</span>만 목표선 85% 미달 — 교정 장비 정지에 따른 일시 하락</p>
+
+    <!-- 아이소타입 — 비율을 개수로. 분모(6개 부서)가 눈에 보인다.
+         빈 칸도 데이터다 — 미달 부서가 몇 개인지 세어진다. -->
+    <div class="a d3" style="margin-top:18px">
+      <div class="br-iso" style="--cell-h:26px;gap:9px">
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell"></span>
+      </div>
+      <div class="br-iso-cap" style="margin-top:10px">6개 부서 중 <b>5개 목표선 상회</b> · 생산관리 1개 미달</div>
+    </div>
+
+    <div class="a d4" style="flex:1;min-height:0;margin-top:14px">
+      <table class="br-table">
+        <thead><tr>
+          <th style="width:26%">부서</th><th style="width:20%">주 담당 업무</th>
+          <th class="num" style="width:13%">접수</th><th class="num" style="width:13%">완료</th>
+          <th class="num" style="width:14%">달성률</th><th style="width:14%">상태</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>기술본부</td><td>전기·전자 시험</td><td class="num">42</td><td class="num">38</td><td class="num">90.5<span class="br-sup">%</span></td><td><span class="br-status br-status--ok">정상</span></td></tr>
+          <tr><td>품질팀</td><td>성적서 검토</td><td class="num">35</td><td class="num">32</td><td class="num">91.4<span class="br-sup">%</span></td><td><span class="br-status br-status--ok">정상</span></td></tr>
+          <tr><td>생산관리</td><td>환경·내구 시험</td><td class="num">26</td><td class="num">21</td><td class="num">80.8<span class="br-sup">%</span></td><td><span class="br-status br-status--warn">주의</span></td></tr>
+          <tr><td>고객지원</td><td>의뢰 접수·안내</td><td class="num">19</td><td class="num">18</td><td class="num">94.7<span class="br-sup">%</span></td><td><span class="br-status br-status--ok">정상</span></td></tr>
+          <tr><td>영업본부</td><td>견적·계약</td><td class="num">13</td><td class="num">12</td><td class="num">92.3<span class="br-sup">%</span></td><td><span class="br-status br-status--ok">정상</span></td></tr>
+          <tr><td>물류팀</td><td>시료 입출고</td><td class="num">7</td><td class="num">7</td><td class="num">100<span class="br-sup">%</span></td><td><span class="br-status br-status--ok">정상</span></td></tr>
+          <tr><td colspan="2" style="color:var(--br-navy)">합계</td><td class="num">142</td><td class="num">128</td><td class="num">90.1<span class="br-sup">%</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 04 부서별 완료 건수 (막대) ──────────────────────────────────────── -->
+<div class="br-frame" data-label="부서별 완료" data-notes="상위 두 부서가 전체의 절반을 넘는다는 점과, 평균선 아래 세 부서가 모두 후공정이라는 점을 연결해 말한다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">주간 지표</p>
+    <h2 class="a br-title br-title--light">부서별 완료 건수, <strong>상위 2개가 절반 이상</strong></h2>
+    <p class="a d2 br-lede">기술본부·품질팀 합계 <span class="br-key">70건</span> — 전체 128건의 54.7%<br>부서 평균 <span class="br-key">21.3건</span> 초과 — 기술본부, 품질팀</p>
+    <div style="position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:30px;align-items:end;flex:1;min-height:0;margin-top:34px">
+      <div class="br-baseline" style="bottom:264px"><span>부서 평균 21.3건</span></div>
+      <div class="br-col"><div class="br-col-val">38</div><div class="by d2 br-bar-v" style="height:470px;"></div></div>
+      <div class="br-col"><div class="br-col-val">32</div><div class="by d3 br-bar-v" style="height:396px;"></div></div>
+      <!-- 지시선 주석 — 막대 안에 둔다. 막대 꼭대기를 자동으로 가리킨다.
+           한 지면에 하나만. 오른쪽 막대들이 낮아 글자가 앉을 자리가 있으므로
+           기본(오른쪽으로 여는) 방향을 쓴다. -->
+      <div class="br-col"><div class="br-col-val br-col-val--muted">21</div>
+        <div class="by d4 br-bar-v br-bar-v--mute" style="height:260px;">
+          <div class="br-note" style="--w:90px;--h:180px">
+            <span class="br-note-dot"></span>
+            <span class="br-note-text">생산관리만 목표 미달 — 교정 장비 1대 정지</span>
+          </div>
+        </div>
+      </div>
+      <div class="br-col"><div class="br-col-val br-col-val--muted">18</div><div class="by d5 br-bar-v br-bar-v--mute" style="height:223px;"></div></div>
+      <div class="br-col"><div class="br-col-val br-col-val--muted">12</div><div class="by d6 br-bar-v br-bar-v--mute" style="height:148px;"></div></div>
+      <div class="br-col"><div class="br-col-val br-col-val--muted">7</div><div class="by d7 br-bar-v br-bar-v--mute" style="height:87px;"></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:30px;margin-top:22px">
+      <div class="f d8 br-col-name">기술본부</div><div class="f d8 br-col-name">품질팀</div>
+      <div class="f d8 br-col-name br-col-name--mute">생산관리</div><div class="f d9 br-col-name br-col-name--mute">고객지원</div>
+      <div class="f d9 br-col-name br-col-name--mute">영업본부</div><div class="f d9 br-col-name br-col-name--mute">물류팀</div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 05 지난주 대비 (비교 2열) ───────────────────────────────────────── -->
+<div class="br-frame" data-label="지난주 대비" data-notes="완료율은 올랐는데 이월은 늘었다. 이 어긋남이 이번 주 보고의 핵심이다. 처리 능력이 아니라 접수 증가가 원인이라는 점을 분명히 한다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">지난주 대비</p>
+    <h2 class="a br-title br-title--light">완료율 개선, <strong>이월은 오히려 증가</strong></h2>
+    <p class="a d2 br-lede">달성률 85.5% → <span class="br-key">90.1%</span> — 처리 능력은 개선<br>접수 증가분이 개선분을 넘어 이월 <span class="br-key">20건 → 34건</span></p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;margin-top:34px">
+      <div class="a d3 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip" style="align-self:flex-start">8월 4주</div>
+        <div class="br-num" style="font-size:72px;line-height:1;color:var(--br-text-2);margin:24px 0 4px">112</div>
+        <div class="br-body" style="margin-bottom:34px">완료 건수 · 달성률 85.5%</div>
+        <div style="font:700 26px/1 var(--br-font-kr);color:var(--br-text-2);margin-top:auto;padding-bottom:20px;border-bottom:1px solid var(--br-card-line)">지표별 상세</div>
+        <div class="br-bars-h" style="margin-top:30px;gap:30px 24px">
+          <div class="br-bar-name">접수</div><div class="br-bar-track"><div class="bx d5 br-bar-h br-bar-h--mute" style="width:92.3%;"></div></div><div class="br-bar-val" style="color:var(--br-text-2)">131</div>
+          <div class="br-bar-name">완료</div><div class="br-bar-track"><div class="bx d6 br-bar-h br-bar-h--mute" style="width:78.9%;"></div></div><div class="br-bar-val" style="color:var(--br-text-2)">112</div>
+          <div class="br-bar-name">지연</div><div class="br-bar-track"><div class="bx d7 br-bar-h br-bar-h--mute" style="width:6.3%;"></div></div><div class="br-bar-val" style="color:var(--br-text-2)">9</div>
+          <div class="br-bar-name">이월</div><div class="br-bar-track"><div class="bx d8 br-bar-h br-bar-h--mute" style="width:14.1%;"></div></div><div class="br-bar-val" style="color:var(--br-text-2)">20</div>
+        </div>
+      </div>
+      <div class="a d4 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip br-chip--solid" style="align-self:flex-start">8월 5주</div>
+        <div class="br-num" style="font-size:72px;line-height:1;color:var(--br-cobalt);margin:24px 0 4px">128</div>
+        <div class="br-body" style="margin-bottom:34px">완료 건수 · 달성률 <span class="br-key">90.1%</span></div>
+        <div style="font:700 26px/1 var(--br-font-kr);color:var(--br-text-2);margin-top:auto;padding-bottom:20px;border-bottom:1px solid var(--br-card-line)">지표별 상세</div>
+        <div class="br-bars-h" style="margin-top:30px;gap:30px 24px">
+          <div class="br-bar-name">접수</div><div class="br-bar-track"><div class="bx d5 br-bar-h" style="width:100%;"></div></div><div class="br-bar-val">142</div>
+          <div class="br-bar-name">완료</div><div class="br-bar-track"><div class="bx d6 br-bar-h" style="width:90.1%;"></div></div><div class="br-bar-val">128</div>
+          <div class="br-bar-name">지연</div><div class="br-bar-track"><div class="bx d7 br-bar-h" style="width:3.5%;"></div></div><div class="br-bar-val">5</div>
+          <div class="br-bar-name">이월</div><div class="br-bar-track"><div class="bx d8 br-bar-h" style="width:23.9%;"></div></div><div class="br-bar-val">34</div>
+        </div>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 06 다음 주 계획 (요일 타임라인) ─────────────────────────────────── -->
+<div class="br-frame" data-label="다음 주 계획" data-notes="주간보고의 타임라인은 요일 단위다. 화요일 교정 완료가 이월 해소의 분기점이라는 점만 짚는다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">다음 주 계획</p>
+    <h2 class="a br-title br-title--light">9월 1주, <strong>이월 해소가 최우선</strong></h2>
+    <!-- 질문 칩 — 이 장이 답하는 질문을 계획과 분리한다. -->
+    <div class="a d2 br-ask" style="margin-top:22px">이월 34건을 언제까지 절반 이하로 줄이나?</div>
+    <p class="a d3 br-lede">교정 장비 복구를 <span class="br-key">화요일</span>까지 완료 — 생산관리 정상화 전제<br>이월 34건은 <span class="br-key">목요일</span>까지 절반 이하로 축소</p>
+    <div style="flex:1;min-height:0;margin-top:40px;display:flex;flex-direction:column">
+      <div class="a d3 br-tl-row" style="margin-bottom:20px">
+        <div></div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr)">
+          <div class="br-tl-head">월</div><div class="br-tl-head">화</div>
+          <div class="br-tl-head">수</div><div class="br-tl-head">목</div><div class="br-tl-head">금</div>
+        </div>
+      </div>
+      <div class="br-tl" style="flex:1;justify-content:space-evenly">
+        <div class="a d4 br-tl-row">
+          <div class="br-tl-name">교정 장비 복구</div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(5,1fr)">
+            <div class="bx d5 br-tl-bar" style="grid-column:1/3;background:var(--br-data-1)">월~화</div>
+          </div>
+        </div>
+        <div class="a d5 br-tl-row">
+          <div class="br-tl-name">이월 34건 처리</div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(5,1fr)">
+            <div class="bx d6 br-tl-bar" style="grid-column:1/5;background:var(--br-data-2)">월~목</div>
+          </div>
+        </div>
+        <div class="a d6 br-tl-row">
+          <div class="br-tl-name">9월 인증 심사 준비</div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(5,1fr)">
+            <div class="bx d7 br-tl-bar" style="grid-column:3/6;background:var(--br-data-3)">수~금</div>
+          </div>
+        </div>
+        <div class="a d7 br-tl-row">
+          <div class="br-tl-name">8월 실적 마감</div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(5,1fr)">
+            <div class="bx d8 br-tl-bar" style="grid-column:5/6;background:var(--br-data-4)">금</div>
+          </div>
+        </div>
+      </div>
+      <div class="f d9 br-tl-row" style="margin-top:24px;padding-top:22px;border-top:1px solid var(--br-card-line)">
+        <div class="br-tl-name" style="color:var(--br-text-3);font-weight:600">분기점</div>
+        <div style="display:flex;gap:64px">
+          <div class="br-tl-mile"><span class="br-tl-dot"></span>화 — 교정 완료 확인</div>
+          <div class="br-tl-mile"><span class="br-tl-dot"></span>목 — 이월 잔량 점검</div>
+          <div class="br-tl-mile"><span class="br-tl-dot"></span>금 — 8월 마감</div>
+        </div>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 07 지원 요청 (마무리) ───────────────────────────────────────────── -->
+<div class="br-frame" data-label="지원 요청" data-notes="이 장이 이 보고의 목적이다. 3건 각각의 기한과 요청 대상을 분명히 말하고 끝낸다. 주간보고는 여기서 5분 안에 끝난다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <h2 class="a" style="font:900 var(--br-fs-display)/1.18 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">
+      <span style="color:var(--br-soft-2)">지원 요청</span><br>3건
+    </h2>
+    <div style="margin-top:52px;display:flex;flex-direction:column">
+      <div class="a d3" style="display:flex;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span style="font:500 30px/1.4 var(--br-font-kr)">교정 장비 예비 1대 확보 — 구매 승인 요청</span>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2);white-space:nowrap;margin-left:40px">9월 1주</span>
+      </div>
+      <div class="a d4" style="display:flex;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span style="font:500 30px/1.4 var(--br-font-kr)">생산관리 임시 인력 2명 — 9월 한 달 배정</span>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2);white-space:nowrap;margin-left:40px">9월 1주</span>
+      </div>
+      <div class="a d5" style="display:flex;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span style="font:500 30px/1.4 var(--br-font-kr)">야간 시험 운영 여부 — 이월 해소 방안 결정</span>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2);white-space:nowrap;margin-left:40px">8월 31일</span>
+      </div>
+    </div>
+    <div class="f d7" style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end">
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">© 2026 COMPANY NAME · All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+</div><!-- /#stage -->
+
+<div id="hud">
+  <button id="prev">◀ 이전</button>
+  <span id="pos"></span>
+  <span id="name"></span>
+  <button id="next">다음 ▶</button>
+  <button id="present">발표 F</button>
+  <button id="notes-btn">노트 N</button>
+  <button id="script-btn">대본 S</button>
+  <button id="all">목록</button>
+</div>
+<div id="notes" hidden><b>발표자 노트</b><span id="notes-text"></span></div>
+<div id="jump" hidden aria-hidden="true"></div>
+
+<script src="deck-viewer.js"></script>
+</body>
+</html>

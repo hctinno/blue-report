@@ -1,0 +1,14 @@
+{
+  "name": "blue-tools",
+  "description": "주식회사 에이치시티 사내 도구 마켓플레이스. 발표 슬라이드 디자인 시스템을 배포한다.",
+  "owner": {
+    "name": "Blue Report contributors"
+  },
+  "plugins": [
+    {
+      "name": "blue-report",
+      "source": "./.claude/skills/blue-report",
+      "description": "블루 리포트 사내 공용 보고서 템플릿. 새 보고서의 출발점인 기준 덱 1종, 라이브 덱 1종, 용도별 발표 덱 12종, A4 문서 4종, 웹 보드 5종, FCC/KC 보고서 14종, 레이아웃 카탈로그 19종. 머리띠·꼬리띠·로고·워터마크를 검사기가 강제한다. HTML·PDF·PPTX·DOCX 출력."
+    }
+  ]
+}

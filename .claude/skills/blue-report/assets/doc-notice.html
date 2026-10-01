@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공지 템플릿</title>
+
+<!-- 폰트는 blue-report.css 의 @font-face 가 assets/fonts/ 에서 불러온다. 바깥 링크 없음 -->
+<link rel="stylesheet" href="blue-report.css">
+<link rel="stylesheet" href="blue-doc.css">
+<link rel="stylesheet" href="doc-viewer.css">
+</head>
+
+<body>
+<div class="bd-doc" data-doc-title="생성형 AI 업무 활용 규정 시행 안내" data-doc-no="HCT-NOT-2026-058">
+
+<!-- 1쪽 ─────────────────────────────────────────────────────────────────
+     교체: 제목 · 시행 정보 · 무엇이 바뀌는가 · 무엇을 해야 하는가 · 문의
+     공지는 한 쪽에서 끝낸다. 게시판에 붙이고 지나가며 읽는 물건이라
+     두 쪽이 되면 뒷장을 아무도 보지 않는다. 넘치면 본문을 줄이지
+     첨부로 미루지 않는다 — 미룰 내용이면 애초에 공지가 아니다.
+     ══════════════════════════════════════════════════════════════════ -->
+<section class="bd-page">
+  <div class="bd-head"><div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div><span class="bd-docno"></span></div>
+  <div class="bd-body">
+
+    <h1 class="bd-title">생성형 AI 업무 활용 규정 시행 안내</h1>
+    <p class="bd-subtitle">2026년 9월 1일부터 전 임직원 적용 · 기업용 계정 발급 시작</p>
+
+    <div class="bd-meta">
+      <div class="bd-meta-k">시행일</div><div>2026.09.01(화)</div>
+      <div class="bd-meta-k">대상</div><div>전 임직원 · 파견 인력</div>
+      <div class="bd-meta-k">담당</div><div>AX추진팀 기획 A</div>
+      <div class="bd-meta-k">문의</div><div>내선 4120</div>
+    </div>
+
+    <h2 class="bd-h1">무엇이 바뀌는가</h2>
+    <ul class="bd-list">
+      <li><span class="bd-key">기업용 계정 지급</span> — 개인 계정 대신 회사 계약 계정 사용.
+      입력 내용이 모델 학습에 쓰이지 않도록 계약으로 보장</li>
+      <li><span class="bd-key">허용 업무 명시</span> — 문서 초안·요약·번역·코드 작성·회의록 정리</li>
+      <li><span class="bd-key">금지 사항 명시</span> — 고객 시험성적서, 성적서 번호, 고객사명,
+      개인정보를 외부 서비스에 입력하는 행위 전면 금지</li>
+    </ul>
+
+    <div class="bd-callout bd-callout--danger">
+      <span class="bd-callout-k">가장 자주 걸리는 것</span>
+      고객사명과 시험 항목을 그대로 넣어 보고서 초안 요청 — 규정 제6조 제2호 위반.
+      고객사는 A사, 항목은 항목1 처럼 바꿔 입력.
+    </div>
+
+    <h2 class="bd-h1">무엇을 해야 하는가</h2>
+    <div class="bd-steps">
+      <div class="bd-step">
+        <span class="bd-step-t">기업용 계정 신청 — 8월 29일(금)까지</span>
+        사내 포털 [신청·승인] &gt; [AI 계정] 에서 신청. 부서장 승인 후 시행일에 일괄 발급.
+      </div>
+      <div class="bd-step">
+        <span class="bd-step-t">활용 교육 이수 — 9월 12일(금)까지</span>
+        온라인 40분. 사내 포털 [교육] 에서 수강. 미이수자는 계정 사용 제한.
+      </div>
+      <div class="bd-step">
+        <span class="bd-step-t">기존 산출물 재등록 — 10월 30일(금)까지</span>
+        개인 계정으로 만들어 사내에 올린 문서 — 내용 확인 후 재등록. 해당자에게 개별 안내 예정.
+      </div>
+    </div>
+
+    <div class="bd-callout bd-callout--info">
+      <span class="bd-callout-k">규정 전문</span>
+      사내 포털 [규정집] &gt; 「생성형 AI 업무 활용 규정」(HCT-REG-2026-007)
+    </div>
+
+  </div>
+  <div class="bd-foot"><span><span class="bd-company">COMPANY NAME</span> · <span class="bd-doctitle"></span></span><span class="bd-pageno"></span></div>
+</section>
+
+</div><!-- /.bd-doc -->
+
+<div id="bd-hud">
+  <span id="bd-pos"></span>
+  <span>A4 · 인쇄하면 그대로</span>
+  <button id="bd-print">인쇄 · PDF</button>
+</div>
+
+<script src="doc-viewer.js"></script>
+</body>
+</html>

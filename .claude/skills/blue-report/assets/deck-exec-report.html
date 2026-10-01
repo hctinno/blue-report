@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>경영진 보고 템플릿</title>
+
+<!-- 폰트는 blue-report.css 의 @font-face 가 assets/fonts/ 에서 불러온다. 바깥 링크 없음 -->
+<link rel="stylesheet" href="blue-report.css">
+<link rel="stylesheet" href="deck-viewer.css">
+</head>
+
+<body class="br-deck">
+<!-- 경영진 보고는 애니메이션을 끈다. 짧게 보고 바로 결정하는 자리다. -->
+<div id="stage" data-no-anim data-deck-title="2026년 상반기 AX 사업 경영 보고">
+
+<!-- 01 표지 ─────────────────────────────────────────────────────────────
+     교체: 보고 제목 · 기간 · 보고 대상
+     경영진 보고는 6장이 상한이다. 넘으면 부록으로 뺀다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="표지" data-notes="표지. 한 문장으로 무엇을 결정받으러 왔는지 말하고 바로 다음 장으로 넘어간다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-rule br-rule--a"></div>
+    <div class="br-rule br-rule--b"></div>
+    <p style="font:500 30px/1 var(--br-font-kr);color:var(--br-soft-2);margin:0 0 40px;letter-spacing:-.01em">
+      투자 계속 여부와 하반기 예산 배분 결정 요청
+    </p>
+    <h1 style="font:300 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">2026 상반기</h1>
+    <h1 style="font:900 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">AX 사업 경영 보고</h1>
+    <div style="align-self:flex-start;margin-top:44px;padding:14px 26px;border:1px solid rgba(244,246,248,.32)">
+      <span style="font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-soft-2)">보고 대상</span>
+      <span style="font:500 var(--br-fs-foot)/1 var(--br-font-kr);margin-left:14px;color:var(--br-on-dark)">대표이사 · 경영위원회</span>
+    </div>
+    <div style="display:flex;align-items:flex-end;justify-content:flex-end;margin-top:auto">
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">© 2026 COMPANY NAME · All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+<!-- 02 결론 (다크) ──────────────────────────────────────────────────────
+     교체: 판정 한 줄 · 근거 지표 3
+     경영진 보고에서 결론은 두 번째 장이다. 목차를 두지 않는다 —
+     6장짜리 보고에 목차를 넣으면 목차가 전체의 6분의 1이 된다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="결론" data-notes="이 장이 보고의 답이다. 판정 한 줄과 근거 세 개만 말한다. 질문이 나오면 3~5장에서 받는다.">
+  <section class="br-slide br-slide--dark" style="padding:84px 96px 56px">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="br-eyebrow">Conclusion</p>
+    <h2 class="br-title br-title--light" style="margin-bottom:8px">투자 계속 <strong>권고</strong> — 다만 대상 축소</h2>
+    <p class="br-lede" style="max-width:1500px">
+      3개 부문 중 2개에서 목표 초과 · 1개는 데이터 미비로 성과 측정 불가 —
+      하반기 예산을 성과 확인된 2개 부문에 집중 배분
+    </p>
+
+    <!-- 다크 요약장 — 근거가 셋이라 3열로 연다(기본은 2열).
+         짙은 지면에 짙은 카드를 얹지 않는다. 상단 괘선으로 구획한다. -->
+    <div class="br-sumgrid" style="grid-template-columns:repeat(3,1fr);gap:var(--br-gap-card) 48px;margin:auto 0">
+      <div class="br-sumcard" data-f="1">
+        <span class="br-sumcard-n">01</span>
+        <div class="br-sumcard-t">연간 목표 대비 절감액<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">목표 4.2억 · 실적 5.4억</span></div>
+        <span class="br-sumcard-v">128<span class="br-sup">%</span></span>
+      </div>
+      <div class="br-sumcard" data-f="2">
+        <span class="br-sumcard-n">02</span>
+        <div class="br-sumcard-t">업무 처리 시간 단축<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">시험 의뢰 접수 기준</span></div>
+        <span class="br-sumcard-v">31<span class="br-sup">%</span></span>
+      </div>
+      <div class="br-sumcard" data-f="3">
+        <span class="br-sumcard-n">03</span>
+        <div class="br-sumcard-t">성과 측정 불가 부문<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">품질본부 — 기준 데이터 부재</span></div>
+        <span class="br-sumcard-v br-sumcard-v--warn">1<span class="br-sup">개</span></span>
+      </div>
+    </div>
+    <div class="br-footer" style="margin-top:34px;border-top-color:var(--br-dark-line)"></div>
+  </section>
+</div>
+
+<!-- 03 부문별 성과 (가로 막대) ──────────────────────────────────────────
+     교체: 부문 이름과 달성률. 막대 길이는 값에 비례해야 한다 —
+     width 를 눈대중으로 적지 않고 값 그대로 퍼센트로 쓴다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="부문별 성과" data-notes="목표 대비 달성률. 품질본부만 회색으로 둔 것은 값이 없어서다. 0이 아니라 미측정이라는 점을 분명히 말한다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="br-eyebrow">01. 부문별 성과</p>
+    <h2 class="br-title">목표 대비 달성률</h2>
+
+    <!-- .br-bars-h 는 [이름] [채널] [값] 3열 그리드다. 세 칸이 직계 자식이어야 한다.
+         행을 <div> 로 묶으면 그 래퍼가 칸 하나를 차지해 세 부문이 가로로 늘어선다.
+         채움 막대는 .br-bar-h (transform-origin:left) 다. .br-bar-v 는 세로 막대용이다.
+         폭은 최댓값 기준 환산 — 142/142=100 · 116/142=81.7 · 92/142=64.8 -->
+    <div class="br-bars-h" style="margin-top:54px;gap:30px 24px">
+      <div class="br-bar-name">기술본부</div>
+      <div class="br-bar-track"><div class="br-bar-h" style="width:100%;"></div></div>
+      <div class="br-bar-val">142<span class="br-sup">%</span></div>
+
+      <div class="br-bar-name">영업본부</div>
+      <div class="br-bar-track"><div class="br-bar-h" style="width:81.7%;"></div></div>
+      <div class="br-bar-val">116<span class="br-sup">%</span></div>
+
+      <div class="br-bar-name">경영지원</div>
+      <div class="br-bar-track"><div class="br-bar-h" style="width:64.8%;"></div></div>
+      <div class="br-bar-val">92<span class="br-sup">%</span></div>
+    </div>
+
+    <p class="br-lede" data-f="1" style="margin-top:34px">측정 가능한 3개 부문 — 2개 목표 초과 · 경영지원 <span class="br-key">92%</span> 근접</p>
+    <div class="br-callout" data-f="2" style="margin-top:auto;max-width:1400px">
+      품질본부는 막대에 없음 — 도입 전 처리 시간 기록이 없어 비교 기준 부재.
+      값이 0 이 아니라 <strong>측정 자체가 불가</strong> — 9월부터 3개월 기준선 수집 후 재측정
+    </div>
+    <div class="br-footer" style="margin-top:34px"></div>
+  </section>
+</div>
+
+<!-- 04 절감액 구성 (도넛) ───────────────────────────────────────────────
+     교체: scripts/donut.py 로 다시 만들어 통째로 갈아 끼운다.
+       python3 scripts/donut.py 46 27 18 9 --labels "인건비 절감,외주비 절감,재작업 감소,기타"
+     각도를 손으로 고치지 않는다. 파이 차트는 쓰지 않는다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="절감액 구성" data-notes="5.4억이 어디서 나왔는지. 인건비 절감이 절반 가까이라는 점, 그것이 채용 유예 효과라는 점을 덧붙인다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="br-eyebrow">02. 절감액 구성</p>
+    <h2 class="br-title">5.4억 원의 출처</h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;margin-top:34px">
+      <div class="br-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px">
+        <!-- 질문 칩 — 「무엇을 물었나」를 답(도넛)과 분리한다. -->
+        <div class="br-ask">5.4억은 어디서 나온 돈인가?</div>
+        <div style="font:700 30px/1 var(--br-font-kr)">절감 항목별 구성비</div>
+  <div class="br-donut-wrap">
+          <svg class="br-donut" viewBox="0 0 196 196" style="width:360px;height:360px" role="img" aria-label="비율 분포">
+    <g transform="translate(98,98)">
+      <circle class="dsh d5" r="78" stroke="var(--mark)" stroke-width="36" stroke-dasharray="223.4 490.1" transform="rotate(-90.00)"></circle>
+      <circle class="dsh d6" r="78" stroke="var(--mark-mid)" stroke-width="36" stroke-dasharray="130.3 490.1" transform="rotate(75.60)"></circle>
+      <circle class="dsh d7" r="78" stroke="var(--mark-mute)" stroke-width="36" stroke-dasharray="86.2 490.1" transform="rotate(172.80)"></circle>
+      <circle class="dsh d8" r="78" stroke="var(--mark-mute)" stroke-width="36" stroke-dasharray="42.1 490.1" transform="rotate(237.60)"></circle>
+    </g>
+  </svg>
+          <div class="br-donut-center"><span class="br-donut-num">46<span class="br-sup">%</span></span><span class="br-donut-cap">인건비 절감</span></div>
+        </div>
+  <div class="br-legend">
+    <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--mark)"></span>인건비 절감</div><div class="br-legend-val">46<span class="br-sup">%</span></div></div>
+    <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--mark-mid)"></span>외주비 절감</div><div class="br-legend-val">27<span class="br-sup">%</span></div></div>
+    <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--mark-mute)"></span>재작업 감소</div><div class="br-legend-val">18<span class="br-sup">%</span></div></div>
+    <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--mark-mute)"></span>기타</div><div class="br-legend-val">9<span class="br-sup">%</span></div></div>
+  </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:26px;min-height:0">
+        <div class="br-card" style="flex:1;display:flex;flex-direction:column;justify-content:center">
+          <div style="font:700 30px/1 var(--br-font-kr);margin-bottom:26px">절감액이 나온 곳</div>
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)"><p class="br-split" style="margin:0">인건비 <strong>2.5억</strong> — 신규 채용 3명 유예분. 인력 감축 아님</p></div>
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)"><p class="br-split" style="margin:0">외주비 <strong>1.5억</strong> — 보고서 작성 외주 계약 2건 종료</p></div>
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)"><p class="br-split" style="margin:0">재작업 <strong>1.0억</strong> — 성적서 오기 재발행 건수 62% 감소</p></div>
+        </div>
+        <div class="br-card">
+          <div style="font:700 30px/1 var(--br-font-kr);margin-bottom:18px">유의할 점</div>
+          <p class="br-split" style="margin:0">인건비 절감분은 <strong>채용 유예</strong>이므로 하반기 채용 재개 시 소멸 — 지속 절감은 외주비·재작업 항목</p>
+        </div>
+      </div>
+    </div>
+    <div class="br-footer" style="margin-top:34px"></div>
+  </section>
+</div>
+
+<!-- 05 최대 위험 (단일 수치) ────────────────────────────────────────────
+     교체: 위험 이름 · 수치 하나 · 미결 시 결과
+     경영진 보고에는 나쁜 소식을 한 장 넣는다. 없으면 신뢰를 잃는다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="최대 위험" data-notes="유일한 위험 신호. 인력 이탈이 아니라 지식 이탈이 문제라는 점을 짚는다. 마지막 장 결정 요청 2번과 연결된다.">
+  <section class="br-slide" style="padding:112px 132px 72px">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <h2 class="br-title">담당 인력 집중</h2>
+    <p class="br-split" style="font-size:var(--br-fs-lede);line-height:1.8;margin:40px 0 0;color:var(--br-text-2)">
+      전체 자동화 과제 <span class="br-key">14건</span> 중 <span class="br-key">9건</span>이 담당자 2명에 집중
+    </p>
+
+    <!-- 아이소타입 — 개수는 도해가 말한다. 분모 14가 정수 칸으로 떨어지므로 쓸 수 있다.
+         빈 칸도 데이터다 — 인수인계 문서가 없는 11건이 세어진다. -->
+    <div style="margin-top:30px">
+      <div class="br-iso" style="--cell-w:36px;--cell-h:48px;gap:10px">
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell"></span><span class="br-iso-cell"></span>
+        <span class="br-iso-cell"></span><span class="br-iso-cell"></span>
+        <span class="br-iso-cell"></span><span class="br-iso-cell"></span>
+        <span class="br-iso-cell"></span><span class="br-iso-cell"></span>
+        <span class="br-iso-cell"></span><span class="br-iso-cell"></span>
+        <span class="br-iso-cell"></span>
+      </div>
+      <div class="br-iso-cap" style="margin-top:12px">14개 과제 중 <b>3개만 인수인계 문서 확보</b> · 11개 미작성</div>
+    </div>
+    <p class="br-split" style="font-size:var(--br-fs-lede);line-height:1.8;margin:44px 0 0;color:var(--br-text-2)">
+      이탈 시 자체 복구 불가 — <span class="br-key">하반기 확산 계획 전면 재수립</span>
+    </p>
+    <div class="br-callout" style="margin-top:40px;max-width:1100px">
+      9월까지 과제별 인수인계 문서 미작성 시 — 하반기 신규 과제 착수 보류 권고
+    </div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;align-items:flex-end">
+      <div class="br-chip" style="font-size:27px;padding:16px 28px">인수인계 문서 확보율 — <strong style="font-weight:700">전체 과제</strong></div>
+      <div class="br-num" style="font-size:var(--br-fs-stat-hero);line-height:1;color:var(--br-coral);letter-spacing:var(--br-ls-tight);margin-top:8px">
+        21<span class="br-sup" style="color:var(--br-data-4)">%</span>
+      </div>
+    </div>
+    <div class="br-footer" style="margin-top:34px"></div>
+  </section>
+</div>
+
+<!-- 06 결정 요청 (마무리) ───────────────────────────────────────────────
+     교체: 결정 항목 3건 · 각각 기한
+     경영진 보고의 마지막 장은 반드시 결정 요청이다. 요약이 아니다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="결정 요청" data-notes="이 장이 보고의 목적이다. 3건 각각 무엇을 언제까지 결정해야 하는지 말하고 끝낸다. 추가 설명은 하지 않는다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <h2 style="font:900 var(--br-fs-display)/1.18 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">
+      <span style="color:var(--br-soft-2)">결정 요청</span><br>3건
+    </h2>
+    <div style="margin-top:52px;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span style="font:500 30px/1.4 var(--br-font-kr)">하반기 예산 — 기술·영업 2개 부문 집중 배분 승인</span>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2);white-space:nowrap;margin-left:40px">9월 1주</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span style="font:500 30px/1.4 var(--br-font-kr)">인수인계 문서 작성 — 과제별 담당자 업무 시간 배정 승인</span>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2);white-space:nowrap;margin-left:40px">9월 2주</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span style="font:500 30px/1.4 var(--br-font-kr)">품질본부 — 기준선 수집 3개월 유예 승인</span>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2);white-space:nowrap;margin-left:40px">9월 1주</span>
+      </div>
+    </div>
+    <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end">
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">© 2026 COMPANY NAME · All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+</div><!-- /#stage -->
+
+<div id="hud">
+  <button id="prev">◀ 이전</button>
+  <span id="pos"></span>
+  <span id="name"></span>
+  <button id="next">다음 ▶</button>
+  <button id="present">발표 F</button>
+  <button id="notes-btn">노트 N</button>
+  <button id="script-btn">대본 S</button>
+  <button id="all">목록</button>
+</div>
+<div id="notes" hidden><b>발표자 노트</b><span id="notes-text"></span></div>
+<div id="jump" hidden aria-hidden="true"></div>
+
+<script src="deck-viewer.js"></script>
+</body>
+</html>

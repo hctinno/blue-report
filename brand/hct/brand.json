@@ -1,0 +1,16 @@
+{
+  "_설명": "사내 보고서 템플릿용 HCT 브랜드 설정. 내부 배포용이라 연락처는 넣지 않는다.",
+  "company": "주식회사 에이치시티",
+  "wordmark": "HCT",
+  "email": "",
+  "website": "",
+  "phone": "",
+  "copyrightYear": "2026",
+  "logo": "hct-logo-white.png",
+  "logoOnLight": "hct-logo-color.png",
+  "_watermark설명": "배경 워터마크용. 국문 병기를 뗀 심볼만. make_logo_variants.py 가 만든다.",
+  "watermark": "hct-logo-symbol-white.png",
+  "watermarkOnLight": "hct-logo-symbol-color.png",
+  "logoHeight": 40,
+  "docTitle": "HCT 사내 보고서"
+}

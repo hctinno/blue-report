@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blue Report FCC/KC · 5. Lab Flow & Re-entry Report</title>
+
+<!-- 이 파일은 scripts/build_fcc_templates.py 가 만든다. 손으로 고치지 않는다 —
+     고치면 재생성 대조에서 걸린다. 부품과 구성은 그 스크립트에 있다.
+     덧층(fcc-kc.css)은 맨 뒤에 온다. 앞의 셋이 토큰·지면·뷰어를 맡는다. -->
+<link rel="stylesheet" href="../../../blue-report.css">
+<link rel="stylesheet" href="../../../blue-doc.css">
+<link rel="stylesheet" href="../../../doc-viewer.css">
+<link rel="stylesheet" href="../../fcc-kc.css">
+</head>
+
+<body>
+<!-- ══════════════════════════════════════════════════════════════════════
+     5. Lab Flow & Re-entry Report
+     대상: 분석 담당 · 실무 검토
+     목적: 시험기관 이동과 재진입
+     방향: A4 세로 · 4쪽
+
+     값은 fixtures/fixture-baseline.json 의 계약을 따른다. 지면의 모든 수치는
+     서버가 계산한 것을 그대로 옮긴 것이며, 템플릿은 합계·비율·순위를 다시
+     계산하지 않는다. [data-field]·[data-metric-id] 가 렌더러가 채우는 자리다.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="bd-doc" data-doc-title="시험기관 이동과 재진입" data-doc-no="DEMO-FCC-2026-S05"
+     data-template-id="fcc-kc-s-lab-flow-reentry">
+
+<section class="bd-page">
+  <div class="bd-head"><div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div><span class="bd-docno"></span></div>
+  <div class="bd-body">
+    <h1 class="bd-h1">시험기관 이동과 재진입</h1>
+    <dl class="fk-scope">
+      <dt>데이터 버전</dt><dd data-field="scope.sourceDataVersion">FCC-PUBLIC-2026.08.15 / KC-PUBLIC-2026.08.12</dd>
+      <dt>분석 기간</dt><dd data-field="scope.appliedPeriod">2026-01-01 ~ 2026-08-15</dd>
+      <dt>모집단</dt><dd data-field="scope.populationDefinition">기간 내 공개된 인증 건 중 필터를 통과한 전체</dd>
+      <dt>레코드 단위</dt><dd data-field="scope.recordGrain">인증 건(certification)</dd>
+      <dt>적용 필터</dt><dd data-field="scope.appliedFilters">제품군 = 무선 모듈(WLAN · BLE) · 인증분류 = FCC Part 15C / KC 적합성평가 · 제외 = 시험 취하 · 반려 건</dd>
+      <dt>커버리지</dt><dd><span class="fk-cov fk-cov--full">커버리지</span> · <span data-field="scope.coverageNote">모집단 전수 반환 · 표본 추출 없음</span></dd>
+    </dl>
+    <div class="fk-metrics fk-metrics--3">
+      <div class="fk-metric" data-metric-id="f_move">
+        <div class="fk-metric-k">이동 흐름</div>
+        <div class="fk-metric-v">37<span class="fk-unit">건</span></div>
+        <div class="fk-metric-n">제조사 기준 전이</div>
+      </div>
+      <div class="fk-metric" data-metric-id="f_uniq">
+        <div class="fk-metric-k">고유 제조사</div>
+        <div class="fk-metric-v">21<span class="fk-unit">개사</span></div>
+        <div class="fk-metric-n">흐름 총합과 다른 값</div>
+      </div>
+      <div class="fk-metric" data-metric-id="f_re">
+        <div class="fk-metric-k">재진입</div>
+        <div class="fk-metric-v">4<span class="fk-unit">건</span></div>
+        <div class="fk-metric-n"></div>
+      </div>
+    </div>
+    <div class="fk-narr" data-narrative-origin="server_fact">
+      <span class="fk-narr-k">서버 계산값</span>
+      <p class="bd-p">흐름 총합 37건 · 고유 제조사 21개사 — 한 제조사가 여러 번 이동 가능</p>
+      <p class="bd-p">재진입 4건은 이탈 후 같은 기관으로 되돌아온 경우</p>
+    </div>
+    <div class="fk-fixture" data-field="fixture.label">DESIGN FIXTURE · 운영 분석 결과 아님</div>
+  </div>
+  <div class="bd-foot"><span><span class="bd-company">COMPANY NAME</span> · <span class="bd-doctitle"></span></span><span class="bd-pageno"></span></div>
+</section>
+<section class="bd-page">
+  <div class="bd-head"><div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div><span class="bd-docno"></span></div>
+  <div class="bd-body">
+    <h1 class="bd-h1">이동 흐름과 전이 행렬</h1>
+    <div class="fk-flow">
+      <div class="fk-flow-node"><b>이전 기관</b>직전 반기 주 사용 기관</div>
+      <div class="fk-flow-arrow">→<small>이동 37건</small></div>
+      <div class="fk-flow-node"><b>이후 기관</b>이번 반기 주 사용 기관</div>
+      <div class="fk-flow-arrow">→<small>재진입 4건</small></div>
+      <div class="fk-flow-node"><b>복귀</b>이전 기관으로 되돌아옴</div>
+    </div>
+    <p class="bd-p" style="color:var(--br-text-2)">제조사 전이 건수 · 행 = 이전 기관 · 열 = 이후 기관</p>
+    <table class="bd-table bd-table--grid fk-mx">
+      <thead><tr><th>이전 → 이후</th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td class="fk-mx-self">·</td><td class="fk-mx-move">6</td><td class="fk-mx-move">4</td><td class="fk-mx-move">2</td></tr>
+        <tr><td>B</td><td class="fk-mx-move">5</td><td class="fk-mx-self">·</td><td class="fk-mx-move">3</td><td class="fk-mx-move">1</td></tr>
+        <tr><td>C</td><td class="fk-mx-move">4</td><td class="fk-mx-move">2</td><td class="fk-mx-self">·</td><td class="fk-mx-move">3</td></tr>
+        <tr><td>D</td><td class="fk-mx-move">3</td><td class="fk-mx-move">1</td><td class="fk-mx-move">3</td><td class="fk-mx-self">·</td></tr>
+      </tbody>
+    </table>
+    <p class="bd-p" style="color:var(--br-text-2)">대각선은 제자리(이동 없음)라 0으로 표기 · 흐름 총합 37건 ≠ 고유 제조사 21개사</p>
+    <div class="fk-warn fk-warn--limit">
+      <span class="fk-warn-k">흐름을 읽을 때</span>
+      <ul>
+        <li>관측된 순서 — 인과 관계 아님</li>
+        <li>이동의 까닭(가격·일정·품질)은 데이터 밖</li>
+        <li>기간 경계에서 잘린 이동은 미집계</li>
+      </ul>
+    </div>
+    <div class="fk-fixture" data-field="fixture.label">DESIGN FIXTURE · 운영 분석 결과 아님</div>
+  </div>
+  <div class="bd-foot"><span><span class="bd-company">COMPANY NAME</span> · <span class="bd-doctitle"></span></span><span class="bd-pageno"></span></div>
+</section>
+<section class="bd-page">
+  <div class="bd-head"><div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div><span class="bd-docno"></span></div>
+  <div class="bd-body">
+    <h1 class="bd-h1">품질과 제한</h1>
+    <div class="fk-quality">
+      <div class="fk-q"><div class="fk-q-k">반환 행</div><div class="fk-q-v">1,284</div></div>
+      <div class="fk-q"><div class="fk-q-k">고유 인증</div><div class="fk-q-v">1,284</div></div>
+      <div class="fk-q"><div class="fk-q-k">미해소 엔터티</div><div class="fk-q-v">3</div></div>
+    </div>
+    <p class="bd-p" style="color:var(--br-text-2)">반환 행과 고유 인증이 같은 값 — 중복 없음</p>
+    <div class="fk-warn">
+      <span class="fk-warn-k">이 수치를 읽을 때</span>
+      <ul>
+        <li>2026년 8월은 15일까지의 부분 기간 — 월 추이의 마지막 점을 전월과 같은 자로 견주지 않음</li>
+        <li>미해소 엔터티 3건은 제조사 수(12개사)에 미포함</li>
+      </ul>
+    </div>
+    <div class="fk-warn fk-warn--limit">
+      <span class="fk-warn-k">이 보고서로 말할 수 없는 것</span>
+      <ul>
+        <li>공개 인증 데이터는 시장점유율·매출·수주를 뜻하지 않음</li>
+        <li>처리 기간과 대기열은 공개 데이터에 없음</li>
+        <li>인증 취소·만료 이력은 이번 모집단에 미포함</li>
+        <li>흐름 총합과 고유 엔터티 수를 합산하지 않음</li>
+      </ul>
+    </div>
+    <div class="fk-fixture" data-field="fixture.label">DESIGN FIXTURE · 운영 분석 결과 아님</div>
+  </div>
+  <div class="bd-foot"><span><span class="bd-company">COMPANY NAME</span> · <span class="bd-doctitle"></span></span><span class="bd-pageno"></span></div>
+</section>
+<section class="bd-page">
+  <div class="bd-head"><div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div><span class="bd-docno"></span></div>
+  <div class="bd-body">
+    <h1 class="bd-h1">근거와 계보</h1>
+    <p class="bd-p">근거 상태 <span class="fk-cov fk-cov--full" data-field="evidence.state">전체</span> · 반환 <span class="bd-key">4</span> / 전체 <span class="bd-key">4</span>건</p>
+    <table class="bd-table fk-evi">
+      <thead><tr><th style="width:30%">인증 식별자</th><th style="width:26%">엔터티</th><th style="width:14%">공개일</th><th>출처</th><th style="width:12%">상태</th></tr></thead>
+      <tbody>
+        <tr><td>2AXXX-WM100-2026</td><td>제조사 가</td><td>2026-07-18</td><td>FCC OET Authorization Search · 2026-08-15</td><td><span class="fk-evi-st fk-evi-st--ok">확인</span></td></tr>
+        <tr><td>MSIP-CRM-XYZ-WM200</td><td>제조사 나</td><td>2026-07-02</td><td>국립전파연구원 적합성평가 공고 · 2026-08-12</td><td><span class="fk-evi-st fk-evi-st--ok">확인</span></td></tr>
+        <tr><td>2BYYY-BLE55-2026-REV2</td><td>주식회사 매우긴법인명테스트용제조사</td><td>2026-06-27</td><td>FCC OET Authorization Search · 2026-08-15</td><td><span class="fk-evi-st fk-evi-st--ok">확인</span></td></tr>
+        <tr><td>R-C-ZZZ-WLAN-2026-0091</td><td>제조사 라</td><td>2026-05-14</td><td>국립전파연구원 적합성평가 공고 · 2026-08-12</td><td><span class="fk-evi-st fk-evi-st--ok">확인</span></td></tr>
+      </tbody>
+    </table>
+    <p class="fk-cont">근거 전량과 필드 대응표는 C(Evidence Dossier) 템플릿</p>
+    <h2 class="bd-h2">계보와 체크섬</h2>
+    <dl class="fk-lineage">
+      <dt>스냅샷</dt><dd data-field="lineage.snapshotChecksum">sha256:3f9a1c… (fixture)</dd>
+      <dt>보고서 모델</dt><dd data-field="lineage.reportModelChecksum">sha256:7b22e0… (fixture)</dd>
+      <dt>형식 간 일관성</dt><dd data-field="lineage.consistencyProjectionChecksum">sha256:c14d88… (fixture)</dd>
+      <dt>계보</dt><dd data-field="lineage.lineageChecksum">sha256:9e0af5… (fixture)</dd>
+      <dt>생성</dt><dd style="font-family:var(--br-font-kr)" data-field="lineage.generatedBy">Blue Report FCC/KC Insight · 보고서 모델 1.3.1 계약 기준</dd>
+    </dl>
+    <p class="bd-p" style="color:var(--br-text-2)">같은 데이터 버전·필터·기간으로 재실행 시 위 체크섬이 동일 — 값이 다르면 입력이 바뀐 것</p>
+    <div class="fk-fixture" data-field="fixture.label">DESIGN FIXTURE · 운영 분석 결과 아님</div>
+  </div>
+  <div class="bd-foot"><span><span class="bd-company">COMPANY NAME</span> · <span class="bd-doctitle"></span></span><span class="bd-pageno"></span></div>
+</section>
+
+</div><!-- /.bd-doc -->
+
+<div id="bd-hud">
+  <span id="bd-pos"></span>
+  <button id="bd-print">인쇄 · PDF</button>
+</div>
+
+<script src="../../../doc-viewer.js"></script>
+</body>
+</html>

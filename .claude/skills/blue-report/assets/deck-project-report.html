@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로젝트 보고 템플릿</title>
+
+<!-- 폰트는 blue-report.css 의 @font-face 가 assets/fonts/ 에서 불러온다. 바깥 링크 없음 -->
+<link rel="stylesheet" href="blue-report.css">
+<link rel="stylesheet" href="deck-viewer.css">
+</head>
+
+<body class="br-deck">
+<div id="stage" data-deck-title="사내 데이터 연계 자동화 완료 보고서">
+
+<!-- 01 표지 -->
+<div class="br-frame" data-label="표지" data-notes="표지. 프로젝트명과 보고 시점(착수/중간/완료)을 분명히 한다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-rule br-rule--a"></div><div class="br-rule br-rule--b"></div>
+    <p class="a" style="font:500 30px/1 var(--br-font-kr);color:var(--br-soft-2);margin:0 0 40px;letter-spacing:-.01em">사내 데이터 연계 자동화 · 완료 보고</p>
+    <h1 class="a d2" style="font:300 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">프로젝트</h1>
+    <h1 class="a d3" style="font:900 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">완료 보고서</h1>
+    <div class="a d5" style="align-self:flex-start;margin-top:44px;padding:14px 26px;border:1px solid rgba(244,246,248,.32)">
+      <span style="font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-soft-2)">수행 기간</span>
+      <span class="br-num" style="font-size:var(--br-fs-foot);line-height:1;margin-left:14px;color:var(--br-on-dark)">2026.03.02 ~ 08.29</span>
+    </div>
+    <div class="f d8" style="display:flex;align-items:flex-end;justify-content:flex-end;margin-top:auto">
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">© 2026 COMPANY NAME · All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+<!-- 02 목차 -->
+<div class="br-frame" data-label="목차" data-notes="목차. 완료 판정 기준이 마지막에 온다는 점을 미리 알린다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div style="display:grid;grid-template-columns:420px 1fr;gap:40px;flex:1;min-height:0">
+      <h2 class="a" style="font:700 92px/1 var(--br-font-label);color:var(--br-cobalt);margin:8px 0 0;letter-spacing:-.01em">Contents</h2>
+      <div style="display:flex;flex-direction:column;justify-content:space-between">
+        <div class="a d2" style="display:grid;grid-template-columns:96px 1fr 120px;align-items:start;gap:24px">
+          <div class="br-num" style="font-size:40px;line-height:1;color:var(--br-cobalt)">01</div>
+          <div><div style="font:700 var(--br-fs-h3)/1.3 var(--br-font-kr);letter-spacing:-.02em">목표와 범위</div>
+            <div class="br-body" style="margin-top:16px">착수 시 합의한 범위와 제외 항목</div></div>
+          <div class="br-num" style="font-weight:500;font-size:var(--br-fs-label);line-height:1;color:var(--br-text-3);text-align:right;padding-top:12px">p.03</div>
+        </div>
+        <div class="a d4" style="display:grid;grid-template-columns:96px 1fr 120px;align-items:start;gap:24px">
+          <div class="br-num" style="font-size:40px;line-height:1;color:var(--br-cobalt)">02</div>
+          <div><div style="font:700 var(--br-fs-h3)/1.3 var(--br-font-kr);letter-spacing:-.02em">일정과 산출물</div>
+            <div class="br-body" style="margin-top:16px">계획 대비 실제 일정 · 산출물 8종</div></div>
+          <div class="br-num" style="font-weight:500;font-size:var(--br-fs-label);line-height:1;color:var(--br-text-3);text-align:right;padding-top:12px">p.04</div>
+        </div>
+        <div class="a d6" style="display:grid;grid-template-columns:96px 1fr 120px;align-items:start;gap:24px">
+          <div class="br-num" style="font-size:40px;line-height:1;color:var(--br-cobalt)">03</div>
+          <div><div style="font:700 var(--br-fs-h3)/1.3 var(--br-font-kr);letter-spacing:-.02em">달성 현황과 미달 항목</div>
+            <div class="br-body" style="margin-top:16px">5개 마일스톤 · 미달 1건의 원인</div></div>
+          <div class="br-num" style="font-weight:500;font-size:var(--br-fs-label);line-height:1;color:var(--br-text-3);text-align:right;padding-top:12px">p.06</div>
+        </div>
+        <div class="a d8" style="display:grid;grid-template-columns:96px 1fr 120px;align-items:start;gap:24px">
+          <div class="br-num" style="font-size:40px;line-height:1;color:var(--br-cobalt)">04</div>
+          <div><div style="font:700 var(--br-fs-h3)/1.3 var(--br-font-kr);letter-spacing:-.02em">완료 판정과 승인 요청</div>
+            <div class="br-body" style="margin-top:16px">판정 기준 6개 · 이관 사항</div></div>
+          <div class="br-num" style="font-weight:500;font-size:var(--br-fs-label);line-height:1;color:var(--br-text-3);text-align:right;padding-top:12px">p.08</div>
+        </div>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 03 목표와 범위 (비교 2열) -->
+<div class="br-frame" data-label="목표와 범위" data-notes="제외 항목을 먼저 확인받는다. 완료 판정 시비는 대부분 여기서 갈린다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">01. 목표와 범위</p>
+    <h2 class="a br-title br-title--light">착수 시 합의 범위, <strong>변경 없음</strong></h2>
+    <p class="a d2 br-lede">범위 변경 요청 2건 접수 — 모두 <span class="br-key">차기 과제</span>로 이월 합의</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;margin-top:34px">
+      <div class="a d3 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip br-chip--solid" style="align-self:flex-start">범위 내</div>
+        <div class="br-num" style="font-size:72px;line-height:1;color:var(--br-cobalt);margin:24px 0 4px">5</div>
+        <div class="br-body" style="margin-bottom:34px">항목 · 전부 완료</div>
+        <ul style="margin:auto 0 0;padding-left:24px;font:400 var(--br-fs-body)/1.8 var(--br-font-kr);color:#45505c">
+          <li style="margin-bottom:14px"><strong style="font-weight:700;color:var(--br-text)">데이터 수집 연계</strong> — 3개 사내 시스템</li>
+          <li style="margin-bottom:14px"><strong style="font-weight:700;color:var(--br-text)">정합성 검증</strong> — 일 단위 자동 대조</li>
+          <li style="margin-bottom:14px"><strong style="font-weight:700;color:var(--br-text)">이상 알림</strong> — 담당자 자동 통보</li>
+          <li style="margin-bottom:14px"><strong style="font-weight:700;color:var(--br-text)">운영 문서</strong> — 장애 대응 절차 포함</li>
+          <li><strong style="font-weight:700;color:var(--br-text)">담당자 교육</strong> — 2회 실시</li>
+        </ul>
+      </div>
+      <div class="a d4 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip" style="align-self:flex-start">범위 밖</div>
+        <div class="br-num" style="font-size:72px;line-height:1;color:var(--br-text-2);margin:24px 0 4px">3</div>
+        <div class="br-body" style="margin-bottom:34px">항목 · 착수 시 제외 합의</div>
+        <ul style="margin:auto 0 0;padding-left:24px;font:400 var(--br-fs-body)/1.8 var(--br-font-kr);color:#45505c">
+          <li style="margin-bottom:14px"><strong style="font-weight:700;color:var(--br-text)">외부 협력사 시스템</strong> — 계약 범위 밖</li>
+          <li style="margin-bottom:14px"><strong style="font-weight:700;color:var(--br-text)">과거 데이터 소급 정제</strong> — 별도 과제</li>
+          <li><strong style="font-weight:700;color:var(--br-text)">실시간 연계</strong> — 일 단위로 합의</li>
+        </ul>
+        <div class="br-callout" style="margin-top:34px">이월 2건 — 실시간 연계, 소급 정제. 차기 과제 기획서에 반영</div>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 04 일정 (타임라인) -->
+<div class="br-frame" data-label="일정" data-notes="계획 대비 2주 지연이 있었고 원인과 회복 시점을 함께 말한다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">02. 일정과 산출물</p>
+    <h2 class="a br-title br-title--light">계획 대비 <strong>2주 지연 후 회복</strong></h2>
+    <p class="a d2 br-lede">4월 협력사 사양 회신 지연으로 <span class="br-key">2주</span> 밀림<br>검증 기간을 1주 단축해 <span class="br-key">최종 일정은 준수</span></p>
+    <div style="flex:1;min-height:0;margin-top:40px;display:flex;flex-direction:column">
+      <div class="a d3 br-tl-row" style="margin-bottom:20px">
+        <div></div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr)">
+          <div class="br-tl-head">3월</div><div class="br-tl-head">4월</div><div class="br-tl-head">5월</div>
+          <div class="br-tl-head">6월</div><div class="br-tl-head">7월</div><div class="br-tl-head">8월</div>
+        </div>
+      </div>
+      <div class="br-tl" style="flex:1;justify-content:space-evenly">
+        <div class="a d4 br-tl-row"><div class="br-tl-name">요구 정의</div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(6,1fr)"><div class="bx d5 br-tl-bar" style="grid-column:1/2;background:var(--br-data-1)">3월</div></div></div>
+        <div class="a d5 br-tl-row"><div class="br-tl-name">연계 개발</div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(6,1fr)"><div class="bx d6 br-tl-bar" style="grid-column:2/5;background:var(--br-data-2)">4~6월 (2주 지연)</div></div></div>
+        <div class="a d6 br-tl-row"><div class="br-tl-name">검증</div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(6,1fr)"><div class="bx d7 br-tl-bar" style="grid-column:5/6;background:var(--br-data-3)">7월 (1주 단축)</div></div></div>
+        <div class="a d7 br-tl-row"><div class="br-tl-name">이관 · 교육</div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(6,1fr)"><div class="bx d8 br-tl-bar" style="grid-column:6/7;background:var(--br-data-4)">8월</div></div></div>
+      </div>
+      <div class="f d9 br-tl-row" style="margin-top:24px;padding-top:22px;border-top:1px solid var(--br-card-line)">
+        <div class="br-tl-name" style="color:var(--br-text-3);font-weight:600">마일스톤</div>
+        <div style="display:flex;gap:64px">
+          <div class="br-tl-mile"><span class="br-tl-dot"></span>3월 말 — 요구 확정</div>
+          <div class="br-tl-mile"><span class="br-tl-dot"></span>6월 말 — 개발 완료</div>
+          <div class="br-tl-mile"><span class="br-tl-dot"></span>8월 말 — 운영 이관</div>
+        </div>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 05 산출물 (표) -->
+<div class="br-frame" data-label="산출물" data-notes="8종 전부 읽지 말고 미제출 1건과 그 사유만 짚는다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">02. 일정과 산출물</p>
+    <h2 class="a br-title br-title--light">산출물 8종, <strong>7종 제출 완료</strong></h2>
+    <p class="a d2 br-lede">미제출 1건은 운영 3개월 실적이 필요한 문서 — <span class="br-key">11월 제출 예정</span></p>
+    <!-- 아이소타입 — 분모(8종)가 눈에 보인다. 표와 나란히 두므로 칸을 낮추고
+         설명을 옆에 붙여 한 줄로 앉힌다. 빈 칸도 데이터다. -->
+    <div class="a d3" style="display:flex;align-items:center;gap:22px;margin-top:16px">
+      <div class="br-iso" style="--cell-w:26px;--cell-h:24px;gap:8px">
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell br-iso-cell--on"></span>
+        <span class="br-iso-cell"></span>
+      </div>
+      <div class="br-iso-cap" style="margin-top:0">8종 중 <b>7종 제출 완료</b> · 미제출 1종</div>
+    </div>
+
+    <!-- 행 8개다. 규격서 상한은 7행이라 기본 여백으로는 푸터와 겹친다.
+         내용을 덜지 않고 .br-table--tight 로 행간만 줄여 맞춘다. -->
+    <div class="a d4" style="flex:1;min-height:0;margin-top:14px">
+      <table class="br-table br-table--tight">
+        <thead><tr>
+          <th style="width:34%">산출물</th><th style="width:18%">담당</th>
+          <th style="width:18%">제출일</th><th style="width:14%">검토</th><th style="width:16%">상태</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>요구 정의서</td><td>기획팀</td><td>2026.03.27</td><td>승인</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>연계 설계서</td><td>기술본부</td><td>2026.04.24</td><td>승인</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>검증 계획서</td><td>품질팀</td><td>2026.06.19</td><td>승인</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>검증 결과서</td><td>품질팀</td><td>2026.07.31</td><td>승인</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>운영 절차서</td><td>기술본부</td><td>2026.08.14</td><td>승인</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>장애 대응 지침</td><td>기술본부</td><td>2026.08.21</td><td>조건부</td><td><span class="br-status br-status--warn">보완</span></td></tr>
+          <tr><td>교육 자료 · 이수 기록</td><td>경영지원</td><td>2026.08.28</td><td>승인</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>운영 안정화 보고서</td><td>기술본부</td><td>2026.11 예정</td><td>—</td><td><span class="br-status br-status--late">미제출</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 06 달성 현황 (막대) -->
+<div class="br-frame" data-label="달성 현황" data-notes="5개 마일스톤 중 마지막 하나만 미달이다. 원인은 다음 장에서.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-4)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">03. 달성 현황</p>
+    <h2 class="a br-title br-title--light">마일스톤 5개 중 <strong>4개 달성</strong></h2>
+    <p class="a d2 br-lede">평균 달성률 <span class="br-key">74.4%</span> — 운영 안정화만 미달<br>미달 원인은 기간 부족이며 품질 문제 아님</p>
+    <div style="position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:40px;align-items:end;flex:1;min-height:0;margin-top:34px">
+      <div class="br-baseline" style="bottom:327px"><span>평균 74.4%</span></div>
+      <div class="br-col"><div class="br-col-val">100<span class="br-sup">%</span></div><div class="by d2 br-bar-v" style="height:440px;"></div></div>
+      <div class="br-col"><div class="br-col-val">96<span class="br-sup">%</span></div><div class="by d3 br-bar-v" style="height:422px;"></div></div>
+      <div class="br-col"><div class="br-col-val">92<span class="br-sup">%</span></div><div class="by d4 br-bar-v" style="height:405px;"></div></div>
+      <div class="br-col"><div class="br-col-val br-col-val--muted">64<span class="br-sup">%</span></div><div class="by d5 br-bar-v br-bar-v--mute" style="height:282px;"></div></div>
+      <!-- 지시선 주석 — 막대 안에 둔다. 지면 오른쪽 끝이라 --left 로 왼쪽으로 연다.
+           한 지면에 하나만. -->
+      <div class="br-col"><div class="br-col-val br-col-val--muted">20<span class="br-sup">%</span></div>
+        <div class="by d6 br-bar-v br-bar-v--mute" style="height:88px;">
+          <div class="br-note br-note--left" style="--w:190px;--h:330px">
+            <span class="br-note-dot"></span>
+            <span class="br-note-text">운영 안정화 20% — 무장애 18일 경과, 90일 충족 시점 2026.11.26</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:40px;margin-top:22px">
+      <div class="f d7 br-col-name">요구 확정</div><div class="f d7 br-col-name">연계 개발</div>
+      <div class="f d8 br-col-name">검증</div><div class="f d8 br-col-name br-col-name--mute">운영 이관</div>
+      <div class="f d9 br-col-name br-col-name--mute">운영 안정화</div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 07 미달 항목 (단일 수치) -->
+<div class="br-frame" data-label="미달 항목" data-notes="미달을 감추지 않는다. 원인이 기간이고 품질이 아니라는 근거를 대고, 후속 일정을 제시한다.">
+  <section class="br-slide" style="padding:112px 132px 72px">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <h2 class="a br-title">운영 안정화 미달</h2>
+    <p class="a d2 br-split" style="font-size:var(--br-fs-lede);line-height:1.8;margin:46px 0 0;color:#333e4a">
+      안정화 판정 기준은 <span class="br-key">무장애 운영 90일</span> — 현재 18일 경과<br>
+      기간 미충족이며 <span class="br-key">장애는 0건</span>
+    </p>
+    <p class="a d4 br-split" style="font-size:var(--br-fs-lede);line-height:1.8;margin:44px 0 0;color:#333e4a">
+      품질 문제 아님 — <span class="br-key">2026.11.26 자동 충족 예정</span>
+    </p>
+    <div class="a d5 br-callout" style="margin-top:40px;max-width:1100px">
+      운영 안정화 보고서는 90일 경과 후 제출 — 그 전까지 월 단위 운영 현황을 정기 보고로 대체
+    </div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;align-items:flex-end">
+      <div class="a d6 br-chip" style="font-size:27px;padding:16px 28px">무장애 운영 — <strong style="font-weight:700">18일 / 90일</strong></div>
+      <div class="p d7 br-num" style="font-size:var(--br-fs-stat-hero);line-height:1;color:var(--br-coral);letter-spacing:var(--br-ls-tight);margin-top:8px">
+        20<span class="br-sup" style="color:var(--br-data-4)">%</span>
+      </div>
+    </div>
+    <div class="br-footer" style="margin-top:34px"></div>
+  </section>
+</div>
+
+<!-- 08 완료 판정 (다크) -->
+<div class="br-frame" data-label="완료 판정" data-notes="착수 시 합의한 6개 기준을 그대로 가져와 하나씩 대조한다. 여기서 승인 여부가 갈린다.">
+  <section class="br-slide br-slide--dark" style="--br-accent:var(--br-cat-3);padding:84px 96px 56px">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">04. 완료 판정</p>
+    <h2 class="a br-title">판정 기준 6개 대조</h2>
+    <!-- 질문 칩 — 이 장이 판정하는 질문을 근거와 분리한다. 어두운 면에서는
+         칩 바탕이 옅은 반투명으로 바뀐다. -->
+    <div class="a d2 br-ask" style="margin-top:26px">착수 시 합의한 6개 기준을 다 충족했는가?</div>
+
+    <!-- 다크 요약장 — 짙은 지면에 짙은 카드를 얹지 않는다. 상단 괘선으로 구획한다.
+         값이 숫자가 아니라 판정어라 --word 로 한 단계 줄인다. -->
+    <div class="br-sumgrid" style="margin-top:34px;flex:1;min-height:0">
+      <div class="a d3 br-sumcard">
+        <span class="br-sumcard-n">01</span>
+        <div class="br-sumcard-t">범위 내 5개 항목 완료<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">착수 합의 범위 전부 구현<br>변경 요청 2건은 이월 합의</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">충족</span>
+      </div>
+      <div class="a d4 br-sumcard">
+        <span class="br-sumcard-n">02</span>
+        <div class="br-sumcard-t">검증 통과<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">시험 항목 142건 전수 통과<br>결과서 품질팀 승인</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">충족</span>
+      </div>
+      <div class="a d5 br-sumcard">
+        <span class="br-sumcard-n">03</span>
+        <div class="br-sumcard-t">산출물 제출<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">8종 중 7종 제출<br>1종은 90일 경과 후 제출</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word br-sumcard-v--warn">일부</span>
+      </div>
+      <div class="a d6 br-sumcard">
+        <span class="br-sumcard-n">04</span>
+        <div class="br-sumcard-t">담당자 교육<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">2회 실시 · 대상자 12명 전원 이수<br>이수 기록 제출 완료</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">충족</span>
+      </div>
+      <div class="a d7 br-sumcard">
+        <span class="br-sumcard-n">05</span>
+        <div class="br-sumcard-t">운영 이관<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">운영 주체 기술본부로 이관<br>장애 대응 지침 보완 후 최종 승인</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word br-sumcard-v--warn">조건부</span>
+      </div>
+      <div class="a d8 br-sumcard">
+        <span class="br-sumcard-n">06</span>
+        <div class="br-sumcard-t">무장애 운영 90일<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">18일 경과 · 장애 0건<br>2026.11.26 자동 충족 예정</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">진행</span>
+      </div>
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- 09 승인 요청 -->
+<div class="br-frame" data-label="승인 요청" data-notes="조건부 완료 승인을 요청한다. 조건 2개와 각각의 기한을 분명히 말하고 끝낸다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <h2 class="a" style="font:900 var(--br-fs-display)/1.18 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">
+      <span style="color:var(--br-soft-2)">조건부 완료</span><br>승인 요청
+    </h2>
+    <p class="a d3 br-lede" style="margin-top:44px;line-height:1.7">판정 기준 6개 중 4개 충족 · 2개 조건부<br>아래 2건 이행을 조건으로 완료 승인 요청</p>
+    <div style="margin-top:44px;display:flex;flex-direction:column">
+      <div class="a d4" style="display:flex;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span style="font:500 30px/1.4 var(--br-font-kr)">장애 대응 지침 보완 제출</span>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2);white-space:nowrap;margin-left:40px">2026.09.12</span>
+      </div>
+      <div class="a d5" style="display:flex;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span style="font:500 30px/1.4 var(--br-font-kr)">운영 안정화 보고서 제출 (무장애 90일 경과 후)</span>
+        <span class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-2);white-space:nowrap;margin-left:40px">2026.11.26</span>
+      </div>
+    </div>
+    <div class="f d7" style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end">
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">© 2026 COMPANY NAME · All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+</div><!-- /#stage -->
+
+<div id="hud">
+  <button id="prev">◀ 이전</button>
+  <span id="pos"></span>
+  <span id="name"></span>
+  <button id="next">다음 ▶</button>
+  <button id="present">발표 F</button>
+  <button id="notes-btn">노트 N</button>
+  <button id="script-btn">대본 S</button>
+  <button id="all">목록</button>
+</div>
+<div id="notes" hidden><b>발표자 노트</b><span id="notes-text"></span></div>
+<div id="jump" hidden aria-hidden="true"></div>
+
+<script src="deck-viewer.js"></script>
+</body>
+</html>

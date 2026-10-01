@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전략 보고 — 설비 가동 모니터링</title>
+
+<!-- 폰트는 blue-report.css 의 @font-face 가 assets/fonts/ 에서 불러온다. 바깥 링크 없음 -->
+<link rel="stylesheet" href="blue-report.css">
+
+<link rel="stylesheet" href="deck-viewer.css">
+</head>
+
+<body class="br-deck">
+<div id="stage" data-deck-title="설비 가동 모니터링 전략 보고">
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     전략 보고 · 논증형 결정 요청 — 16장
+
+     경영진 보고(deck-exec-report)와 다른 물건이다. 저쪽은 결론을 먼저 놓고
+     닫지만, 이 덱은 문제 인식부터 대안 비교와 구현 증명까지 순서대로 밟은
+     뒤에 결정을 받는다. 판단의 근거를 청중과 함께 쌓아야 하는 자리에 쓴다.
+
+     흐름 — 필요성 → 정의·기준 → 해석 → 현황 → 전환 → 대안 비교 →
+            수행 역량 → 구조 → 구현 증명 → 진척 → 한계 → 확장 → 경로 → 결정
+
+     교체 요령
+       · 7장의 대안 비교가 이 덱의 축이다. 두 수치의 자릿수 차이가 클수록
+         논증이 선명해진다. 자릿수가 비슷하면 다른 조판을 쓴다.
+       · 10장은 화면 캡처 자리다. 캡처는 지면 폭 그대로가 아니라 카드 안에
+         넣는다. PNG 원본은 무겁다 — JPEG·WebP 로 줄여서 넣는다.
+       · 16장의 협의 필요사항은 4건이 상한이다. 넘치면 결정을 쪼갠다.
+     ══════════════════════════════════════════════════════════════════ -->
+
+<!-- ── 01. 표지 ───────────────────────────────────────────────────── -->
+<div class="br-frame" data-label="표지" data-notes="표지. 제목과 한 줄 성과만 말하고 넘어간다. 외주비 없이 자체 구현했다는 사실이 이 보고의 출발점이다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-rule br-rule--a"></div>
+    <div class="br-rule br-rule--b"></div>
+
+    <p class="a" style="font:500 30px/1 var(--br-font-kr);color:var(--br-soft-2);margin:0 0 40px;letter-spacing:-.01em">
+      시험인증·교정 서비스 맞춤형 · 외주 개발비 없이 자체 구현
+    </p>
+    <h1 class="a d2" style="font:300 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">설비 가동 모니터링</h1>
+    <h1 class="a d3" style="font:900 var(--br-fs-cover)/1.14 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">전략 보고서</h1>
+
+
+    <div class="a d5" style="align-self:flex-start;margin-top:44px;padding:14px 26px;border:1px solid rgba(244,246,248,.32)">
+      <span style="font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-soft-2)">보고 시점</span>
+      <span class="br-num" style="font-size:var(--br-fs-foot);line-height:1;margin-left:14px;color:var(--br-on-dark)">2026.09</span>
+    </div>
+
+    <div class="f d8" style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:auto">
+      <div>
+        <div style="font:500 30px/1 var(--br-font-kr);color:var(--br-on-dark)">운영 담당 · 총괄</div>
+        <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-soft-2);margin-top:14px">contact@company.co.kr</div>
+      </div>
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">© 2026 COMPANY NAME · All rights reserved</div>
+    </div>
+  </section>
+</div>
+
+<!-- ── 02. 필요성 — 비교 2열 ──────────────────────────────────────── -->
+<div class="br-frame" data-label="필요성" data-notes="두 관점이 서로 다른 질문을 한다는 것을 먼저 합의받는다. 여기서 어긋나면 뒤의 기준 논의가 전부 겉돈다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">01. 필요성</p>
+    <h2 class="a br-title br-title--light">관리자의 관점, <strong>실무자의 관점</strong></h2>
+    <p class="a d2 br-lede">같은 설비를 두고 <span class="br-key">서로 다른 질문</span> — 한쪽만 답하는 지표는 반드시 반발</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;margin-top:34px">
+
+      <div class="a d3 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip" style="align-self:flex-start">관리자의 관점</div>
+        <div style="font:900 52px/1.2 var(--br-font-kr);color:var(--br-cobalt);margin:26px 0 0;letter-spacing:var(--br-ls-tight)">얼마나<br>활용되고 있는가</div>
+        <div style="margin-top:auto;padding-top:30px">
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">활용 수준 — <strong>파악 가능 여부</strong></p>
+          </div>
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">수치 신뢰도 — <strong>확인 가능 여부</strong></p>
+          </div>
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">운영·투자 판단 — <strong>활용 방법</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="a d4 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip br-chip--solid" style="align-self:flex-start">실무자의 관점</div>
+        <div style="font:900 52px/1.2 var(--br-font-kr);color:var(--br-cobalt);margin:26px 0 0;letter-spacing:var(--br-ls-tight)">현장 조건이<br>반영되고 있는가</div>
+        <div style="margin-top:auto;padding-top:30px">
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">현장 요소 — <strong>정확한 반영 여부</strong></p>
+          </div>
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">수치 단독 해석 — <strong>불이익 발생 여부</strong></p>
+          </div>
+          <div style="padding:24px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">기존 일정·업무 판단 — <strong>도움 여부</strong></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ── 03. 정의와 기준 — 일정 타임라인(24시간) ────────────────────── -->
+<div class="br-frame" data-label="정의와 기준" data-notes="두 설비의 하루를 나란히 놓는다. 출장 설비는 이동까지 봐야 하루의 쓰임이 설명된다는 점이 핵심이다. 분모는 아직 협의 대상이다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-3)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">02. 가동 정의 · 두 설비 사례</p>
+    <h2 class="a br-title br-title--light">설비 가동의 <strong>정의와 산정 기준안</strong></h2>
+    <p class="a d2 br-lede">시험인증·교정 수행과 유지관리를 위한 사용을 가동에 포함<br><span class="br-key">[제안]</span> 1일 24시간 기준 · <span class="br-key">[협의필요]</span> 범위와 분모</p>
+
+    <div style="flex:1;min-height:0;margin-top:36px;display:flex;flex-direction:column">
+      <div class="a d3 br-tl-row" style="margin-bottom:20px">
+        <div></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr)">
+          <div class="br-tl-head">00–06</div><div class="br-tl-head">06–12</div>
+          <div class="br-tl-head">12–18</div><div class="br-tl-head">18–24</div>
+        </div>
+      </div>
+
+      <div class="br-tl" style="flex:1;justify-content:space-evenly">
+        <div class="a d4 br-tl-row">
+          <div class="br-tl-name">내부 챔버<br><span style="font-weight:400;color:var(--br-text-3)">출장이동 없음</span></div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(4,1fr)">
+            <div class="bx d5 br-tl-bar" style="grid-column:2/3;background:var(--br-data-4)">점검·셋팅</div>
+            <div class="bx d6 br-tl-bar" style="grid-column:3/5;background:var(--br-data-1)">시험 · 자동 운전</div>
+          </div>
+        </div>
+        <div class="a d5 br-tl-row">
+          <div class="br-tl-name">교정 출장 설비<br><span style="font-weight:400;color:var(--br-text-3)">출장이동 포함</span></div>
+          <div class="br-tl-track" style="grid-template-columns:repeat(4,1fr)">
+            <div class="bx d6 br-tl-bar" style="grid-column:2/3;background:var(--br-data-5)">이동·셋팅</div>
+            <div class="bx d7 br-tl-bar" style="grid-column:3/4;background:var(--br-data-3)">교정 · 매뉴얼</div>
+            <div class="bx d8 br-tl-bar" style="grid-column:4/5;background:var(--br-data-5)">이동</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="f d9 br-tl-row" style="margin-top:24px;padding-top:22px;border-top:1px solid var(--br-card-line)">
+        <div class="br-tl-name" style="color:var(--br-text-3);font-weight:600">구간 성격</div>
+        <div style="display:flex;gap:52px;flex-wrap:wrap">
+          <div class="br-tl-mile"><span class="br-tl-dot" style="background:var(--br-data-1)"></span>자동 운전 — 사람 비상주</div>
+          <div class="br-tl-mile"><span class="br-tl-dot" style="background:var(--br-data-3)"></span>매뉴얼 조작 — 사람 상주</div>
+          <div class="br-tl-mile"><span class="br-tl-dot" style="background:var(--br-data-5)"></span>이동 — 서비스 수행 부수</div>
+        </div>
+      </div>
+    </div>
+    <div class="br-footer">가상 일정 · 실측 가동률 아님</div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     04. 도넛 — scripts/donut.py 산출물 그대로. 손으로 각도를 적지 않는다
+     python3 scripts/donut.py --r 110 --w 44 --labels "…" 40 15 15 10 20
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="가동률 해석" data-notes="같은 80%라도 안이 다르다는 것이 이 장의 전부다. 구성비를 봐야 무엇을 줄일지 정해진다. 두 예시 모두 가상 구성비다.">
+  <section class="br-slide">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">03. 가동률의 해석</p>
+    <h2 class="a br-title br-title--light">가동 80%로 같아도 <strong>안을 열면 다른 상태</strong></h2>
+    <p class="a d2 br-lede">가동률 단독으로는 개선 지점 특정 불가 — <span class="br-key">구성비 확인이 전제</span></p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;margin-top:28px">
+
+      <div class="a d3 br-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px">
+        <div class="br-ask">예시 A — 시험·교정 비중이 큰 경우</div>
+        <div class="br-donut-wrap">
+          <svg class="br-donut" viewBox="0 0 268 268" style="width:268px;height:268px" role="img" aria-label="예시 A 구성비 — 시험·교정 자동 40%, 매뉴얼 조작 15%, 셋팅 15%, 일일점검·이동 10%, 유휴·기타 20%">
+            <g transform="translate(134,134)">
+              <circle class="dsh d5" r="110.0" stroke="var(--br-data-1)" stroke-width="44.0" stroke-dasharray="273.6 691.2" transform="rotate(-90.00)"></circle>
+              <circle class="dsh d6" r="110.0" stroke="var(--br-data-3)" stroke-width="44.0" stroke-dasharray="100.8 691.2" transform="rotate(54.00)"></circle>
+              <circle class="dsh d7" r="110.0" stroke="var(--br-data-4)" stroke-width="44.0" stroke-dasharray="100.8 691.2" transform="rotate(108.00)"></circle>
+              <circle class="dsh d8" r="110.0" stroke="var(--br-data-5)" stroke-width="44.0" stroke-dasharray="66.2 691.2" transform="rotate(162.00)"></circle>
+              <circle class="dsh d9" r="110.0" stroke="var(--br-data-2)" stroke-width="44.0" stroke-dasharray="135.4 691.2" transform="rotate(198.00)"></circle>
+            </g>
+          </svg>
+          <div class="br-donut-center">
+            <span class="br-donut-num">40<span class="br-sup">%</span></span>
+            <span class="br-donut-cap">자동 운전</span>
+          </div>
+        </div>
+        <div class="br-legend">
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-1)"></span>시험·교정 자동</div><div class="br-legend-val">40<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-3)"></span>매뉴얼 조작</div><div class="br-legend-val">15<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-4)"></span>셋팅</div><div class="br-legend-val">15<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-5)"></span>일일점검·이동</div><div class="br-legend-val">10<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-2)"></span>유휴·기타</div><div class="br-legend-val">20<span class="br-sup">%</span></div></div>
+        </div>
+        <div class="br-body" style="text-align:center">실제 수요와 납기 확인 대상</div>
+      </div>
+
+      <div class="a d4 br-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px">
+        <div class="br-ask">예시 B — 준비·유지관리·이동 비중이 큰 경우</div>
+        <div class="br-donut-wrap">
+          <svg class="br-donut" viewBox="0 0 268 268" style="width:268px;height:268px" role="img" aria-label="예시 B 구성비 — 시험·교정 자동 10%, 매뉴얼 조작 20%, 셋팅 25%, 일일점검·이동 25%, 유휴·기타 20%">
+            <g transform="translate(134,134)">
+              <circle class="dsh d5" r="110.0" stroke="var(--br-data-5)" stroke-width="44.0" stroke-dasharray="66.2 691.2" transform="rotate(-90.00)"></circle>
+              <circle class="dsh d6" r="110.0" stroke="var(--br-data-3)" stroke-width="44.0" stroke-dasharray="135.4 691.2" transform="rotate(-54.00)"></circle>
+              <circle class="dsh d7" r="110.0" stroke="var(--br-data-1)" stroke-width="44.0" stroke-dasharray="169.9 691.2" transform="rotate(18.00)"></circle>
+              <circle class="dsh d8" r="110.0" stroke="var(--br-data-2)" stroke-width="44.0" stroke-dasharray="169.9 691.2" transform="rotate(108.00)"></circle>
+              <circle class="dsh d9" r="110.0" stroke="var(--br-data-4)" stroke-width="44.0" stroke-dasharray="135.4 691.2" transform="rotate(198.00)"></circle>
+            </g>
+          </svg>
+          <div class="br-donut-center">
+            <span class="br-donut-num">50<span class="br-sup">%</span></span>
+            <span class="br-donut-cap">셋팅·점검·이동</span>
+          </div>
+        </div>
+        <div class="br-legend">
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-5)"></span>시험·교정 자동</div><div class="br-legend-val">10<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-3)"></span>매뉴얼 조작</div><div class="br-legend-val">20<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-1)"></span>셋팅</div><div class="br-legend-val">25<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-2)"></span>일일점검·이동</div><div class="br-legend-val">25<span class="br-sup">%</span></div></div>
+          <div class="br-legend-item"><div class="br-legend-name"><span class="br-dot" style="background:var(--br-data-4)"></span>유휴·기타</div><div class="br-legend-val">20<span class="br-sup">%</span></div></div>
+        </div>
+        <div class="br-body" style="text-align:center">필수 시간과 반복 원인 확인 대상</div>
+      </div>
+
+    </div>
+    <div class="br-footer">가상 구성비 · 실측값 아님</div>
+  </section>
+</div>
+
+<!-- ── 05. 과거 운영 — 비교 2열 ───────────────────────────────────── -->
+<div class="br-frame" data-label="과거 운영" data-notes="두 방식 모두 사람에게 기댄다는 공통점을 짚는다. 그래서 기준이 서로 다른 데이터가 남았다는 결론으로 넘어간다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">04. 개발 히스토리 · 과거 운영</p>
+    <h2 class="a br-title br-title--light">과거의 <strong>설비 가동관리</strong></h2>
+    <p class="a d2 br-lede">사람의 확인 → 사람의 기록 → <span class="br-key">기준이 서로 다른 데이터</span></p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;margin-top:34px">
+
+      <div class="a d3 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip" style="align-self:flex-start">01 · 현장 순회</div>
+        <div style="font:900 46px/1.2 var(--br-font-kr);color:var(--br-cobalt);margin:26px 0 0;letter-spacing:var(--br-ls-tight)">담당자가<br>직접 확인</div>
+        <div class="br-body" style="margin-top:24px">특정 시점에 현장을 돌며 상태 확인</div>
+        <div class="a d5 br-callout" style="margin-top:auto">확인한 순간만 기록에 남음 — 상시 이력 부재</div>
+      </div>
+
+      <div class="a d4 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip" style="align-self:flex-start">02 · 수기 일지</div>
+        <div style="font:900 46px/1.2 var(--br-font-kr);color:var(--br-cobalt);margin:26px 0 0;letter-spacing:var(--br-ls-tight)">사용자가<br>직접 작성</div>
+        <div class="br-body" style="margin-top:24px">사용 후 일지 작성·제출</div>
+        <div class="a d6 br-callout" style="margin-top:auto">누락 · 지연 · 작성자별 편차 상존</div>
+      </div>
+
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ── 06. 자동 수집 전환 — 3단계 ─────────────────────────────────── -->
+<div class="br-frame" data-label="자동 수집 전환" data-notes="두 차례 실증에서 한계를 확인한 뒤 자동 로그로 옮겼다는 순서를 지킨다. 실패를 숨기면 마지막 단계의 설득력이 떨어진다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-5);padding:84px 96px 56px">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">05. 개발 히스토리 · 실증과 개발</p>
+    <h2 class="a br-title br-title--light">자동 수집으로의 <strong>전환</strong></h2>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px;flex:1;min-height:0;margin-top:48px">
+
+      <div class="a d2 br-card br-card--step" style="padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip">03 · 실증</span>
+        <div style="font:900 44px/1.15 var(--br-font-kr);margin-top:22px;color:var(--br-text-2);text-align:center">스마트<br>플러그</div>
+        <ul style="margin:36px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:var(--br-text-2);align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:var(--br-text)">전력 변화</strong> — 소비 패턴으로 가동 상태 추정</li>
+          <li><strong style="font-weight:700;color:var(--br-text)">한계</strong> — 설비별 편차로 전반 적용 불가</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid var(--br-card-line);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-text-2)"><span>판정</span><span class="br-status br-status--late">미채택</span></div>
+      </div>
+
+      <div class="a d4 br-card br-card--step" style="border-top-color:var(--br-cat-2);padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip">04 · 실증</span>
+        <div style="font:900 44px/1.15 var(--br-font-kr);margin-top:22px;color:var(--br-text-2);text-align:center">메인 PC<br>ON·OFF</div>
+        <ul style="margin:36px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:var(--br-text-2);align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:var(--br-text)">사용자 클릭</strong> — 메인 PC에서 시작·종료 입력</li>
+          <li><strong style="font-weight:700;color:var(--br-text)">한계</strong> — 사람 개입이 그대로 잔존</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid var(--br-card-line);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-text-2)"><span>판정</span><span class="br-status br-status--late">미채택</span></div>
+      </div>
+
+      <div class="a d6 br-card br-card--final" style="padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip" style="background:var(--br-amber);border-color:var(--br-amber);color:#4a3200;font-family:var(--br-font-num);font-weight:600;padding:14px 26px">05 · 채택</span>
+        <div style="font:900 44px/1.15 var(--br-font-kr);margin-top:22px;color:var(--br-amber);text-align:center">자동 로그<br>추출</div>
+        <ul style="margin:36px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:#e8f1fd;align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:#fff">세 신호 수집</strong> — 동작 인식 · 자동화 · 카메라</li>
+          <li><strong style="font-weight:700;color:#fff">작업자 입력</strong> — 별도 입력 0회</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid rgba(255,255,255,.3);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:#e8f1fd"><span>판정</span><span class="br-status br-status--ok">채택</span></div>
+      </div>
+
+    </div>
+    <div class="br-footer">사람의 확인·기록을 시스템의 자동 이력으로 전환</div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     07. 대안 비교 — 이 덱의 축. 자릿수 차이가 논증의 전부다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="대안 비교" data-notes="이 덱의 핵심 장이다. 2.7억과 15만원의 자릿수 차이를 먼저 말하고, 견적 조건과 제외 항목을 반드시 함께 밝힌다. 내부 인건비는 빠져 있다.">
+  <section class="br-slide" style="padding:104px 132px 64px">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">06. 외주 견적 검토와 자체개발</p>
+    <h2 class="a br-title br-title--light">같은 기능, <strong>1,800배 차이</strong></h2>
+    <p class="a d2 br-lede">챔버 1개 기준 <span class="br-key">2.7억원</span> 대 <span class="br-key">15만원</span> — 40개로 확장해도 자릿수 차이 유지</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;margin-top:34px">
+      <div class="a d3 br-card" style="display:flex;flex-direction:column;justify-content:center">
+        <div class="br-chip" style="align-self:flex-start">외주 개발 시</div>
+        <div class="br-num" style="font-size:84px;line-height:1;color:var(--br-text-2);margin:22px 0 4px">2.7<span class="br-sup" style="font-size:34px">억원</span></div>
+        <div class="br-body">챔버 1개 기준 · VAT 별도 · PoC 실험실 1개소</div>
+        <div style="margin-top:26px;padding-top:24px;border-top:1px solid var(--br-card-line)">
+          <p class="br-split" style="margin:0">확장 시 — 챔버 40개 <strong>약 10억원</strong></p>
+          <p class="br-split" style="margin:12px 0 0">견적 구성 — 총 <strong>18 M/M</strong> · 일시 개발 14 M/M</p>
+        </div>
+      </div>
+
+      <div class="a d4 br-card" style="display:flex;flex-direction:column;justify-content:center">
+        <div class="br-chip br-chip--solid" style="align-self:flex-start">자체 개발</div>
+        <div class="br-num" style="font-size:84px;line-height:1;color:var(--br-cobalt);margin:22px 0 4px">15<span class="br-sup" style="font-size:34px">만원</span></div>
+        <div class="br-body">챔버 1개 기준 · AI 구독 월 3만원 + 임시 서버 + 악세사리</div>
+        <div style="margin-top:26px;padding-top:24px;border-top:1px solid var(--br-card-line)">
+          <p class="br-split" style="margin:0">확장 시 — 챔버 40개 <strong>400만원 이하</strong></p>
+          <p class="br-split" style="margin:12px 0 0">챔버당 <strong>10만원 이하</strong> · 외부 지급 없음</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="a d6 br-callout" style="margin-top:32px">
+      2026.06.29 견적 · 유효기간 1개월 경과 · 내부 인건비 제외 · 확대·운영·유지보수 총비용 [미정]
+    </div>
+
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ── 08. 수행 역량 — 핵심 정리(다크) ────────────────────────────── -->
+<div class="br-frame" data-label="수행 역량" data-notes="비개발자 2인이 3개월에 해냈다는 사실이 뒤의 재개 요청을 뒷받침한다. 현장 경험이 요구 정의로 직결됐다는 점을 강조한다.">
+  <section class="br-slide br-slide--dark" style="padding:84px 96px 56px">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">07. 현장 경험을 구현 역량으로</p>
+    <h2 class="a br-title">100% 자체개발</h2>
+
+    <div class="br-sumgrid" style="margin-top:48px;flex:1;min-height:0">
+
+      <div class="a d2 br-sumcard">
+        <span class="br-sumcard-n">01</span>
+        <div class="br-sumcard-t">비개발자 출신 현장 경험자<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">운영 담당 · 총괄<br>외부 개발사 참여 구간 없음</span></div>
+        <span class="br-sumcard-v">2<span class="br-sup">인</span></span>
+      </div>
+
+      <div class="a d3 br-sumcard">
+        <span class="br-sumcard-n">02</span>
+        <div class="br-sumcard-t">설계부터 배포까지 소요<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">2026.03 – 06<br>별도 개발 교육 없음</span></div>
+        <span class="br-sumcard-v">3<span class="br-sup">개월</span></span>
+      </div>
+
+      <div class="a d4 br-sumcard">
+        <span class="br-sumcard-n">03</span>
+        <div class="br-sumcard-t">시험인증·교정 실무 경력<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">현장을 아는 사람이 요구 정의<br>실제로 필요한 조건 반영</span></div>
+        <span class="br-sumcard-v">10<span class="br-sup">년+</span></span>
+      </div>
+
+      <div class="a d5 br-sumcard">
+        <span class="br-sumcard-n">04</span>
+        <div class="br-sumcard-t">프로그램·서버·시스템 전 구성<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">AI를 도구로 전 구간 구현<br>범용 솔루션 아닌 업무 맞춤 로직</span></div>
+        <span class="br-sumcard-v">100<span class="br-sup">%</span></span>
+      </div>
+
+    </div>
+    <div class="br-footer">현장 경험으로 요구 정의 → 맞춤 로직 설계 → AI 활용 전 구성 자체 구현</div>
+  </section>
+</div>
+
+<!-- ── 09. 구조 — 3단계 ───────────────────────────────────────────── -->
+<div class="br-frame" data-label="전달 구조" data-notes="현장 PC가 수집·저장·전송을 모두 맡고, 조회 사용자는 설치 없이 웹으로 본다는 두 가지만 남긴다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-5);padding:84px 96px 56px">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">08. 수집 · 저장 · 전송 · 조회</p>
+    <h2 class="a br-title br-title--light">현장 PC에서 웹 조회까지, <strong>기록 전달 경로</strong></h2>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px;flex:1;min-height:0;margin-top:48px">
+
+      <div class="a d2 br-card br-card--step" style="padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip br-chip--solid">Step 1</span>
+        <div style="font:900 46px/1 var(--br-font-kr);margin-top:22px;color:var(--br-cobalt)">수집</div>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;justify-content:center">
+          <span class="br-chip" style="padding:10px 18px">동작 인식</span>
+          <span class="br-chip" style="padding:10px 18px">카메라</span>
+        </div>
+        <ul style="margin:34px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:var(--br-text-2);align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:var(--br-text)">로그 수집 모듈</strong> — 매뉴얼·자동화 동작 기록</li>
+          <li><strong style="font-weight:700;color:var(--br-text)">영상 감지 모듈</strong> — 카메라 변화 판단</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid var(--br-card-line);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-text-2)"><span>위치</span><span>설비별 메인 PC</span></div>
+      </div>
+
+      <div class="a d4 br-card br-card--step" style="border-top-color:var(--br-cyan);padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip br-chip--solid" style="background:#1382b8;border-color:#1382b8">Step 2</span>
+        <div style="font:900 46px/1 var(--br-font-kr);margin-top:22px;color:#1382b8">전송·보관</div>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;justify-content:center">
+          <span class="br-chip" style="padding:10px 18px">자동 전송</span>
+          <span class="br-chip" style="padding:10px 18px">클라우드</span>
+        </div>
+        <ul style="margin:34px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:var(--br-text-2);align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:var(--br-text)">전송 에이전트</strong> — PC 로그를 서버로 자동 송신</li>
+          <li><strong style="font-weight:700;color:var(--br-text)">서버</strong> — 수집 이력 보관</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid var(--br-card-line);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-text-2)"><span>작업자 입력</span><span class="br-num" style="font-size:var(--br-fs-foot)">0회</span></div>
+      </div>
+
+      <div class="a d6 br-card br-card--final" style="padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip" style="background:var(--br-amber);border-color:var(--br-amber);color:#4a3200;font-family:var(--br-font-num);font-weight:600;padding:14px 26px">Step 3</span>
+        <div style="font:900 46px/1 var(--br-font-kr);margin-top:22px;color:var(--br-amber)">조회</div>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;justify-content:center">
+          <span class="br-chip" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff;padding:10px 18px">웹</span>
+          <span class="br-chip" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff;padding:10px 18px">권한 기반</span>
+        </div>
+        <ul style="margin:34px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:#e8f1fd;align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:#fff">현재 상태·사용 이력</strong> — 설비와 PC 상태 동시 확인</li>
+          <li><strong style="font-weight:700;color:#fff">분석·관리</strong> — 로그인 권한 기반 조회</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid rgba(255,255,255,.3);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:#e8f1fd"><span>사용자 설치</span><span>불필요</span></div>
+      </div>
+
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     10. 구현 증명 — 화면 캡처 자리
+     캡처는 <img> 로 카드 안에 넣는다. 지면 폭 그대로 깔지 않는다.
+     PNG 원본은 무겁다 — JPEG·WebP 로 줄여서 넣는다
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="br-frame" data-label="구현 증명" data-notes="말이 아니라 화면으로 증명하는 장이다. 캡처를 띄우고 세 기능만 짚는다. 수치는 시범 수집분이라 확정값이 아니라는 점을 반드시 밝힌다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-4)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">09. 실제로 구현한 핵심 기능</p>
+    <h2 class="a br-title br-title--light">구현 결과, <strong>실제 화면</strong></h2>
+
+    <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:34px;flex:1;min-height:0;margin-top:32px">
+
+      <!-- 캡처 자리 — <img src="설비-대시보드.jpg" alt="…" style="width:100%;display:block"> 로 바꾼다 -->
+      <div class="a d3 br-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px">
+        <div class="br-ask">매장 대기열 계측 대시보드 — 운영 현황</div>
+        <div style="width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;border:2px dashed var(--br-card-line);background:var(--br-tint)">
+          <div style="text-align:center;padding:40px">
+            <div style="font:700 32px/1.4 var(--br-font-kr);color:var(--br-text-2)">화면 캡처 자리</div>
+            <div class="br-body" style="margin-top:14px">이 카드의 <code style="font-family:var(--br-font-num)">&lt;img&gt;</code> 로 교체<br>PNG 원본 대신 JPEG·WebP 권장</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:24px;min-height:0">
+        <div class="a d4 br-card" style="flex:1;display:flex;flex-direction:column;justify-content:center">
+          <div style="font:700 30px/1 var(--br-font-kr);margin-bottom:24px">구현 기능</div>
+          <div style="padding:22px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">조회 범위 — <strong>조직·위치·기간별</strong></p>
+          </div>
+          <div style="padding:22px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">운영 상태 — <strong>설비와 PC 동시 확인</strong></p>
+          </div>
+          <div style="padding:22px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">이력·분석 — <strong>원본 로그 · 가동 구간 · 저가동</strong></p>
+          </div>
+          <div style="padding:22px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0">관리 — <strong>설비 매핑 · 판정 규칙</strong></p>
+          </div>
+        </div>
+        <div class="a d6 br-callout">기능 확인용 시범 화면 — 가동률·순위는 미확정</div>
+      </div>
+
+    </div>
+    <div class="br-footer">측정표준그룹 일부 설비 시범 수집</div>
+  </section>
+</div>
+
+<!-- ── 11. 진척 — 지표 표 ─────────────────────────────────────────── -->
+<div class="br-frame" data-label="진척" data-notes="완료 두 건과 미실행 한 건을 구분해 말한다. 임시 테스트는 정확도 검증이 아니라는 점이 이 장의 핵심이다. 중단 사유는 기술 문제가 아니다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">10. 개발 · 검증 현황</p>
+    <h2 class="a br-title br-title--light">어디까지 왔고, <strong>무엇이 남았는가</strong></h2>
+    <p class="a d2 br-lede">개발 완료 · 임시 테스트 완료 — <span class="br-key">정확도 · 안정화 · 맞춤 수정 미실행</span></p>
+
+    <div class="a d4" style="flex:1;min-height:0;margin-top:28px">
+      <table class="br-table">
+        <thead>
+          <tr>
+            <th style="width:22%">구간</th>
+            <th style="width:44%">내용</th>
+            <th style="width:20%">확인 범위</th>
+            <th style="width:14%">상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>개발</td><td>자동 수집 · 집계 · 조회 전 기능 구현</td><td>세 경로 동작·상태 로그</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>개발</td><td>화면 연동 · 설비 관리</td><td>웹 조회 · 매핑</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>임시 테스트</td><td>측정표준그룹 일부 설비 시범 수집</td><td>기능 동작 확인까지</td><td><span class="br-status br-status--ok">완료</span></td></tr>
+          <tr><td>정확도</td><td>설비와 기록의 연결 정확도 확인</td><td>미착수</td><td><span class="br-status br-status--late">미실행</span></td></tr>
+          <tr><td>안정화</td><td>장기 운영 안정화</td><td>미착수</td><td><span class="br-status br-status--late">미실행</span></td></tr>
+          <tr><td>맞춤 수정</td><td>설비별·업무별 맞춤 보정</td><td>미착수</td><td><span class="br-status br-status--late">미실행</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="a d6 br-callout" style="margin-top:20px">
+      개발 2인 모두 조직개편으로 타 업무 배정 — 후속 검증 보류 · 기술적 문제로 인한 중단 아님
+    </div>
+    <div class="br-footer">임시 테스트 ≠ 정확도 검증</div>
+  </section>
+</div>
+
+<!-- ── 12. 한계 — 비교 2열 ────────────────────────────────────────── -->
+<div class="br-frame" data-label="지표의 한계" data-notes="가동률을 단독 평가 지표로 쓰지 않겠다는 선언이다. 실무자의 반발을 미리 차단하는 자리이기도 하다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-4)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">11. 가동률의 역할</p>
+    <h2 class="a br-title br-title--light">가동률만으로는 <strong>답이 나오지 않는다는 전제</strong></h2>
+    <p class="a d2 br-lede">가동률은 기초 운영지표 — <span class="br-key">단독 판단 근거로 사용 제외</span></p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;margin-top:34px">
+
+      <div class="a d3 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip" style="align-self:flex-start">가동률 단독</div>
+        <div style="font:900 46px/1.2 var(--br-font-kr);color:var(--br-text-2);margin:24px 0 0;letter-spacing:var(--br-ls-tight)">답할 수 있는 것<br>하나뿐</div>
+        <div style="margin-top:28px">
+          <div style="padding:20px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0"><strong>답 가능</strong> — 설비가 언제 · 얼마나 쓰였는가</p>
+          </div>
+          <div style="padding:20px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0;color:var(--br-text-3)">답 불가 — 왜 그 수치가 나왔는가</p>
+          </div>
+          <div style="padding:20px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0;color:var(--br-text-3)">답 불가 — 높으면 좋고 낮으면 나쁜가</p>
+          </div>
+          <div style="padding:20px 0;border-top:1px solid var(--br-card-line)">
+            <p class="br-split" style="margin:0;color:var(--br-text-3)">답 불가 — 무엇을 늘리고 무엇을 줄일 것인가</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="a d4 br-card" style="display:flex;flex-direction:column">
+        <div class="br-chip br-chip--solid" style="align-self:flex-start">운영지표 연계</div>
+        <div style="font:900 46px/1.2 var(--br-font-kr);color:var(--br-cobalt);margin:24px 0 0;letter-spacing:var(--br-ls-tight)">왜 그런지 ·<br>무엇을 바꿀지</div>
+        <div class="br-bars-h" style="margin-top:28px;gap:26px 24px">
+          <div class="br-bar-name">업무·생산성</div>
+          <div class="br-bar-track"><div class="bx d5 br-bar-h" style="width:88%;"></div></div>
+          <div class="br-bar-val" style="font-size:24px">실적</div>
+
+          <div class="br-bar-name">재무</div>
+          <div class="br-bar-track"><div class="bx d6 br-bar-h" style="width:76%;"></div></div>
+          <div class="br-bar-val" style="font-size:24px">이익</div>
+
+          <div class="br-bar-name">인력 운영</div>
+          <div class="br-bar-track"><div class="bx d7 br-bar-h" style="width:64%;"></div></div>
+          <div class="br-bar-val" style="font-size:24px">근태</div>
+
+          <div class="br-bar-name">프로젝트·투자</div>
+          <div class="br-bar-track"><div class="bx d8 br-bar-h" style="width:52%;"></div></div>
+          <div class="br-bar-val" style="font-size:24px">환수율</div>
+        </div>
+        <div class="a d9 br-callout" style="margin-top:auto">사용 이력 수집 → 운영지표 연계 → 개선·투자 판단 근거</div>
+      </div>
+
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ── 13. 확장 — 핵심 정리(다크) ─────────────────────────────────── -->
+<div class="br-frame" data-label="통합 데이터" data-notes="설비 이력 하나만으로는 부족하고 공통 기준으로 다른 데이터와 묶여야 한다는 제안이다. 접근 권한과 식별자는 아직 미정이다.">
+  <section class="br-slide br-slide--dark" style="padding:84px 96px 56px">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">12. 통합 운영 데이터</p>
+    <h2 class="a br-title">통합 운영 데이터의 구성</h2>
+
+    <div class="br-sumgrid" style="margin-top:48px;flex:1;min-height:0">
+
+      <div class="a d2 br-sumcard">
+        <span class="br-sumcard-n">01</span>
+        <div class="br-sumcard-t">설비 사용 이력<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">가동 구간 · 상태 · 업무 유형<br>현재 자동 수집 중</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">확정</span>
+      </div>
+
+      <div class="a d3 br-sumcard">
+        <span class="br-sumcard-n">02</span>
+        <div class="br-sumcard-t">업무·생산성<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">처리 실적 · 시간 대비 산출물<br>연계 범위 협의 대상</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">제안</span>
+      </div>
+
+      <div class="a d4 br-sumcard">
+        <span class="br-sumcard-n">03</span>
+        <div class="br-sumcard-t">재무<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">매출 · 인건비 · 영업이익<br>ERP 접근 권한 미정</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">제안</span>
+      </div>
+
+      <div class="a d5 br-sumcard">
+        <span class="br-sumcard-n">04</span>
+        <div class="br-sumcard-t">인력 운영<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">출퇴근 · 근태 · 투입 시간<br>분석 단위·목적·권한 협의 필요</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">제안</span>
+      </div>
+
+      <div class="a d6 br-sumcard">
+        <span class="br-sumcard-n">05</span>
+        <div class="br-sumcard-t">프로젝트·투자<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">진행 정보 · 투자 대비 환수율<br>식별자 정의 미정</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">제안</span>
+      </div>
+
+      <div class="a d7 br-sumcard">
+        <span class="br-sumcard-n">06</span>
+        <div class="br-sumcard-t">공통 기준 연계<span style="display:block;font:400 var(--br-fs-foot)/1.6 var(--br-font-kr);color:var(--br-on-dark-2);margin-top:12px">설비 · 업무 · 기간 · 조직<br>가동 × 매출 × 이익 × 인력 관계 분석</span></div>
+        <span class="br-sumcard-v br-sumcard-v--word">DX</span>
+      </div>
+
+    </div>
+    <div class="br-footer">접근 · 항목 · 식별자 · 정의 [미정] · 데이터별 분석 단위와 권한 [협의필요]</div>
+  </section>
+</div>
+
+<!-- ── 14. 분석 예시 — 지표 표 ────────────────────────────────────── -->
+<div class="br-frame" data-label="분석 예시" data-notes="지표를 조합하면 무엇을 볼 수 있는지 두 사례로만 보인다. 자동 결론과 개인 평가는 범위 밖이라는 점을 분명히 말한다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-3)">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">13. 비교 분석 예시</p>
+    <h2 class="a br-title br-title--light">통합 분석의 예시, <strong>비교 지표 조합</strong></h2>
+    <p class="a d2 br-lede">패턴 식별 → 현장·경영 데이터 검증 → <span class="br-key">개선·투자 가설</span></p>
+
+    <div class="a d4" style="flex:1;min-height:0;margin-top:28px">
+      <table class="br-table">
+        <thead>
+          <tr>
+            <th style="width:16%">관점</th>
+            <th style="width:20%">지표 조합</th>
+            <th style="width:22%">관찰 패턴</th>
+            <th style="width:42%">확인 항목</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>수익성</td><td>가동 × 이익</td><td>가동 ↑ · 이익 ↓</td><td>업무 구성 · 시간 대비 산출물 · 투입 비용</td></tr>
+          <tr><td>수익성</td><td>가동 × 이익</td><td>가동 ↓ · 이익 ↑</td><td>고부가 업무 집중 여부 · 설비 여유분 활용 가능성</td></tr>
+          <tr><td>인력 운영</td><td>가동 × 근태</td><td>가동 ↑ · 근태 ↓</td><td>자동화 구간 비중 · 무인 운전 가능 범위</td></tr>
+          <tr><td>인력 운영</td><td>가동 × 근태</td><td>가동 ↑ · 근태 ↑</td><td>병목 · 반복 업무 · 품질·안전 조건</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="a d6 br-callout" style="margin-top:24px">
+      가상 패턴 예시 — 자동 결론 도출과 개인 평가는 적용 범위 밖
+    </div>
+    <div class="br-footer"></div>
+  </section>
+</div>
+
+<!-- ── 15. 경로 — 3단계 ───────────────────────────────────────────── -->
+<div class="br-frame" data-label="고도화 경로" data-notes="지금이 1단계라는 것을 분명히 말한다. 2·3단계는 제안이며 확정이 아니다. 단계를 올릴수록 판단에 쓸 정보가 넓어진다는 점이 요지다.">
+  <section class="br-slide" style="--br-accent:var(--br-cat-5);padding:84px 96px 56px">
+    <div class="br-mark" data-on="light"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="light"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <p class="ad br-eyebrow">14. DX · AX 고도화 경로</p>
+    <h2 class="a br-title br-title--light">운영 데이터 기반의 <strong>고도화 경로</strong></h2>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px;flex:1;min-height:0;margin-top:48px">
+
+      <div class="a d2 br-card br-card--step" style="padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip br-chip--solid">1단계 · 현재</span>
+        <div style="font:900 46px/1 var(--br-font-kr);margin-top:22px;color:var(--br-cobalt)">가동 정보</div>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;justify-content:center">
+          <span class="br-chip" style="padding:10px 18px">자동 기록</span>
+        </div>
+        <ul style="margin:34px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:var(--br-text-2);align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:var(--br-text)">자동 기록</strong> — 언제 · 얼마나 · 어떤 상태로 사용</li>
+          <li><strong style="font-weight:700;color:var(--br-text)">사람 입력</strong> — 없이 사용 이력 축적</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid var(--br-card-line);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-text-2)"><span>상태</span><span class="br-status br-status--ok">확정</span></div>
+      </div>
+
+      <div class="a d4 br-card br-card--step" style="border-top-color:var(--br-cyan);padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip br-chip--solid" style="background:#1382b8;border-color:#1382b8">2단계 · DX</span>
+        <div style="font:900 46px/1 var(--br-font-kr);margin-top:22px;color:#1382b8">데이터 연동</div>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;justify-content:center">
+          <span class="br-chip" style="padding:10px 18px">공통 기준</span>
+        </div>
+        <ul style="margin:34px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:var(--br-text-2);align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:var(--br-text)">연결 대상</strong> — 재무 · 인력 · 실적 · 프로젝트</li>
+          <li><strong style="font-weight:700;color:var(--br-text)">효과</strong> — 흩어진 운영 데이터를 하나의 기준에서 조회</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid var(--br-card-line);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:var(--br-text-2)"><span>상태</span><span class="br-status br-status--warn">제안</span></div>
+      </div>
+
+      <div class="a d6 br-card br-card--final" style="padding:32px 34px;display:flex;flex-direction:column;align-items:center">
+        <span class="br-chip" style="background:var(--br-amber);border-color:var(--br-amber);color:#4a3200;font-family:var(--br-font-num);font-weight:600;padding:14px 26px">3단계 · AX</span>
+        <div style="font:900 46px/1 var(--br-font-kr);margin-top:22px;color:var(--br-amber)">인사이트</div>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;justify-content:center">
+          <span class="br-chip" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff;padding:10px 18px">AI 분석</span>
+        </div>
+        <ul style="margin:34px 0 0;padding-left:24px;font:400 var(--br-fs-foot)/1.7 var(--br-font-kr);color:#e8f1fd;align-self:stretch">
+          <li style="margin-bottom:18px"><strong style="font-weight:700;color:#fff">탐색</strong> — 개선 지점과 투자 우선순위</li>
+          <li><strong style="font-weight:700;color:#fff">확보</strong> — 경영·운영·관리의 공통 근거</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:26px;border-top:1px solid rgba(255,255,255,.3);align-self:stretch;display:flex;justify-content:space-between;font:500 var(--br-fs-foot)/1 var(--br-font-kr);color:#e8f1fd"><span>상태</span><span class="br-status br-status--warn">제안</span></div>
+      </div>
+
+    </div>
+    <div class="br-footer">단계를 올릴수록 판단에 쓸 수 있는 정보 확대</div>
+  </section>
+</div>
+
+<!-- ── 16. 결정 요청 — 마무리 ─────────────────────────────────────── -->
+<div class="br-frame" data-label="결정 요청" data-notes="이 장이 보고의 목적이다. 재개 가부만 받고, 협의 4건은 결정 이후 일정으로 넘긴다. 겸업으로는 불가하다는 조건을 분명히 말한다.">
+  <section class="br-slide br-slide--cover" style="justify-content:center">
+    <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-watermark" data-on="dark"><!-- 배경 워터마크 자리: apply_brand.py 가 brand.json 의 watermark(다크면)·watermarkOnLight(밝은면)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+    <div class="br-rule br-rule--a"></div>
+
+    <p class="ad br-eyebrow" style="color:var(--br-accent-on-dark)">15. 결정 요청</p>
+    <h2 class="a" style="font:900 var(--br-fs-display)/1.18 var(--br-font-kr);margin:0;letter-spacing:var(--br-ls-tight)">
+      <span style="color:var(--br-soft-2)">과제 재개 여부,</span><br>결정 요청
+    </h2>
+    <p class="a d3 br-lede" style="margin-top:38px;line-height:1.7">남은 과정은 단순 보완 아님 — 설비별 현장 검증과 맞춤 보정 반복 구간<br>일시적 겸업 배정으로는 재개 불가 · <span style="color:var(--br-on-dark);font-weight:700">전담 TF 구성이 전제</span></p>
+
+    <div class="a d5" style="margin-top:44px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px 40px;align-self:stretch">
+      <div style="display:flex;align-items:baseline;gap:20px;padding:20px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span class="br-num" style="font-size:30px;line-height:1;color:var(--br-accent-on-dark)">01</span>
+        <span style="font:500 30px/1.3 var(--br-font-kr)">전담 TF 구성 · 인력 배정</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:20px;padding:20px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span class="br-num" style="font-size:30px;line-height:1;color:var(--br-accent-on-dark)">02</span>
+        <span style="font:500 30px/1.3 var(--br-font-kr)">가동 정의 · 분모 확정</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:20px;padding:20px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span class="br-num" style="font-size:30px;line-height:1;color:var(--br-accent-on-dark)">03</span>
+        <span style="font:500 30px/1.3 var(--br-font-kr)">교정전산 · ERP 연계 범위</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:20px;padding:20px 0;border-bottom:1px solid rgba(244,246,248,.22)">
+        <span class="br-num" style="font-size:30px;line-height:1;color:var(--br-accent-on-dark)">04</span>
+        <span style="font:500 30px/1.3 var(--br-font-kr)">운영 · 유지보수 주체 확정</span>
+      </div>
+    </div>
+
+    <div class="f d7" style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end">
+      <div class="br-num" style="font-weight:400;font-size:var(--br-fs-foot);line-height:1;color:var(--br-on-cover-3)">© 2026 COMPANY NAME · All rights reserved</div>
+      <div style="text-align:right">
+        <div style="font:500 var(--br-fs-foot)/1.5 var(--br-font-kr);color:var(--br-on-cover-2)">검토 완료 후 현장 검증 재개<br>검증 이후 DX 연계와 활용 범위 재보고</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</div><!-- /#stage -->
+
+<div id="hud">
+  <button id="prev">◀ 이전</button>
+  <span id="pos">1 / 16</span>
+  <span id="name">표지</span>
+  <button id="next">다음 ▶</button>
+  <button id="present">발표 F</button>
+  <button id="notes-btn">노트 N</button>
+  <button id="script-btn">대본 S</button>
+  <button id="all">목록</button>
+</div>
+<div id="notes" hidden><b>발표자 노트</b><span id="notes-text"></span></div>
+<div id="jump" hidden aria-hidden="true"></div>
+
+<script src="deck-viewer.js"></script>
+</body>
+</html>

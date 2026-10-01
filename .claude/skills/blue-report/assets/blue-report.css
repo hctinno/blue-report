@@ -1,0 +1,844 @@
+/* ============================================================================
+   블루 리포트 디자인 시스템 — 토큰 · 파운데이션 · 애니메이션
+   기준 캔버스 1920x1080. 최소 글자 24px.
+   색은 이 파일의 커스텀 속성으로만 쓴다. 슬라이드에 raw hex를 직접 적지 않는다.
+   ========================================================================= */
+
+/* 폰트는 저장소가 들고 있다. 바깥에서 받아 오지 않는다.
+   그래야 인터넷 없이도, Artifact 로 발행해도 같은 글자로 나온다.
+
+   fonts/PretendardVariable.subset.woff2 — 425KB 한 벌에 굵기 45~930 이 전부 들어 있다.
+   KS X 1001 한글 2,350자 + ASCII + 호환 자모 + 문서 기호.
+   scripts/make_font_subset.py 가 만든다. 손으로 받아 넣지 않는다.
+   재배포 조건은 assets/fonts/LICENSE-Pretendard.txt (SIL OFL 1.1). */
+@font-face {
+  font-family:'Pretendard Variable';
+  src:url('fonts/PretendardVariable.subset.woff2') format('woff2-variations');
+  font-weight:45 930;   /* 가변 축 전 구간. 300·400·500·600·700·900 을 한 파일이 낸다 */
+  font-style:normal;
+  font-display:swap;
+}
+
+:root {
+  /* ---------- 지면 ---------- */
+  /* 면은 테두리가 아니라 그림자로 나눈다.
+     참조 덱 50장을 실측한 결과 가장 큰 차이가 이것이었다 — 저쪽은 흰 지면에 흰 카드를
+     올리고 오직 그림자로만 구분한다. 테두리를 한 줄도 쓰지 않는다.
+     우리는 반대로 지면에 색을 넣고 카드에 테두리를 둘러 「떠 있는 면」이 아니라
+     「그려 놓은 상자」가 됐다.
+
+     지면을 순백으로 올리지 않는 이유 — 흰 카드가 그림자로만 구분되면 인쇄와 저해상
+     투사에서 사라진다. #f7f9fc 는 육안으로 흰색이되 카드와 명도차가 남아 그림자를 돕는다.
+     이 지면에서 기존 마크가 전부 대비를 유지한다(코발트 7.72 · 맥락 회색 2.22:1). */
+  --br-page:        #f7f9fc;   /* 밝은 본문 지면 — 배경은 이것 1개 + 다크면 2개까지만 */
+  --br-card:        #ffffff;
+  /* 카드 테두리를 없애는 것은 .br-card 의 border:0 이 한다. 이 토큰을 transparent 로
+     비우면 안 된다 — 이름과 달리 표 행 구분선과 A4 문서 괘선 9곳이 이걸 쓴다.
+     한 번 비웠다가 표에서 행 구분선이 통째로 사라졌다. 지면이 밝아진 만큼 값만 낮춘다. */
+  --br-card-line:   #e3e8f0;
+  --br-card-shadow: 0 2px 4px rgba(16,24,40,.04), 0 14px 36px rgba(16,24,40,.10);
+  --br-tint:        #eef2f8;   /* 대조군 카드 · 칩 바탕. 흰 카드가 요점, 이것이 대조군 */
+  --br-track:       #e3e9f0;   /* 막대 채널. 데이터가 아니라 그릇이다 */
+  --br-hairline:    #dfe4ec;   /* 기준선 전용. 면을 나누는 데 쓰지 않는다 */
+  --br-chip-line:   #dfe4ec;   /* 알약 칩 테두리 */
+
+  /* ---------- 텍스트 ---------- */
+  --br-text:   #10151c;
+  --br-text-2: #54606e;
+  --br-text-3: #8b98a6;
+
+  /* ---------- 강조 ---------- */
+  --br-cobalt: #2f4a9c;   /* 강조 1 · 주 — HCT 브랜드 블루. 지면 대비 7.51:1 */
+  --br-cyan:   #35b8f0;   /* 강조 2 */
+  --br-navy:   #0b2a6b;   /* 깊은 값 · 키워드 볼드 */
+  --br-coral:  #ff7a59;   /* 경고 · 핵심 단일 수치 */
+
+  /* ---------- 상태 — 정상 · 주의 · 위험 ----------
+     세 상태는 계열색과 겹치지 않는다. 계열색이 "무엇"을 말한다면(부서 · 제품 · 분기)
+     상태색은 "어떤가"를 말한다. 같은 초록이 두 일을 하면 읽는 사람이 그 막대가
+     좋은 소식인지 3번 부서인지 알 수 없다. 그래서 이 여섯 값은 계열색으로 쓰지 않는다.
+
+     색만으로 상태를 말하지 않는다 — 칩에는 언제나 글자가 함께 온다(정상 · 지연 · 위험).
+     색각 이상이 있는 사람에게는 글자가 유일한 단서다.
+
+     글자 대비는 인쇄 기준 4.5:1 을 넘긴다 — 정상 5.90 · 주의 5.55 · 위험 6.22:1.
+     괘선은 콜아웃 상자의 테두리이지 데이터 마크가 아니므로 2:1 규칙 대상이 아니다. */
+  --br-ok-line:   #7fc7a0;
+  --br-ok-bg:     #e8f6ee;
+  --br-ok-text:   #0f6b3f;
+
+  --br-warn-line: #f0c469;
+  --br-warn-bg:   #fff7e4;
+  --br-warn-text: #8a5a00;
+
+  --br-alert-line: #e8907a;
+  --br-alert-bg:   #fff1ec;
+  --br-alert-text: #a33418;
+
+  /* 다크면 위 상태. 밝은면 값을 그대로 쓰면 지면에 묻힌다. 대비 9.07 · 12.17 · 7.78:1 */
+  --br-ok-on-dark:    #4fd08a;
+  --br-warn-on-dark:  #ffcf6b;
+  --br-alert-on-dark: #ff8a80;
+
+  /* ---------- 다크면 (2종까지) ---------- */
+  --br-cover:     #071b45;  /* 표지 · 파트 간지 */
+  --br-dark:      #101827;  /* 핵심 정리 */
+  --br-dark-line: #2b3852;  /* 다크면 구분선. 카드 바탕은 두지 않는다 */
+
+  /* 다크면 위 텍스트 */
+  --br-on-dark:    #f4f6f8;
+  --br-on-dark-2:  #a9bcd6;
+  --br-on-dark-3:  #6b7c96;
+  --br-on-cover-2: #a6c2e6;
+  --br-on-cover-3: #8aa3c4;
+  --br-accent-on-dark: #6fa8ff;   /* 다크면 위 강조 · 숫자 */
+  --br-amber:      #ffcf6b;       /* 다크면 위 마지막 단계 강조 */
+
+  /* ---------- 데이터 램프 (밝은 지면 전용) ----------
+     값이 클수록 진한 단조 램프. 5색 모두 지면 #f4f6f8 대비 2:1 이상.
+     12.44 / 7.11 / 3.58 / 2.73 / 2.10 : 1 */
+  --br-data-1: #0b2a6b;
+  --br-data-2: #2f4a9c;
+  --br-data-3: #2f7ff0;
+  --br-data-4: #5b9bd5;
+  --br-data-5: #86b0da;
+
+  /* 다크면 위 데이터 램프. 밝은면 램프를 뒤집은 것이 아니라 따로 고른 값이다.
+     donut.py --dark 가 이것을 읽는다. 지면(--br-dark) 대비 2:1 이상. */
+  --br-data-dark-1: #dbe9ff;
+  --br-data-dark-2: #a9c8ff;
+  --br-data-dark-3: #6fa8ff;
+  --br-data-dark-4: #3d84ea;
+  --br-data-dark-5: #2a5fc0;
+
+  /* 구간이 6개 이상이면 양 끝을 고정한 보간 램프를 쓴다. scripts/palette.py --steps N 으로 생성.
+     아래는 7단계. 전 단계 지면 대비 2:1 이상, 인접 색 중복 없음. */
+  --br-bar-1: #0b2a6b;  --br-bar-2: #20407e;  --br-bar-3: #345790;  --br-bar-4: #486da2;
+  --br-bar-5: #5d83b5;  --br-bar-6: #729ac8;  --br-bar-7: #86b0da;
+
+  /* 채널 위 램프. 위 두 램프는 **지면** 대비로 잡은 값이라 막대 채널
+     (--br-track, #e3e9f0) 안에 넣으면 밝은 쪽이 무너진다 — --br-bar-7 이 지면에서
+     2.16 이지만 채널 위에서는 1.86 으로 떨어진다. 채널 안에 6단 이상을 깔아야 할 때
+     이것을 쓴다. 전 단계 채널 대비 11.03 / 8.10 / 5.79 / 4.16 / 3.05 / 2.28 : 1.
+     채널 밖(지면 위 점·칩)에는 위 램프를 그대로 쓴다. */
+  --br-chan-1: #0b2a6b;  --br-chan-2: #22417d;  --br-chan-3: #39588f;
+  --br-chan-4: #516fa0;  --br-chan-5: #6886b2;  --br-chan-6: #7f9dc4;
+
+  /* ---------- 계열색 (categorical) — 항목이 서로 다른 것일 때 ----------
+     부서 · 제품 · 분기처럼 순서가 없는 항목을 가른다. 크기를 나타내는 데이터 램프
+     (--br-data-*)와 쓰임이 다르다. 램프는 "얼마나", 계열색은 "무엇"이다.
+     값의 크기로 색을 고르면 안 된다 — 막대 길이가 이미 크기를 말한다.
+
+     슬롯 순서는 고정이다. 1번부터 차례로 배정하고 돌려 쓰지 않는다. 이 순서 자체가
+     색각 안전 장치다 — 인접한 두 색만 서로 닿으므로, 붙어 서는 쌍이 갈리도록 짠 것이다.
+     초록을 2번이 아니라 4번에 둔 이유가 이것이다. 초록과 주황이 이웃하면 적록색각
+     이상에서 ΔE 4.9 로 붕괴한다. 지금 순서의 최악 인접쌍은 ΔE 15.2 다.
+
+     일곱 번째 계열이 필요하면 색을 새로 만들지 않는다. 묶어서 "기타"로 내리거나
+     장을 나눈다.
+
+     전 슬롯이 지면 대비 3:1 이상. scripts/palette.py --check 가 판정한다. */
+  --br-cat-1: #2f4a9c;   /* 파랑 — HCT 코발트. 언제나 첫째 */
+  --br-cat-2: #c86a1a;   /* 주황 */
+  --br-cat-3: #8341c4;   /* 보라 */
+  --br-cat-4: #0d6b45;   /* 초록 */
+  --br-cat-5: #0d88a8;   /* 청록 */
+  --br-cat-6: #c02535;   /* 빨강 */
+
+  /* 다크면 계열색. 밝은면 값을 그대로 쓰면 짙은 지면에서 묻힌다.
+     밝게 뒤집은 것이 아니라 같은 방법으로 따로 고른 값이다. */
+  --br-cat-dark-1: #628eed;
+  --br-cat-dark-2: #d67523;
+  --br-cat-dark-3: #ae75d6;
+  --br-cat-dark-4: #3eab5e;
+  --br-cat-dark-5: #1f9ec4;
+  --br-cat-dark-6: #df6862;
+
+  /* ---------- 데이터 마크의 주인공과 맥락 ----------
+     참고본에서 가장 크게 갈린 지점이다. 7개 부서를 파랑 농담 7단계로 칠하면
+     "누가 평균을 넘었나"를 색이 말해 주지 않는다. 값의 크기는 막대 길이가 이미
+     말하고 있으므로, 색은 그 위에 "무엇을 보라"를 얹어야 한다.
+
+     주인공은 --br-mark, 나머지는 --br-mark-mute 로 물린다. 몇 개를 주인공으로
+     둘지는 문장이 정한다 — 제목이 "상위 3개"라면 셋만 색을 준다.
+
+     회색도 데이터 마크이므로 2:1 규칙을 지킨다. 다만 **지면이 아니라 실제 뒷배경**
+     기준이다 — 가로 막대는 지면이 아니라 채널(--br-track, #e3e9f0) 위에 놓인다.
+     예전 값 #9aabc0 은 지면 대비 2.22 였지만 채널 위에서 1.92 로 떨어졌다.
+     지면만 보던 검사기가 이것을 놓쳤다. #92a3ba 로 내려 채널 위 2.10:1 을 확보한다.
+     밝은면 지면 2.44 · 채널 2.10 · 다크면 2.37:1.
+
+     구간이 셋이면 주인공 · 중간 · 맥락 세 단계를 쓴다. --br-soft-* 를 중간으로
+     쓰면 안 된다 — 밝은면에서 1.67~1.96:1 이라 2:1 에 미달한다. 그렇게 짰다가
+     검사에 걸렸다. 중간 단계는 3.77:1 로 따로 잡았다. */
+  --br-mark:      var(--br-cat-1);
+  --br-mark-mid:  #5b7fb5;
+  --br-mark-mute: #92a3ba;
+  --br-mark-dark:      var(--br-cat-dark-1);
+  --br-mark-mid-dark:  #4a6a9e;
+  --br-mark-mute-dark: #44566f;
+
+  /* ---------- 소프트 램프 (다크면 위 데이터 · 밝은 면의 비데이터 요소) ----------
+     밝은 지면에서는 대비 1.67~1.96:1로 2:1에 미달한다. 밝은 면의 데이터 마크에 쓰지 않는다. */
+  --br-soft-1: #7fb6f5;
+  --br-soft-2: #9dc4f2;
+  --br-soft-3: #a4c4e5;
+
+  /* ---------- 그라디언트 ----------
+     막대 길이에 방향감을 준다. 참조 덱은 시안(#44ccfe)에서 시작하지만 그 값은 우리
+     지면에서 대비 1.76 이라 데이터 마크 2:1 규칙에 미달한다. 밝은 끝을 우리 램프의
+     --br-data-3(#2f7ff0, 대비 3.68)으로 올려 같은 효과에 규격을 지킨다.
+     끝점은 언제나 --br-cobalt 다 — 막대 안 오른쪽에 흰 값 라벨을 얹기 때문이다.
+     밝은 쪽에 흰 글자를 얹으면 읽히지 않는다. */
+  --br-grad-bar:  linear-gradient(90deg,  var(--br-data-3) 0%, var(--br-cobalt) 100%);
+  --br-grad-col:  linear-gradient(180deg, var(--br-data-3) 0%, var(--br-cobalt) 100%);
+  --br-grad-fill: linear-gradient(135deg, var(--br-cobalt) 0%, var(--br-navy) 100%);
+
+  /* ---------- 타입 ---------- */
+  /* 사내 폰트는 프리텐다드로 확정. 본문·숫자·라벨 세 자리를 한 벌로 쓴다.
+     대체 순서의 뜻 — 'Pretendard' 는 PC 에 설치된 정식판(있으면 그것을 쓴다),
+     'Pretendard Variable' 은 위 @font-face 로 저장소가 들고 있는 서브셋,
+     그 뒤는 폰트가 아예 못 뜰 때의 시스템 대체다.
+     세 토큰을 나눠 둔 것은 값이 달라서가 아니라, 나중에 숫자나 라벨만
+     다른 폰트로 갈아 끼울 때 이 세 줄만 고치면 되게 하려는 것이다. */
+  --br-font-kr:    'Pretendard', 'Pretendard Variable', -apple-system, BlinkMacSystemFont,
+                   system-ui, 'Malgun Gothic', sans-serif;
+  --br-font-num:   var(--br-font-kr);
+  --br-font-label: var(--br-font-kr);
+
+  --br-fs-cover:      108px;  /* 표지 제목 */
+  --br-fs-display:     96px;  /* 마무리 CTA 제목 */
+  --br-fs-part:        84px;  /* 파트 번호 (Barlow Condensed) */
+  --br-fs-h2:          62px;  /* 슬라이드 제목 */
+  --br-fs-h2-sm:       54px;  /* 두 줄 이상 슬라이드 제목 */
+  --br-fs-h3:          38px;  /* 목차 항목 */
+  --br-fs-card-title:  32px;
+  --br-fs-lede:        28px;  /* 제목 아래 요약 문장 */
+  --br-fs-label:       26px;  /* 섹션 라벨 (Barlow Condensed) */
+  --br-fs-datalabel:   30px;  /* 막대 항목명 · 질문 칩 · 요약 카드 한 줄 */
+  --br-fs-body:        25px;
+  --br-fs-foot:        24px;  /* 하한 */
+  --br-fs-stat-hero:  120px;  /* 단일 수치 강조. 참조 덱 최대가 121px 이고
+                                 200px 은 지면 하나를 통째로 먹는다 */
+  --br-fs-stat:        56px;  /* 카드 안 수치 */
+  --br-fs-stat-sm:     32px;  /* 막대 값 컬럼 */
+  --br-sup:          .44em;   /* % 첨자 — 24px 하한의 유일한 예외 */
+
+  --br-ls-tight: -.03em;
+  --br-ls-label:  .14em;
+  --br-ls-mark:   .2em;
+
+  /* ---------- 간격 ---------- */
+  --br-sp-1: 8px;  --br-sp-2: 14px; --br-sp-3: 22px; --br-sp-4: 34px;
+  --br-sp-5: 52px; --br-sp-6: 84px;
+  /* 좌우 132px = 1920 의 6.9%. 참조 덱은 7.1% 로 우리(5.0%)보다 넓다.
+     여백이 좁으면 제목이 지면 끝에 붙어 빽빽해 보인다. */
+  --br-pad-slide: 100px 132px 72px;
+  --br-pad-cover: 110px 132px 80px;
+  --br-gap-card:  36px;
+
+  /* ---------- 형태 ----------
+     참조 덱은 카드 36px · 막대 8px 이다. 1920 지면에서 카드 28px 가 같은 인상을 낸다.
+     모서리는 실측 항목 중 인상 차이가 가장 컸다 — 저쪽이 정확히 두 배 둥글었다. */
+  --br-r-card:   28px;
+  --br-r-pill:  999px;   /* 상태 칩 전용 */
+  --br-r-chip:   14px;   /* 질문 칩 — 알약이 아니라 둥근 사각 */
+  --br-r-bar:     8px;   /* 좁은 채널의 막대 */
+  --br-r-bar-lg: 10px;   /* 높이 40px 이상 막대 */
+}
+
+/* ============================================================================
+   1. 슬라이드 골격
+   ========================================================================= */
+
+.br-deck { margin:0; padding:0; background:#111; }
+
+.br-slide {
+  position:relative;
+  box-sizing:border-box;
+  width:1920px; height:1080px;
+  overflow:hidden;
+  font-family:var(--br-font-kr);
+  background:var(--br-page);
+  color:var(--br-text);
+  padding:var(--br-pad-slide);
+  display:flex; flex-direction:column;
+}
+/* 한글이 음절 단위로 잘리지 않게 전역 적용 */
+.br-slide, .br-slide * { word-break:keep-all; overflow-wrap:break-word; }
+
+/* 표지·간지 — 딥네이비 위 우측에서 들어오는 청색 광선. 참조 덱 표지의 구성이다.
+   사진을 쓰지 않는다. 알파만 얹으므로 새 색을 들이지 않는다 —
+   "배경은 밝은 지면 1개 + 다크면 2개까지" 규칙에 걸리지 않는다. */
+.br-slide--cover {
+  background:
+    radial-gradient(120% 90% at 78% 60%, rgba(47,127,240,.42) 0%, rgba(7,27,69,0) 60%),
+    radial-gradient(80% 60% at 92% 40%, rgba(47,127,240,.22) 0%, rgba(7,27,69,0) 55%),
+    var(--br-cover);
+  color:var(--br-on-dark); padding:var(--br-pad-cover);
+}
+.br-slide--dark  { background:var(--br-dark);  color:var(--br-on-dark); }
+
+/* ── 배경 워터마크 ────────────────────────────────────────────────────────
+   다크면 가운데에 회사 마크를 아주 옅게 깐다. 지면이 단색 한 장으로 죽지 않게
+   하는 장치이며, 새 색을 들이지 않는다(같은 흰색의 투명도만 쓴다).
+   z-index:-1 로 본문 뒤에 깔린다 — .br-slide 가 position:relative 라 슬라이드
+   안쪽에 갇히고 배경보다는 위에 온다.
+   불투명도가 낮아 원본 해상도를 넘겨 키워도 흐림이 드러나지 않는다.
+   표지(--br-cover)에는 쓰지 않는다 — 본문이 왼쪽에 몰려 있어 가운데 마크와
+   제목이 겹치고, 우측 상단 마크와 안내선으로 이미 브랜드가 선다.
+   그 밖의 모든 지면에 깔린다. 밝은 지면은 잉크가 진해 3%로 낮춘다. */
+/* isolation 이 없으면 z-index:-1 이 슬라이드 배경 뒤로 내려가 아예 안 보인다.
+   .br-slide 는 position:relative 지만 z-index 가 없어 쌓임 맥락을 만들지 않는다. */
+.br-slide { isolation:isolate; }
+.br-watermark {
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  z-index:-1; pointer-events:none;
+  width:720px; text-align:center;
+}
+.br-watermark img { display:block; width:100%; height:auto; }
+/* 다크면은 흰 잉크가 옅게 번지므로 5%. 밝은 지면은 진한 잉크라 같은 값이면
+   너무 세게 보이고 본문 대비를 갉아먹는다. 3%로 낮춘다. */
+.br-slide .br-watermark { opacity:.03; }
+.br-slide--dark .br-watermark { opacity:.05; }
+/* 브랜드를 넣기 전 템플릿 상태. 워드마크 글자는 벡터라 아무리 키워도 깨지지 않는다.
+   nowrap 이 없으면 720px 상자 안에서 단어 중간이 잘려 COMPAN / Y NAME 으로 접힌다.
+   전역 word-break:keep-all 은 한글 규칙이라 라틴 낱말을 지켜 주지 않는다.
+   크기는 상자에 들어가는 값으로 잡는다 — 자간 .2em 이 붙어 128px 이면 두 배 넘게 넘친다. */
+.br-watermark .br-wordmark {
+  font:700 64px/1 var(--br-font-label) !important;
+  letter-spacing:var(--br-ls-mark); color:var(--br-on-dark) !important;
+  white-space:nowrap;
+}
+/* 표지(첫 장)에는 마크업 자체를 넣지 않는다. 마무리·결정 요청·단일 수치 강조처럼
+   --cover 조판을 쓰는 다른 장에는 깔린다. --cover 는 지면이 짙으므로 다크면과
+   같은 5%다.
+   위치는 정가운데가 아니라 우측 하단이다 — --cover 조판은 본문이 화면을 넓게
+   쓰고(결정 요청 3건이 위아래로 늘어선다든지) 좌우 끝까지 닿는 경우가 많아,
+   정가운데에 두면 본문 글자와 겹칠 여지가 다른 지면보다 크다. 구석은 항상
+   비어 있다시피 해 안전하다. right·bottom 값은 --br-pad-cover(110px 132px 80px)
+   의 좌우·하단 여백과 맞춰 지면 여백 선 안쪽에 얌전히 앉게 한다. */
+.br-slide--cover .br-watermark {
+  opacity:.05;
+  left:auto; top:auto; right:132px; bottom:130px; transform:none;
+}
+
+/* 표지·간지의 세로 안내선. 장식색이 아니라 흰색 알파라서 배경 규칙에 걸리지 않는다. */
+.br-rule { position:absolute; top:0; bottom:0; border-left:1px solid rgba(244,246,248,.14); }
+.br-rule--a { right:0;   width:44%; }
+.br-rule--b { right:0;   width:22%; border-left-color:rgba(244,246,248,.08); }
+
+/* ============================================================================
+   2. 타이포 파운데이션
+   ========================================================================= */
+
+/* ── 장별 강조색 ──────────────────────────────────────────────────────────
+   "모든 페이지가 같은 색이라 구별이 안 된다"에 대한 답이다.
+
+   슬라이드에 --br-accent 를 얹으면 눈썹말 · 제목 괘선 · 파트 번호가 그 색으로 간다.
+   본문 · 표 · 데이터 마크는 따라가지 않는다 — 장마다 데이터 색이 바뀌면
+   같은 부서가 3장에서 파랑, 5장에서 주황이 되어 색이 뜻을 잃는다.
+   바뀌는 것은 "지금 어느 장인가"를 말하는 자리뿐이다.
+
+       <section class="br-slide" style="--br-accent:var(--br-cat-2)">
+
+   한 파트 안의 슬라이드는 같은 값을 쓴다. 장마다 바꾸면 그냥 알록달록해질 뿐이다.
+   주지 않으면 딥네이비(밝은면) · 하늘색(다크면)으로, 지금까지와 같다. */
+.br-slide            { --br-accent-resolved: var(--br-accent, var(--br-navy)); }
+.br-slide--dark,
+.br-slide--cover     { --br-accent-resolved: var(--br-accent-dark, var(--br-accent-on-dark)); }
+
+.br-eyebrow {           /* 섹션 라벨 */
+  margin:0 0 var(--br-sp-2);
+  font:600 var(--br-fs-label)/1 var(--br-font-label);
+  letter-spacing:var(--br-ls-label);
+  text-transform:uppercase;
+  color:var(--br-accent-resolved);
+}
+
+.br-title  { margin:0; font:900 var(--br-fs-h2)/1.2 var(--br-font-kr); letter-spacing:var(--br-ls-tight); }
+.br-title--sm { font-size:var(--br-fs-h2-sm); line-height:1.3; }
+/* 제목 안에서 weight 300과 900을 대비시킨다: <h2 class="br-title br-title--light">가벼운 앞말 <strong>굵은 핵심</strong></h2> */
+.br-title--light { font-weight:300; }
+.br-title--light strong { font-weight:900; }
+
+.br-lede {
+  margin:var(--br-sp-3) 0 0;
+  font:400 var(--br-fs-lede)/1.6 var(--br-font-kr);
+  color:var(--br-text-2);
+}
+.br-slide--dark .br-lede, .br-slide--cover .br-lede { color:var(--br-on-cover-2); }
+
+.br-body { font:400 var(--br-fs-body)/1.6 var(--br-font-kr); color:var(--br-text-2); margin:0; }
+
+/* 핵심 수치 · 개념 강조 */
+.br-key { font-weight:700; color:var(--br-navy); }
+.br-slide--dark .br-key, .br-slide--cover .br-key { color:var(--br-on-dark); }
+
+/* 숫자는 항상 Barlow 700 */
+.br-num { font-family:var(--br-font-num); font-weight:700; font-variant-numeric:tabular-nums; }
+.br-sup { font-size:var(--br-sup); }   /* % 첨자 */
+
+/* 키워드 — 내용 구조의 서술 분할 */
+.br-split { margin:0 0 18px; font:400 var(--br-fs-body)/1.7 var(--br-font-kr); color:var(--br-text-2); }
+.br-split > strong { font-weight:700; color:var(--br-text); }
+
+/* ============================================================================
+   3. 파운데이션 카드 · 칩 · 콜아웃
+   ========================================================================= */
+
+/* 흰 카드 = 요점, 틴트 카드 = 대조군. 그림자 유무가 위계를 만든다 — 색을 더 쓰지 않는다.
+   테두리를 두르지 않는다. 테두리와 그림자를 함께 쓰면 그림자가 하는 일이 사라지고
+   카드가 「떠 있는 면」이 아니라 「그려 놓은 상자」로 읽힌다. */
+.br-card {
+  box-sizing:border-box;
+  background:var(--br-card);
+  border:0;
+  border-radius:var(--br-r-card);
+  box-shadow:var(--br-card-shadow);
+  padding:30px 34px;
+}
+/* 대조군 카드 — 요점이 아닌 것. 그림자를 빼고 틴트로 눕힌다. */
+.br-card--mute { background:var(--br-tint); box-shadow:none; }
+/* 다크면에서는 판을 얹지 않는다.
+   지면 #101827 위에 카드 #182238 은 대비 1.12:1, 테두리도 1.52:1 이라
+   경계가 뭉개진다. 짙은 면 위의 짙은 판은 읽는 사람을 불편하게 한다.
+   판을 걷어내고 상단 괘선으로만 구획한다 — 지면이 하나로 유지된다. */
+.br-slide--dark .br-card, .br-slide--cover .br-card {
+  background:none;
+  border:0;
+  border-top:2px solid var(--br-accent-on-dark);
+  border-radius:0;
+  box-shadow:none;
+  padding:26px 0 0;
+}
+/* 단계 강조가 필요한 카드만 상단 굵은 테두리 허용 */
+.br-card--step  { border-top:8px solid var(--br-cobalt); }
+.br-card--final { background:var(--br-navy); color:#fff; border:none; border-top:8px solid var(--br-amber); }
+
+/* 알약 칩 — 한 줄 전용. 두 줄이 되면 .br-chip--rect 로 바꾼다. */
+.br-chip {
+  display:inline-block; box-sizing:border-box;
+  border:1px solid var(--br-chip-line);
+  border-radius:var(--br-r-pill);
+  background:var(--br-card);
+  box-shadow:var(--br-card-shadow);
+  padding:14px 26px;
+  font:500 var(--br-fs-body)/1 var(--br-font-kr);
+  color:#45505c;
+  box-shadow:none;               /* 칩에는 그림자를 주지 않는다 */
+  white-space:nowrap;
+}
+.br-chip--rect { border-radius:var(--br-r-card); white-space:normal; line-height:1.4; }
+.br-chip--solid { background:var(--br-cobalt); border-color:var(--br-cobalt); color:#fff; font-family:var(--br-font-num); font-weight:600; }
+.br-slide--dark .br-chip, .br-slide--cover .br-chip {
+  background:transparent; border-color:rgba(244,246,248,.5); color:var(--br-on-dark);
+}
+
+/* 주의 콜아웃 */
+.br-callout {
+  border:1px solid var(--br-warn-line);
+  background:var(--br-warn-bg);
+  color:var(--br-warn-text);
+  border-radius:var(--br-r-card);
+  padding:24px 30px;
+  font:500 var(--br-fs-body)/1.6 var(--br-font-kr);
+}
+
+/* 번호 인덱스 (다크 정리면 카드) */
+.br-index {
+  display:block; box-sizing:border-box;
+  border:1px solid var(--br-dark-line);
+  padding:10px 0; text-align:center;
+  font:600 var(--br-fs-foot)/1 var(--br-font-num);
+  color:var(--br-on-dark-2);
+}
+
+/* 푸터 — 콘텐츠와 겹치지 않게 항상 마지막 형제로 둔다 */
+.br-footer {
+  margin-top:var(--br-sp-3);
+  font:400 var(--br-fs-foot)/1 var(--br-font-kr);
+  color:var(--br-text-3);
+  text-align:right;
+  flex-shrink:0;
+}
+.br-footer strong { font-weight:700; color:var(--br-text-2); }
+.br-slide--dark .br-footer { color:var(--br-on-dark-3); }
+.br-slide--dark .br-footer strong { color:var(--br-on-dark-2); }
+
+/* 브랜드 마크 — 모든 슬라이드의 우측 상단 모서리. 표지도 본문도 같은 자리다.
+   상하 여백 띠 안에 들어가므로 본문과 절대 겹치지 않는다.
+     일반 슬라이드  padding-top 84  → 26..66px  (본문 시작 84px, 18px 여유)
+     표지·간지      padding-top 110 → 38..78px  (본문 시작 110px, 32px 여유)
+   data-on 이 배경 밝기를 선언한다. apply_brand.py 가 이 값을 보고 로고 변형을 고른다.
+     data-on="dark"  다크·코발트 배경 → 흰색 녹아웃 로고
+     data-on="light" 밝은 지면       → 원색(파란) 로고 */
+.br-mark {
+  position:absolute;
+  top:26px; right:96px;
+  z-index:5;
+  display:flex; align-items:center;
+  pointer-events:none;          /* 클릭·선택을 가로막지 않는다 */
+}
+.br-slide--cover .br-mark { top:38px; right:120px; }
+
+/* 워드마크 — 로고 확정 전까지 텍스트로 처리한다.
+   apply_brand.py 가 brand.json 의 logo/logoOnLight 로 교체한다. */
+.br-wordmark {
+  font:600 28px/1 var(--br-font-label);
+  letter-spacing:var(--br-ls-mark);
+  color:var(--br-cobalt);                     /* 밝은 지면 기본값 */
+}
+.br-mark[data-on="dark"] .br-wordmark { color:var(--br-on-dark); }
+
+.br-logo { display:block; height:40px; width:auto; }
+
+/* ============================================================================
+   4. 차트 파운데이션
+   ========================================================================= */
+
+/* 도넛 — 원주 기반 stroke-dasharray로만 그린다. <path d="M…A…"> 파이 금지.
+   각 구간: dash = C*pct/100 - C*1.5/360, rotate(누적pct*3.6 - 90) */
+.br-donut { display:block; }
+.br-donut circle { fill:none; stroke-linecap:butt; }
+
+/* 도넛 홀 — 여기에 결론 수치를 넣는다.
+   예전에는 "좁은 홀에 텍스트를 넣지 않는다"고 적어 두고 비워 뒀는데, 홀 지름이
+   도넛 지름의 63%라 좁지 않다. 비워 두면 지면 한가운데가 그냥 구멍이고,
+   읽는 사람은 어느 조각이 결론인지 범례에서 다시 찾아야 한다. */
+.br-donut-wrap   { position:relative; display:inline-grid; place-items:center; }
+.br-donut-center { position:absolute; text-align:center; pointer-events:none; }
+.br-donut-num    { font:700 var(--br-fs-stat)/1 var(--br-font-num); color:var(--mark);
+                   letter-spacing:var(--br-ls-tight); display:block; }
+.br-donut-cap    { font:600 var(--br-fs-foot)/1.3 var(--br-font-kr); color:var(--br-text-2);
+                   display:block; margin-top:8px; }
+.br-slide--dark .br-donut-cap { color:var(--br-on-dark-2); }
+
+/* 도넛 범례 — 홀에 결론이 들어갔으므로 범례는 구간 목록 노릇만 한다.
+   가운데 정렬 대신 왼쪽으로 세워 이름과 값이 열을 이루게 한다. */
+.br-legend { display:flex; flex-wrap:wrap; gap:14px 30px; justify-content:center; }
+.br-legend-item { display:flex; align-items:baseline; gap:10px; }
+.br-legend-name { font:600 var(--br-fs-foot)/1.3 var(--br-font-kr); color:var(--br-text-2); }
+.br-legend-val  { font:700 var(--br-fs-foot)/1.3 var(--br-font-num); color:var(--br-text); }
+.br-slide--dark .br-legend-name { color:var(--br-on-dark-2); }
+.br-slide--dark .br-legend-val  { color:var(--br-on-dark); }
+.br-dot { display:inline-block; width:12px; height:12px; border-radius:50%; vertical-align:middle; margin-right:8px; }
+
+/* ── 마크 색을 한곳에서 정한다 ────────────────────────────────────────────
+   마크업이 background 를 직접 적지 않는다. 클래스로 "주인공인가 맥락인가"만
+   말하면 색은 여기가 고른다. 다크면 전환도 여기서 한 번에 끝난다. */
+.br-slide { --mark:var(--br-mark); --mark-mid:var(--br-mark-mid); --mark-mute:var(--br-mark-mute); }
+.br-slide--dark, .br-slide--cover { --mark:var(--br-mark-dark); --mark-mid:var(--br-mark-mid-dark); --mark-mute:var(--br-mark-mute-dark); }
+/* 다크면의 그라디언트는 밝은면 램프를 쓰면 지면에 묻는다. 평면으로 둔다. */
+.br-slide--dark .br-bar-v, .br-slide--cover .br-bar-v,
+.br-slide--dark .br-bar-h, .br-slide--cover .br-bar-h { background:var(--mark); }
+/* 장별 강조색은 마크에 닿지 않는다. 눈썹말과 파트 번호만 바뀐다.
+   장마다 데이터 색이 바뀌면 같은 부서가 2장에서 파랑, 5장에서 주황이 되어
+   색이 뜻을 잃는다. 바뀌는 것은 "지금 어느 장인가"를 말하는 자리뿐이다. */
+
+/* 세로 막대 — 값은 막대 안이 아니라 막대 위 전용 줄에 */
+.br-col      { display:flex; flex-direction:column; justify-content:flex-end; text-align:center; height:100%; }
+.br-col-val  { font:700 var(--br-fs-stat-sm)/1 var(--br-font-num); margin-bottom:12px; color:var(--mark); }
+.br-col-val--muted { color:var(--br-text-3); }
+/* 막대 폭에 상한을 둔다. 열 너비를 꽉 채우면 지면이 색으로 덮여 무거워지고,
+   막대끼리 붙어 보여 각각이 하나의 값이라는 것이 흐려진다. */
+/* 채움에 그라디언트를 준다. 길이에 방향감이 생긴다. 밝은 끝이 --br-data-3 인 것은
+   참조 덱의 시안(#44ccfe)이 우리 지면에서 대비 1.76 이라 2:1 규칙에 미달하기 때문이다. */
+.br-bar-v    { width:min(100%,124px); margin-inline:auto;
+               transform-origin:bottom; border-radius:var(--br-r-bar) var(--br-r-bar) 0 0;
+               background:var(--br-grad-col); }
+.br-bar-v--mute { background:var(--mark-mute); }   /* 대조군은 평면. 방향감을 주지 않는다 */
+.br-col-name { text-align:center; font:700 var(--br-fs-foot)/1.35 var(--br-font-kr); color:var(--br-text); }
+/* 맥락 열의 이름은 물린다. 이름은 막대와 다른 그리드에 있어 형제 선택으로는
+   닿지 않으므로 클래스를 직접 붙인다. 색이 말하는 것을 굵기가 한 번 더 말한다. */
+.br-col-name--mute { font-weight:500; color:var(--br-text-3); }
+.br-slide--dark .br-col-name { color:var(--br-on-dark); }
+.br-slide--dark .br-col-name--mute { color:var(--br-on-dark-3); }
+
+/* 가로 막대 — 이름 / 채널 / 값을 각각 다른 그리드 컬럼에 둔다.
+   채널(트랙)을 항상 깔아 둔다. 트랙이 없으면 "얼마나 남았나"가 보이지 않는다. */
+.br-bars-h    { display:grid; grid-template-columns:auto 1fr 140px; align-items:center; gap:22px 26px; }
+.br-bar-track { height:26px; background:var(--br-track); border-radius:var(--br-r-pill); overflow:hidden; }
+.br-slide--dark .br-bar-track, .br-slide--cover .br-bar-track { background:#1c2740; }
+.br-bar-h     { height:100%; transform-origin:left; border-radius:var(--br-r-pill);
+                background:var(--br-grad-bar); }
+.br-bar-h--mute { background:var(--mark-mute); }   /* 대조군은 평면 */
+.br-bar-name  { font:500 var(--br-fs-body)/1.3 var(--br-font-kr); color:var(--br-text); white-space:nowrap; }
+.br-slide--dark .br-bar-name, .br-slide--cover .br-bar-name { color:var(--br-on-dark-2); }
+.br-bar-val   { font:700 var(--br-fs-stat-sm)/1 var(--br-font-num); color:var(--mark); text-align:right; }
+.br-bar-val--muted { color:var(--br-text-3); }
+/* 값 아래에 붙는 부가 수치(달성률 · 목표 대비). 값과 같은 칸에 세로로 쌓는다.
+   계획과 실적을 카드 둘로 갈라 놓으면 좌우를 오가며 비교해야 한다. 한 트랙 위에
+   겹쳐 놓고 — 트랙이 계획, 채움이 실적 — 이 줄이 달성률을 말한다. */
+.br-bar-sub   { font:600 var(--br-fs-foot)/1 var(--br-font-num); color:var(--br-text-3);
+                text-align:right; margin-top:7px; }
+/* 분모(계획값). .br-sup 을 쓰면 안 된다 — 그건 단위 자리이고, 내용 대조 검사가
+   "174/ 180" 을 값 하나로 읽는다. 분모는 값이 아니라 견주는 대상이다. */
+.br-bar-of    { font-size:var(--br-fs-foot); font-weight:600; color:var(--br-text-3); margin-left:5px; }
+.br-bar-sub--alert { color:var(--br-alert-text); }
+
+/* ── 질문 칩 ──────────────────────────────────────────────────────────────
+   설문 문항 · 판정 질문처럼 「무엇을 물었나」를 여기 가둔다. 답과 섞지 않는다.
+   Gate 장표에서 판정 질문을 본문과 같은 활자로 적으면 질문과 답이 붙어 보인다.
+   알약(999px)이 아니라 둥근 사각이다 — 상태 칩과 형태로 구분된다. */
+.br-ask {
+  /* 슬라이드는 세로 flex 다. inline-block 만으로는 flex 자식이 가로로 늘어나
+     칩이 아니라 띠가 된다. width:fit-content 로 글자 폭만 차지하게 못 박는다 —
+     align-self 로 막으면 가운데 정렬한 카드 안에서 칩만 왼쪽으로 튀어나간다. */
+  display:inline-block; box-sizing:border-box; width:fit-content; max-width:100%;
+  background:var(--br-tint); color:var(--br-text); border:0;
+  border-radius:var(--br-r-chip); padding:16px 26px;
+  font:600 var(--br-fs-datalabel)/1.3 var(--br-font-kr);
+}
+.br-slide--dark .br-ask, .br-slide--cover .br-ask {
+  background:rgba(244,246,248,.10); color:var(--br-on-dark);
+}
+
+/* ── 아이소타입 — 비율을 개수로 ───────────────────────────────────────────
+   분모가 눈에 보인다. 「12개 중 8개 확인, 4개 미확인」 형식과 같은 도해다.
+   분모를 반드시 정수 칸으로 나눠 떨어지게 만든다 — 42/63 을 10칸 중 7칸으로
+   반올림하지 않는다. 떨어지지 않으면 이 도해를 쓰지 않는다.
+   빈 칸도 데이터다(분모를 말한다). 그래서 트랙 회색이 아니라 맥락 마크 색을
+   쓰고 2:1 규칙을 지킨다 — 셀 수 없으면 도해가 성립하지 않는다. */
+/* 칸 크기는 지면 사정에 맞춘다. 기본 44x60px, 표와 같이 놓을 때는 낮춘다. */
+.br-iso      { display:flex; flex-wrap:wrap; gap:12px; --cell-w:44px; --cell-h:60px; }
+.br-iso-cell { width:var(--cell-w); height:var(--cell-h); border-radius:6px;
+               background:var(--mark-mute); }
+.br-iso-cell--on { background:var(--mark); }
+.br-iso-cap  { margin-top:18px; font:600 var(--br-fs-body)/1.4 var(--br-font-kr);
+               color:var(--br-text-2); }
+.br-iso-cap b { color:var(--br-text); font-weight:700; }
+
+/* ── 다크 요약장 — 구간의 끝을 표시한다 ───────────────────────────────────
+   Part 가 끝날 때마다 한 장씩 넣는다. 밝은 본문이 이어지다 한 번 어두워지는 것이
+   구간 종료 신호가 된다.
+
+   짙은 지면에 짙은 카드를 얹지 않는다. 참조 덱은 그렇게 하지만 우리 지면에서
+   대비가 1.16:1 이라 초점이 안 맞는 얼룩으로 보인다 — 예전에 그렇게 만들었다가
+   걷어낸 자리다. 카드 대신 상단 괘선으로 구획한다. 밝은면의 흰 카드와 같은 일을
+   그림자 없이 해내는 방법이다. */
+.br-sumgrid  { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--br-gap-card) 64px; }
+.br-sumcard  { border-top:2px solid var(--br-accent-on-dark); padding:24px 0 0;
+               display:flex; align-items:baseline; gap:20px; }
+.br-sumcard-n { flex:none; font:700 var(--br-fs-foot)/1 var(--br-font-num);
+                color:var(--br-on-dark-3); letter-spacing:var(--br-ls-label); }
+.br-sumcard-t { flex:1; min-width:0; font:600 var(--br-fs-datalabel)/1.35 var(--br-font-kr);
+                color:var(--br-on-dark); }
+.br-sumcard-v { flex:none; font:800 52px/1 var(--br-font-num); color:var(--br-accent-on-dark);
+                letter-spacing:var(--br-ls-tight); }
+.br-sumcard-v--warn { color:var(--br-amber); }
+/* 값이 숫자가 아니라 판정어(충족·조건부)일 때. 52px 숫자 크기로 한글을 쓰면
+   낱말이 수치처럼 읽히고 글자 칸을 밀어낸다. 한 단계 줄여 낱말로 앉힌다. */
+.br-sumcard-v--word { font-size:38px; font-weight:700; letter-spacing:0; }
+
+/* ── 지시선 주석 ──────────────────────────────────────────────────────────
+   문제 지점만 ㄱ자로 끌어내 한 줄 붙인다. 한 지면에 하나만 — 둘이 되면 둘 다 안 읽힌다.
+   참조 덱은 50장 내내 빨강을 이 용도로만 썼다.
+   --w · --h 로 꺾임 크기를 정한다. 점이 가리키는 곳이 시작점이다. */
+/* 막대 안에 넣으면 막대 꼭대기를 자동으로 가리킨다. 절대 좌표로 붙이면 값이 바뀔
+   때마다 손으로 다시 맞춰야 하고, 실제로 그렇게 붙였다가 점이 빈 공간을 가리켰다.
+   .br-bar-v 안의 자식으로 두는 것이 기본 사용법이다.
+   가로 막대에는 쓰지 않는다 — .br-bar-track 이 overflow:hidden 이라 트랙 밖으로
+   나간 점과 글자를 통째로 잘라 낸다. 잘려도 다른 검사는 통과하므로
+   check_deck.py 16번(지시선 주석이 잘리지 않는가)이 대신 잡는다. */
+.br-bar-v { position:relative; }
+.br-note      { position:absolute; left:50%; top:0; --w:150px; --h:70px; pointer-events:none; }
+.br-note-dot  { position:absolute; left:-5px; top:-5px; width:10px; height:10px;
+                border-radius:50%; background:var(--br-alert-text); }
+/* 선은 헤어라인(1.1:1)으로 그으면 지면에 묻어 안 보인다. 데이터 마크는 아니지만
+   읽히지 않으면 주석이 성립하지 않으므로 --br-text-3(2.79:1)으로 긋는다. */
+/* 경로는 점 → 옆 → 위 → 글자다. 그러므로 세로획은 언제나 글자 쪽(먼 끝)에
+   있어야 한다. 오른쪽으로 열 때 세로획을 점 쪽(왼쪽)에 두면 선이 글자에 닿지
+   않고 장식이 된다 — --left 변형에서 한 번 그렇게 짰다가 고쳤는데, 기본 방향에
+   같은 실수가 남아 있었다. 저장소 안 덱이 --left 만 쓰고 있어 렌더에 안 나왔다.
+   check_deck.py 16번이 이제 "선이 점과 글자를 잇는가"를 판정한다. */
+.br-note::before {
+  content:""; position:absolute; left:0; top:0; width:var(--w); height:var(--h);
+  border-right:1px solid var(--br-text-3); border-bottom:1px solid var(--br-text-3);
+  transform:translateY(calc(-1 * var(--h)));
+}
+.br-note-text { position:absolute; left:calc(var(--w) + 12px); top:calc(-1 * var(--h));
+                transform:translateY(-50%); width:340px;
+                font:700 var(--br-fs-foot)/1.4 var(--br-font-kr); color:var(--br-alert-text); }
+
+/* 왼쪽으로 여는 변형. 지면 오른쪽 끝을 짚을 때 쓴다 — 오른쪽으로 열면 글자가 잘린다.
+   --w 를 음수로 주지 않는다. 음수 폭은 요소를 슬라이드 밖으로 밀어내 크기 검사에 걸린다. */
+/* 왼쪽으로 열 때도 세로획은 글자 쪽(먼 끝)에 있어야 한다. 점 쪽에 두면 선이
+   점과 글자를 잇지 못하고 장식이 된다 — 한 번 그렇게 짰다가 렌더에서 잡았다.
+   경로는 점 → 왼쪽 → 위 → 글자다. */
+.br-note--left::before { left:auto; right:0;
+                         border-right:0; border-left:1px solid var(--br-text-3); }
+.br-note--left .br-note-dot  { left:auto; right:-4px; }
+.br-note--left .br-note-text { left:auto; right:calc(var(--w) + 12px); text-align:right; }
+
+/* 표 — 얼룩무늬를 쓰지 않는다. 얇은 구분선과 머리행 아래선만으로 구분한다 */
+.br-table { width:100%; border-collapse:collapse; font-family:var(--br-font-kr); }
+.br-table th {
+  text-align:left; padding:0 20px 15px;
+  font:700 var(--br-fs-foot)/1.3 var(--br-font-kr);
+  color:var(--br-navy); border-bottom:2px solid var(--br-navy);
+}
+.br-table td {
+  padding:16px 20px; font:400 var(--br-fs-body)/1.4 var(--br-font-kr);
+  color:var(--br-text-2); border-bottom:1px solid var(--br-card-line);
+}
+.br-table tr:last-child td { border-bottom:none; }
+.br-table td:first-child { font-weight:700; color:var(--br-text); }
+/* 8행 이상인 표에만 쓴다. 규격 상한은 7행이고, 그보다 많으면 기본 여백으로는
+   꼬리말과 부딪힌다. 글자 크기는 건드리지 않는다 — 줄이는 것은 행간뿐이다. */
+.br-table--tight td { padding:11px 20px; }
+.br-table--tight th { padding-bottom:12px; }
+.br-table .num, .br-table th.num {
+  font-family:var(--br-font-num); font-weight:700; color:var(--br-text);
+  text-align:right; font-variant-numeric:tabular-nums;
+}
+.br-table th.num { color:var(--br-navy); }
+
+/* 상태 칩 — 그림자 없는 알약. 색만이 아니라 글자로도 상태를 말한다 */
+.br-status {
+  display:inline-block; border-radius:var(--br-r-pill); padding:8px 18px;
+  font:600 var(--br-fs-foot)/1 var(--br-font-kr); white-space:nowrap;
+}
+/* 정상은 초록이다. 예전에는 흰 바탕에 회색 글자였는데, 그러면 "정상"이 색으로는
+   아무 말도 하지 않아 표를 훑을 때 좋은 신호와 나쁜 신호가 한눈에 갈리지 않았다.
+   세 상태가 각자 색을 갖되, 글자(정상 · 지연 · 위험)는 그대로 남는다 — 색각 이상이
+   있는 사람에게는 글자가 유일한 단서이므로 색만으로 말하지 않는다. */
+.br-status--ok    { background:var(--br-ok-bg);    border:1px solid var(--br-ok-line);    color:var(--br-ok-text); }
+.br-status--warn  { background:var(--br-warn-bg);  border:1px solid var(--br-warn-line);  color:var(--br-warn-text); }
+.br-status--late  { background:var(--br-alert-bg); border:1px solid var(--br-alert-line); color:var(--br-alert-text); }
+
+/* 다크면 위에서는 밝은 바탕 칩이 지면을 뚫는다. 글자에만 색을 주고 바탕은 비운다. */
+.br-slide--dark .br-status, .br-slide--cover .br-status {
+  background:none; border-color:var(--br-dark-line); color:var(--br-on-dark-2);
+}
+.br-slide--dark .br-status--ok,   .br-slide--cover .br-status--ok   { color:var(--br-ok-on-dark);    border-color:var(--br-ok-on-dark); }
+.br-slide--dark .br-status--warn, .br-slide--cover .br-status--warn { color:var(--br-warn-on-dark);  border-color:var(--br-warn-on-dark); }
+.br-slide--dark .br-status--late, .br-slide--cover .br-status--late { color:var(--br-alert-on-dark); border-color:var(--br-alert-on-dark); }
+
+/* 일정 타임라인 — 이름 컬럼과 기간 격자를 분리해 막대가 이름을 덮지 않게 한다 */
+.br-tl        { display:flex; flex-direction:column; gap:16px; }
+.br-tl-row    { display:grid; grid-template-columns:300px 1fr; align-items:center; gap:28px; }
+.br-tl-name   { font:700 var(--br-fs-body)/1.3 var(--br-font-kr); color:var(--br-text); }
+.br-tl-track  { display:grid; align-items:center; position:relative; min-height:44px; }
+.br-tl-head   { font:600 var(--br-fs-foot)/1 var(--br-font-label); letter-spacing:.1em;
+                color:var(--br-text-3); text-align:center; text-transform:uppercase; }
+.br-tl-bar    { height:38px; border-radius:var(--br-r-bar); transform-origin:left;
+                display:flex; align-items:center; padding:0 16px;
+                font:600 var(--br-fs-foot)/1 var(--br-font-kr); color:#fff; white-space:nowrap; }
+.br-tl-line   { position:absolute; top:0; bottom:0; border-left:1px solid var(--br-card-line); }
+/* 마일스톤 — 기간 막대와 겹치지 않게 트랙 아래 별도 줄에 둔다 */
+.br-tl-mile   { display:flex; align-items:center; gap:10px;
+                font:600 var(--br-fs-foot)/1 var(--br-font-kr); color:var(--br-navy); }
+.br-tl-dot    { width:14px; height:14px; border-radius:50%; background:var(--br-coral); flex:none; }
+
+/* 구조 도해 — scripts/diagram.py 산출물이 들어가는 자리.
+   viewBox 를 본문 폭 1728 에 1:1 로 맞춰 두었으므로 폭만 100%로 주고
+   높이는 비율대로 따라오게 둔다. 여기서 폭을 줄이면 SVG 안 글자가 같이
+   줄어 24px 하한을 깬다 — 줄여야 하면 diagram.py 의 W 를 바꾼다. */
+.br-dg { display:block; width:100%; height:auto; }
+
+/* 시간축 위 구간 블록 — 일정 타임라인(.br-tl)이 마일스톤형이라 말하지 못하는
+   "언제부터 언제까지 얼마나"를 말한다. 좌표는 diagram.py interval 이 계산한다.
+   트랙에 overflow 를 주지 않는다 — 좁은 구간의 라벨을 블록 밖으로 빼기 때문이다. */
+.br-iv       { display:flex; flex-direction:column; gap:18px; }
+.br-iv-axis  { display:flex; justify-content:space-between; margin-left:328px;
+               font:600 var(--br-fs-foot)/1 var(--br-font-num); color:var(--br-text-3); }
+/* 블록에 안 들어가 밖으로 뺀 라벨은 트랙 위로 올라간다. 줄마다 그만큼 자리를
+   비워 두지 않으면 윗줄 막대를 덮는다. diagram.py 가 쓴 단 수를 --br-iv-gap 에
+   실어 보내므로 축 아래뿐 아니라 모든 줄이 같은 띠를 갖는다. */
+.br-iv-row   { display:grid; grid-template-columns:300px 1fr; align-items:end; gap:28px;
+               padding-top:var(--br-iv-gap, 0); }
+.br-iv-name  { font:700 var(--br-fs-body)/1.3 var(--br-font-kr); color:var(--br-text); }
+.br-iv-track { position:relative; height:52px; border-radius:var(--br-r-bar);
+               background:var(--br-card-line); }
+.br-iv-seg   { position:absolute; top:0; bottom:0; border-radius:3px;
+               display:flex; align-items:center; padding:0 12px; }
+.br-legend--row { justify-content:flex-start; margin-left:328px; }
+.br-slide--dark .br-iv-name { color:var(--br-on-dark); }
+.br-slide--dark .br-iv-axis { color:var(--br-on-dark-3); }
+
+/* 장 결론 띠 — 밀도 높은 지면의 맨 아래에서 "무엇을 읽어야 하나"를 한 줄로 닫는다.
+   16:9 로 오면서 세로에 남는 자리를 여백으로 비워 두지 않고 여기에 쓴다. */
+.br-ribbon {
+  display:flex; align-items:center; gap:18px; margin-top:auto; flex-shrink:0;
+  padding:20px 28px; border-left:6px solid var(--br-mark);
+  background:var(--br-card); border-radius:0 var(--br-r-card) var(--br-r-card) 0;
+  font:600 var(--br-fs-body)/1.4 var(--br-font-kr); color:var(--br-text);
+}
+.br-ribbon b { font-weight:800; color:var(--br-mark); }
+.br-slide--dark .br-ribbon {
+  background:none; border-left-color:var(--br-on-dark-2); color:var(--br-on-dark);
+}
+.br-slide--dark .br-ribbon b { color:var(--br-on-dark); }
+
+/* 확신도 칩 — 지면의 어느 항목이 확정이고 어느 것이 아직 제안인지 밝힌다.
+   .br-status 가 진행 상태(정상·주의·지연)를 말한다면 이쪽은 근거의 굳기를 말한다.
+   어휘를 넷으로 고정한다. 늘리면 읽는 사람이 등급을 구분하지 못한다. */
+.br-conf {
+  display:inline-flex; align-items:center; flex:none; padding:4px 12px;
+  border:1px solid currentColor; border-radius:var(--br-r-pill);
+  font:700 var(--br-fs-foot)/1 var(--br-font-kr); white-space:nowrap;
+}
+.br-conf--fixed { color:var(--br-ok-text); }      /* 확정 — 정해졌다 */
+.br-conf--plan  { color:var(--br-mark); }         /* 제안 — 우리 안이다 */
+.br-conf--open  { color:var(--br-warn-text); }    /* 협의필요 — 상대가 있다 */
+.br-conf--none  { color:var(--br-text-3); }       /* 미정 — 아직 없다 */
+.br-slide--dark .br-conf--fixed, .br-slide--cover .br-conf--fixed { color:var(--br-ok-on-dark); }
+.br-slide--dark .br-conf--plan,  .br-slide--cover .br-conf--plan  { color:var(--br-on-dark); }
+.br-slide--dark .br-conf--open,  .br-slide--cover .br-conf--open  { color:var(--br-warn-on-dark); }
+.br-slide--dark .br-conf--none,  .br-slide--cover .br-conf--none  { color:var(--br-on-dark-3); }
+
+/* 기준선 */
+/* 기준선 — 평균·목표선. 파선으로 그어 데이터 마크가 아님을 형태로 말한다.
+   실선 한 줄이면 막대 테두리처럼 읽혀 눈에 걸리지 않는다. */
+.br-baseline { position:absolute; left:0; right:0; border-top:2px dashed var(--br-text-3); }
+.br-baseline > span {
+  position:absolute; right:0; top:-34px; padding:4px 12px;
+  background:var(--br-page); border-radius:var(--br-r-pill);
+  font:600 var(--br-fs-foot)/1 var(--br-font-kr); color:var(--br-text-2);
+}
+.br-slide--dark .br-baseline { border-top-color:var(--br-on-dark-3); }
+.br-slide--dark .br-baseline > span { background:var(--br-dark); color:var(--br-on-dark-2); }
+
+/* ============================================================================
+   5. 진입 애니메이션
+   슬라이드가 활성화되면 [data-deck-active]가 붙고 제목 → 본문 → 차트 순으로 등장한다.
+   딜레이 .d1~.d12 = 80ms 단위. 마지막 딜레이가 1s를 넘지 않게 한다.
+   ========================================================================= */
+
+@keyframes br-fu   { from { opacity:0; transform:translateY(22px) } }
+@keyframes br-fd   { from { opacity:0; transform:translateY(-16px) } }
+@keyframes br-fi   { from { opacity:0 } }
+@keyframes br-gx   { from { transform:scaleX(0) } }
+@keyframes br-gy   { from { transform:scaleY(0) } }
+@keyframes br-pop  { from { opacity:0; transform:scale(.8) } }
+@keyframes br-dash { from { stroke-dasharray:0 4000 } }
+
+@media (prefers-reduced-motion:no-preference) {
+  [data-deck-active] .a   { animation:br-fu  .62s cubic-bezier(.2,.75,.2,1) both }
+  [data-deck-active] .ad  { animation:br-fd  .62s cubic-bezier(.2,.75,.2,1) both }
+  [data-deck-active] .f   { animation:br-fi  .8s  ease both }
+  [data-deck-active] .bx  { animation:br-gx  .85s cubic-bezier(.2,.85,.2,1) both }
+  [data-deck-active] .by  { animation:br-gy  .85s cubic-bezier(.2,.85,.2,1) both }
+  [data-deck-active] .p   { animation:br-pop .55s cubic-bezier(.2,.85,.2,1) both }
+  [data-deck-active] .dsh { animation:br-dash 1.1s ease both }
+
+  .d1{animation-delay:.08s!important}  .d2{animation-delay:.16s!important}
+  .d3{animation-delay:.24s!important}  .d4{animation-delay:.32s!important}
+  .d5{animation-delay:.40s!important}  .d6{animation-delay:.48s!important}
+  .d7{animation-delay:.56s!important}  .d8{animation-delay:.64s!important}
+  .d9{animation-delay:.72s!important}  .d10{animation-delay:.80s!important}
+  .d11{animation-delay:.88s!important} .d12{animation-delay:.96s!important}
+}
+
+/* 등장 효과를 끄는 덱. #stage 에 data-no-anim 을 주면 전부 꺼진다.
+   주간보고처럼 정적으로 읽고 인쇄하는 문서에 쓴다. 발표용 덱은 켠 채로 둔다.
+   미디어 쿼리 밖이라 prefers-reduced-motion 과 무관하게 항상 이긴다. */
+[data-no-anim] [data-deck-active] .a,
+[data-no-anim] [data-deck-active] .ad,
+[data-no-anim] [data-deck-active] .f,
+[data-no-anim] [data-deck-active] .bx,
+[data-no-anim] [data-deck-active] .by,
+[data-no-anim] [data-deck-active] .p,
+[data-no-anim] [data-deck-active] .dsh { animation:none!important }
+

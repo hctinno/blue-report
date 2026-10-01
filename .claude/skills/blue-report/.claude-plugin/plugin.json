@@ -1,0 +1,9 @@
+{
+  "name": "blue-report",
+  "description": "블루 리포트 디자인 시스템 — 사내 공용 보고서 템플릿. **새 보고서는 기준 덱(standard)에서 시작한다** — 머리띠·꼬리띠·로고·워터마크가 장마다 자동으로 붙는다. 기준 덱 1종과 라이브 덱 1종, 발표 덱 12종(레이아웃 19종), A4 문서 4종, 웹 보드 5종, FCC/KC 보고서 14종. 단계 전개·발표 모드·레이저·대본 창. HTML·PDF·PPTX·DOCX 출력.",
+  "version": "1.4.1",
+  "author": {
+    "name": "주식회사 에이치시티"
+  },
+  "homepage": "https://github.com/hctinno/blue-report"
+}

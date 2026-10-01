@@ -1,0 +1,221 @@
+{
+  "fixture": {
+    "isDesignFixture": true,
+    "label": "DESIGN FIXTURE · 운영 분석 결과 아님",
+    "case": "0건 · 빈 결과"
+  },
+  "report": {
+    "templateId": "fcc-kc-a-executive-editorial",
+    "templateVersion": "0.1.0",
+    "reportNo": "DEMO-FCC-2026-0001",
+    "title": "무선 모듈 인증 동향과 시험기관 편중",
+    "subtitle": "2026년 상반기 FCC/KC 공개 인증 데이터 분석 · 하반기 시험 물량 배분 결정용",
+    "purpose": "executive",
+    "issuedAt": "2026.08.31",
+    "publisher": "주식회사 에이치시티",
+    "product": "Blue Report FCC/KC Insight",
+    "audience": "경영진 · 영업 책임자",
+    "preparedFor": "2026 하반기 사업계획 회의"
+  },
+  "scope": {
+    "sourceDataVersion": "FCC-PUBLIC-2026.08.15 / KC-PUBLIC-2026.08.12",
+    "sourceWatermark": "public-snapshot-20260815",
+    "appliedPeriod": "2026-01-01 ~ 2026-08-15",
+    "periodIsPartial": true,
+    "partialPeriodNote": "2026년 8월은 15일까지만 반영된 부분 기간 — 전월과 같은 자로 견주지 않음",
+    "appliedFilters": [
+      "제품군 = 무선 모듈(WLAN · BLE)",
+      "인증분류 = FCC Part 15C / KC 적합성평가",
+      "제외 = 시험 취하 · 반려 건"
+    ],
+    "populationDefinition": "기간 내 공개된 인증 건 중 필터를 통과한 전체",
+    "recordGrain": "certification",
+    "coverageComplete": "complete",
+    "recordsCoverageComplete": true,
+    "coverageNote": "모집단 전수 반환 · 표본 추출 없음"
+  },
+  "entityResolution": {
+    "resolvedName": "대상 제조사 12개사",
+    "aliases": [
+      "법인명 변경 2건",
+      "영문 표기 상이 5건"
+    ],
+    "unresolvedCount": 3,
+    "ambiguousCount": 1,
+    "method": "사업자 식별자 우선 · 실패 시 정규화 상호 + 주소 대조"
+  },
+  "metrics": [
+    {
+      "id": "cert_total",
+      "label": "기간 내 인증",
+      "value": 0,
+      "unit": "건",
+      "note": "필터 통과 건 없음"
+    },
+    {
+      "id": "entity_total",
+      "label": "제조사 수",
+      "value": 0,
+      "unit": "개사"
+    },
+    {
+      "id": "lab_share_top",
+      "label": "1위 시험기관 비중",
+      "value": "—",
+      "note": "대상 없음"
+    },
+    {
+      "id": "yoy_delta",
+      "label": "전년 동기 대비",
+      "value": "—",
+      "note": "비교 대상 없음"
+    }
+  ],
+  "charts": [
+    {
+      "id": "trend_monthly",
+      "kind": "time_series",
+      "title": "월별 인증 건수",
+      "unit": "건",
+      "axisNote": "8월은 15일까지의 부분 기간",
+      "partialFromIndex": 7,
+      "series": [
+        {
+          "name": "인증 건수",
+          "points": [
+            {
+              "label": "1월",
+              "value": 0
+            },
+            {
+              "label": "2월",
+              "value": 0
+            },
+            {
+              "label": "3월",
+              "value": 0
+            },
+            {
+              "label": "4월",
+              "value": 0
+            },
+            {
+              "label": "5월",
+              "value": 0
+            },
+            {
+              "label": "6월",
+              "value": 0
+            },
+            {
+              "label": "7월",
+              "value": 0
+            },
+            {
+              "label": "8월",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lab_rank",
+      "kind": "ranked_bar",
+      "title": "시험기관별 처리 건수",
+      "unit": "건",
+      "axisNote": "모집단 1,284건 · 상위 6개 기관",
+      "series": [
+        {
+          "name": "처리 건수",
+          "points": [
+            {
+              "label": "시험기관 A",
+              "value": 0,
+              "emphasis": "subject"
+            },
+            {
+              "label": "시험기관 B",
+              "value": 0,
+              "emphasis": "context"
+            },
+            {
+              "label": "시험기관 C",
+              "value": 0,
+              "emphasis": "context"
+            },
+            {
+              "label": "시험기관 D",
+              "value": 0,
+              "emphasis": "context"
+            },
+            {
+              "label": "시험기관 E",
+              "value": 0,
+              "emphasis": "context"
+            },
+            {
+              "label": "그 외 7개 기관 합계",
+              "value": 0,
+              "emphasis": "context"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "narrative": [
+    {
+      "origin": "server_fact",
+      "title": "검증된 사실",
+      "paragraphs": [
+        "필터를 통과한 인증 0건 — 데이터 없음이 아니라 조건에 맞는 건 없음"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "text": "필터 재검토 — 기간 또는 제품군 범위 확대",
+      "owner": "분석 담당",
+      "due": "즉시"
+    }
+  ],
+  "quality": {
+    "summary": [
+      {
+        "label": "반환 행",
+        "value": 0
+      },
+      {
+        "label": "고유 인증",
+        "value": 0
+      },
+      {
+        "label": "미해소 엔터티",
+        "value": 0
+      }
+    ],
+    "warnings": [
+      "0건은 오류가 아니라 결과 — 필터를 넓히면 달라질 수 있음"
+    ],
+    "limitations": [
+      "공개 인증 데이터는 시장점유율·매출·수주를 뜻하지 않음",
+      "처리 기간과 대기열은 공개 데이터에 없음",
+      "인증 취소·만료 이력은 이번 모집단에 미포함"
+    ]
+  },
+  "evidence": {
+    "state": "none",
+    "returned": 0,
+    "total": 0,
+    "items": []
+  },
+  "publicContacts": [],
+  "lineage": {
+    "snapshotChecksum": "sha256:3f9a1c… (fixture)",
+    "reportModelChecksum": "sha256:7b22e0… (fixture)",
+    "consistencyProjectionChecksum": "sha256:c14d88… (fixture)",
+    "lineageChecksum": "sha256:9e0af5… (fixture)",
+    "generatedBy": "Blue Report FCC/KC Insight · 보고서 모델 1.3.1 계약 기준"
+  }
+}

@@ -1,0 +1,200 @@
+/* ============================================================================
+   블루 리포트 문서판 — A4 세로 문서용 파운데이션
+   기준 지면 794x1123px (210x297mm @96dpi). 인쇄하면 그대로 A4 한 장이다.
+
+   색·타입·간격 토큰은 blue-report.css 를 그대로 쓴다. 이 파일은 토큰을
+   선언하지 않는다. 두 파일을 함께 불러야 한다.
+
+     <link rel="stylesheet" href="blue-report.css">
+     <link rel="stylesheet" href="blue-doc.css">
+
+   슬라이드와 다른 점
+     - 지면이 A4 세로다. 여러 쪽이고 쪽마다 머리말·꼬리말이 반복된다
+     - 글자 하한이 다르다. 슬라이드는 24px(멀리서 봄), 문서는 10.5pt(손에 듦)
+     - 등장 애니메이션이 없다. 읽고 인쇄하는 물건이다
+
+   지면 밖(회색 바탕·조작 막대)과 인쇄 규칙은 doc-viewer.css 에 있다.
+   덱의 blue-report.css / deck-viewer.css 와 같은 구분이다.
+   ========================================================================= */
+
+/* ── 문서 타입 척도 ────────────────────────────────────────────────────────
+   pt 로 적는다. 인쇄가 기준이기 때문이다. 1pt = 1.333px @96dpi */
+:root {
+  /* A4 는 794px 지면이다. 슬라이드용 --br-r-card(28px)를 그대로 쓰면
+     비율상 두 배 넘게 둥글어 인쇄물이 장난스러워 보인다. */
+  --bd-r-box: 10px;
+
+  --bd-fs-title:   24pt;   /* 문서 제목 */
+  --bd-fs-h1:      15pt;   /* 장 제목 */
+  --bd-fs-h2:      12pt;   /* 절 제목 */
+  --bd-fs-body:  10.5pt;   /* 본문 — 하한 */
+  --bd-fs-small:   9pt;    /* 표 안 보조 · 각주 · 쪽번호 (본문 아님) */
+
+  --bd-page-w:  794px;
+  --bd-page-h: 1123px;
+  --bd-pad:    64px 72px;  /* 지면 여백 — 좌우 19mm */
+  --bd-lh:     1.65;       /* 한글 본문 행간 */
+}
+
+/* ── 지면 ───────────────────────────────────────────────────────────────── */
+.bd-page {
+  position:relative; box-sizing:border-box;
+  width:var(--bd-page-w); height:var(--bd-page-h);
+  margin:0 auto 20px; padding:var(--bd-pad);
+  background:var(--br-card);
+  color:var(--br-text);
+  font:400 var(--bd-fs-body)/var(--bd-lh) var(--br-font-kr);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+.bd-page, .bd-page * { word-break:keep-all; overflow-wrap:break-word; }
+
+/* 본문 영역. 머리말과 꼬리말 사이를 채운다. */
+.bd-body { flex:1; min-height:0; }
+
+/* ── 머리말 · 꼬리말 ──────────────────────────────────────────────────────
+   쪽번호와 문서명은 뷰어가 채운다. 손으로 숫자를 적지 않는다. */
+.bd-head {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding-bottom:10px; margin-bottom:26px;
+  border-bottom:1px solid var(--br-hairline);
+  font:500 var(--bd-fs-small)/1 var(--br-font-kr); color:var(--br-text-3);
+}
+.bd-foot {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding-top:10px; margin-top:22px;
+  border-top:1px solid var(--br-hairline);
+  font:400 var(--bd-fs-small)/1 var(--br-font-kr); color:var(--br-text-3);
+}
+.bd-foot .bd-pageno { font-family:var(--br-font-num); font-weight:600; }
+.bd-head .bd-docno  { font-family:var(--br-font-num); font-weight:600; }
+.bd-company { font-weight:600; color:var(--br-text-2); }
+
+/* 브랜드 마크는 슬라이드와 같은 `.br-mark` 자리표시자를 쓴다.
+   apply_brand.py 가 슬라이드와 똑같이 처리하므로 브랜드 소스가 하나로 유지된다.
+   다만 슬라이드에서는 우측 상단 절대 위치이므로 문서에서는 흐름 안으로 되돌린다.
+   로고 높이도 40px(슬라이드)에서 머리말에 맞게 줄인다. 인라인 style 을 이겨야
+   해서 !important 를 쓴다. */
+.bd-head .br-mark { position:static; top:auto; right:auto; }
+.bd-head .br-logo { height:20px !important; }
+.bd-head .br-wordmark { font-size:11pt !important; color:var(--br-navy); }
+
+/* ── 표제부 — 문서 첫 쪽의 제목 블록 ───────────────────────────────────── */
+.bd-title {
+  font:900 var(--bd-fs-title)/1.3 var(--br-font-kr);
+  letter-spacing:var(--br-ls-tight); margin:0 0 14px;
+}
+.bd-subtitle { font:400 12pt/1.5 var(--br-font-kr); color:var(--br-text-2); margin:0 0 22px; }
+
+/* 문서 정보 표 — 작성자·일자·문서번호 등. 라벨 열 + 값 열. */
+.bd-meta { display:grid; grid-template-columns:96px 1fr 96px 1fr; border-top:2px solid var(--br-navy); }
+.bd-meta > div { padding:9px 12px; border-bottom:1px solid var(--br-card-line); font-size:var(--bd-fs-body); }
+.bd-meta .bd-meta-k { font-weight:700; color:var(--br-navy); background:var(--br-page); }
+
+/* ── 제목 위계 ───────────────────────────────────────────────────────────
+   장 제목에 좌측 굵은 표시를 둔다. 장식이 아니라 위계 표시다. */
+.bd-h1 {
+  font:700 var(--bd-fs-h1)/1.4 var(--br-font-kr); color:var(--br-navy);
+  margin:24px 0 12px; padding-left:12px; border-left:4px solid var(--br-cobalt);
+}
+.bd-h1:first-child { margin-top:0; }
+.bd-h2 { font:700 var(--bd-fs-h2)/1.5 var(--br-font-kr); color:var(--br-text); margin:18px 0 8px; }
+.bd-p  { margin:0 0 10px; }
+.bd-p:last-child { margin-bottom:0; }
+
+/* ── 목록 ────────────────────────────────────────────────────────────────
+   조·항·호 번호를 쓰는 사규는 .bd-list--legal 로 괄호 번호를 매긴다. */
+.bd-list { margin:0 0 12px; padding-left:20px; }
+.bd-list li { margin-bottom:6px; }
+.bd-list li:last-child { margin-bottom:0; }
+.bd-list--legal { list-style:none; padding-left:0; counter-reset:bd-legal; }
+.bd-list--legal > li { counter-increment:bd-legal; padding-left:34px; text-indent:-34px; }
+.bd-list--legal > li::before {
+  content:"(" counter(bd-legal) ") "; display:inline-block; width:34px; text-indent:0;
+  font-family:var(--br-font-num); font-weight:600; color:var(--br-navy);
+}
+
+/* ── 표 ──────────────────────────────────────────────────────────────────
+   슬라이드 표와 같은 처리(2px 딥네이비 머리글 + 헤어라인)를 문서 크기로 옮긴다. */
+.bd-table { width:100%; border-collapse:collapse; font-size:var(--bd-fs-body); margin:0 0 12px; }
+.bd-table th {
+  text-align:left; padding:8px 10px; background:var(--br-page);
+  font-weight:700; color:var(--br-navy);
+  border-top:2px solid var(--br-navy); border-bottom:1px solid var(--br-navy);
+}
+.bd-table td { padding:8px 10px; border-bottom:1px solid var(--br-card-line); vertical-align:top; }
+.bd-table .num { font-family:var(--br-font-num); font-weight:600; text-align:right;
+                 font-variant-numeric:tabular-nums; }
+.bd-table--grid th, .bd-table--grid td { border:1px solid var(--br-card-line); }
+.bd-table--grid th { border-color:var(--br-navy); }
+
+/* ── 강조와 상태 ─────────────────────────────────────────────────────────── */
+.bd-key  { font-weight:700; color:var(--br-navy); }
+.bd-chip {
+  display:inline-block; border-radius:var(--br-r-pill); padding:2px 10px;
+  font:600 var(--bd-fs-small)/1.5 var(--br-font-kr); white-space:nowrap;
+  border:1px solid var(--br-chip-line); color:var(--br-text-2); background:var(--br-card);
+}
+.bd-chip--warn { background:var(--br-warn-bg);  border-color:var(--br-warn-line);  color:var(--br-warn-text); }
+.bd-chip--late { background:var(--br-alert-bg); border-color:var(--br-coral);      color:var(--br-alert-text); }
+
+/* ── 목차 ────────────────────────────────────────────────────────────────
+   장 제목과 쪽번호 사이를 점선으로 잇는다. 쪽번호는 손으로 적는다 —
+   꼬리말 쪽번호와 달리 목차는 문서를 짠 사람이 아는 값이다. */
+.bd-toc { list-style:none; margin:0 0 12px; padding:0; }
+.bd-toc li { display:flex; align-items:baseline; gap:10px; margin-bottom:9px; }
+.bd-toc li:last-child { margin-bottom:0; }
+.bd-toc .bd-toc-t { font-weight:700; color:var(--br-navy); }
+.bd-toc .bd-toc-d { flex:1; border-bottom:1px dotted var(--br-chip-line); }
+.bd-toc .bd-toc-p { font-family:var(--br-font-num); font-weight:600; color:var(--br-navy); }
+.bd-toc li.bd-toc--sub { padding-left:20px; }
+.bd-toc li.bd-toc--sub .bd-toc-t { font-weight:400; color:var(--br-text-2); }
+
+/* ── 절차 단계 ───────────────────────────────────────────────────────────
+   매뉴얼의 본체다. 번호를 손으로 적지 않는다 — 단계를 끼워 넣어도 다시 매겨진다. */
+.bd-steps { counter-reset:bd-step; margin:0 0 12px; }
+.bd-step { position:relative; padding-left:40px; margin-bottom:14px; counter-increment:bd-step; }
+.bd-step:last-child { margin-bottom:0; }
+.bd-step::before {
+  content:counter(bd-step); position:absolute; left:0; top:0;
+  width:26px; height:26px; border-radius:var(--br-r-pill);
+  background:var(--br-navy); color:var(--br-on-dark);
+  font:700 10pt/26px var(--br-font-num); text-align:center;
+}
+.bd-step .bd-step-t { display:block; font-weight:700; color:var(--br-navy); margin-bottom:4px; }
+
+/* ── 화면 캡처·도해 자리 ─────────────────────────────────────────────────
+   .bd-figure-box 를 실제 <img> 로 갈아 끼운다. 자리를 비워 두지 않는다. */
+.bd-figure { border:1px solid var(--br-card-line); border-radius:var(--bd-r-box);
+             background:var(--br-page); margin:0 0 12px; overflow:hidden; }
+.bd-figure .bd-figure-box {
+  height:150px; display:flex; align-items:center; justify-content:center;
+  color:var(--br-text-2); font-size:var(--bd-fs-body);
+}
+.bd-figure img { display:block; width:100%; }
+.bd-figure figcaption {
+  padding:8px 12px; border-top:1px solid var(--br-card-line);
+  font-size:var(--bd-fs-body); color:var(--br-text-2);
+}
+
+/* 주의 상자 — 매뉴얼의 경고, 사규의 단서 조항에 쓴다. */
+.bd-callout {
+  border:1px solid var(--br-warn-line); background:var(--br-warn-bg); color:var(--br-warn-text);
+  border-radius:var(--bd-r-box); padding:12px 16px; margin:0 0 12px;
+}
+
+.bd-callout--danger { border-color:var(--br-coral); background:var(--br-alert-bg); color:var(--br-alert-text); }
+.bd-callout--info   { border-color:var(--br-cobalt); background:var(--br-page); color:var(--br-navy); }
+.bd-callout .bd-callout-k { display:block; font-weight:700; margin-bottom:4px; }
+
+/* 서명란 — 결재·확인이 필요한 문서에 쓴다.
+   .bd-body 안이 아니라 .bd-page 직계로 둔다. .bd-page 가 세로 flex 이고
+   .bd-body 가 flex:1 이므로 그것만으로 지면 바닥에 붙는다. 안에 두면
+   본문 흐름을 따라 중간에 떠 버린다. */
+.bd-sign { display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:16px; margin-top:20px; }
+.bd-sign > div { border:1px solid var(--br-card-line); }
+.bd-sign .bd-sign-k {
+  padding:7px 10px; background:var(--br-page); border-bottom:1px solid var(--br-card-line);
+  font:600 var(--bd-fs-small)/1 var(--br-font-kr); color:var(--br-navy); text-align:center;
+}
+.bd-sign .bd-sign-v { height:56px; }

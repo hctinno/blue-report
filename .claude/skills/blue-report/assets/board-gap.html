@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AX 공백 실행점검</title>
+
+<!-- 색·폰트는 blue-report.css, 웹 크기·부품은 blue-web.css. 두 파일을 함께 부른다 -->
+<link rel="stylesheet" href="blue-report.css">
+<link rel="stylesheet" href="blue-web.css">
+</head>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     점검보드 — 상위 공백 하나에 대응 항목 여럿을 매달아 "메웠는가"를 세는 형태.
+     쓰는 자리 — 두 체계(상위 지적 · 하위 실사)를 대조해 빠진 칸을 찾을 때.
+
+     원본은 IBM Plex · 자체 12색 팔레트 · 다크 모드를 따로 들고 있었다. 넷 중
+     규격에서 가장 멀리 나간 벌이라 이설하며 셋을 전부 버린다. 다크 모드를 되살리지
+     않는 이유는 규격이 다크면을 표지·간지 2종으로 한정하기 때문이다 — 지면 전체를
+     뒤집으면 데이터 마크 대비를 두 벌로 관리해야 한다.
+     ══════════════════════════════════════════════════════════════════ -->
+<body class="bw">
+
+<nav class="bw-rail" aria-label="보드 차례">
+  <div class="br-mark" data-on="dark"><!-- 로고 자리: apply_brand.py 가 brand.json 의 logo(다크용)·logoOnLight(밝은면용)로 교체한다 --><span class="br-wordmark">COMPANY NAME</span></div>
+  <h1>AX 공백<br>실행점검</h1>
+  <span class="bw-rail-sub">Gap Check</span>
+  <a href="#s01"><i>01</i>공백 17건</a>
+  <a href="#s02"><i>02</i>기존 항목 42개</a>
+  <a href="#s03"><i>03</i>09-06 산출물</a>
+  <a href="#s04"><i>04</i>2차 갱신</a>
+  <a href="#s05"><i>05</i>통합 발견</a>
+  <a href="#s06"><i>06</i>지금 무엇부터</a>
+  <a href="#s07"><i>07</i>한계</a>
+  <p class="bw-rail-foot"><b>기준일 2026-08-29</b>
+    갱신 2026-09-06<br>
+    SSOT · 마스터 문서 v1.0</p>
+</nav>
+
+<main class="bw-main">
+<header class="bw-top">
+  <h1>준비된 둘은 실물로, 나머지는 그대로</h1>
+  <div class="bw-meta">
+    <span>기준일 <b class="bw-mono">2026-08-29</b> · 갱신 <b class="bw-mono">2026-09-06</b></span>
+    <span>부모 <b>운영_실행팩_v1.md</b> 1장</span>
+    <span>SSOT <b>Master_Operating_Plan_2026_v1.0</b></span>
+  </div>
+</header>
+
+<p class="bw-lede">실행팩이 지적한 <b>공백 17건</b>을 부모로 두고 그 아래 <b>63개 항목</b>으로 "지금 손에 무엇이 있는가"를 확인. 두 체계 분리 운영 시 "부족한 게 17개냐 21개냐"가 되므로 부모-자식으로 결합.</p>
+
+
+  <div class="bw-grid bw-grid--2">
+    <div class="bw-card">
+  <h3>마스터 문서가 정의한 것</h3>
+  <p class="bw-src">공백이 아니라 이미 문서에 있는 항목 — 판정 기준은 "실제로 했는가"</p>
+  <div class="bw-meter" role="img" aria-label="42개 중 있음 31, 부분 4, 없음 7">
+        <span class="bw-m--ok" style="flex:31">31</span>
+        <span class="bw-m--part" style="flex:4">4</span>
+        <span class="bw-m--gap" style="flex:7">7</span>
+      </div>
+  <div class="bw-meter-key">
+        <div><span class="bw-dot bw-m--ok"></span><b class="bw-mono">31</b> 있음</div>
+        <div><span class="bw-dot bw-m--part"></span><b class="bw-mono">6</b> 부분</div>
+        <div><span class="bw-dot bw-m--gap"></span><b class="bw-mono">5</b> 없음</div>
+</div>
+    </div>
+    <div class="bw-card bw-card--late">
+  <h3>실행팩이 지적한 공백</h3>
+  <p class="bw-src">17건의 공백에 대응하는 고유 항목 21개 — 판정 기준은 "메웠는가"</p>
+  <div class="bw-meter" role="img" aria-label="21개 중 있음 2, 부분 7, 없음 12">
+        <span class="bw-m--ok" style="flex:2">2</span>
+        <span class="bw-m--part" style="flex:7">7</span>
+        <span class="bw-m--gap" style="flex:12">12</span>
+      </div>
+  <div class="bw-meter-key">
+        <div><span class="bw-dot bw-m--ok"></span><b class="bw-mono">2</b> 있음</div>
+        <div><span class="bw-dot bw-m--part"></span><b class="bw-mono">7</b> 부분</div>
+        <div><span class="bw-dot bw-m--gap"></span><b class="bw-mono">12</b> 없음</div>
+</div>
+    </div>
+  </div>
+
+  <p class="bw-callout bw-callout--key"><strong>부족한 것은 마스터 문서가 아니라, 실행팩이 이미 짚어준 공백의 미해소.</strong> 마스터 정의 42개 중 32개 확보, 실행팩 지적 공백 대응 21개 중 12개 공란. 전체 63개 중 있음 34 · 부분 13 · 없음 16.<br><b>2026-09-06 1차 갱신</b> — 최초 실사(있음 33 · 부분 9 · 없음 21) 대비 없음 4건이 부분으로 상승 · 있음 증가 0.<br><b>같은 날 2차 갱신</b> — <b>H4 공통자산 6종 6/6 완성</b>과 <b>Track B 후보 1·2순위 제안</b>으로 <b>있음이 34로 최초 증가.</b> Recipe·Common Component 2종은 등록 0건, Track B 착수조건 3개는 여전히 [미정].</p>
+
+  <section class="bw-sec" id="s01">
+    <h2>공백 17건 현황<em>01</em></h2>
+    <p class="bw-lede">실행팩 1장의 분류(즉시 / 10~12월 / 2027) 그대로 유지. 오른쪽은 대응하는 실사 항목과 그 상태.</p>
+    <div id="gaps"></div>
+  </section>
+
+  <section class="bw-sec" id="s02">
+    <h2>마스터 문서 기존 항목 42개<em>02</em></h2>
+    <p class="bw-lede">공백이 아니라 문서가 이미 정의한 것. 판정 기준은 "정의됐는가"가 아니라 <b>실제로 했는가</b>.</p>
+
+    <div class="bw-grid bw-grid--2">
+      <div class="bw-box">
+        <div class="bw-box-h"><b>부분 — 값이 비었거나 충돌한다</b><span class="bw-mono">6건</span></div>
+        <div class="bw-scroll"><table class="bw-table">
+          <tbody>
+            <tr><td class="bw-mono">A1</td><td><b>조직 공식 명칭</b><span class="bw-src">마스터 1장 [미정] · O14 (기한 09-30)</span></td></tr>
+            <tr><td class="bw-mono">D1</td><td><b>데이터 등급 체계</b> <span class="bw-s bw-s--warn">협의필요</span><span class="bw-src">마스터 G1~G3도 워크북 D1~D4도 확정된 적 없는 예시. 자료소유조직·품질 협의로 정의</span></td></tr>
+            <tr><td class="bw-mono">G5</td><td><b>KPI 트래커</b><span class="bw-src">13지표 중 Baseline 9개 공란 → 수식이 "착수불가" 반환</span></td></tr>
+            <tr><td class="bw-mono">J4</td><td><b>예산 Tier</b><span class="bw-src">Tier 0·1·2 구분만. 승인 없음 · O13</span></td></tr>
+            <tr><td class="bw-mono">G2</td><td><b>Track B 후보 선정</b> <span class="bw-tag bw-tag--new">09-06</span><span class="bw-src">1·2순위 제안 완료(후보확정안_v1.md). 착수조건(표46) 7개 중 3개 — 업무책임·실무담당·검수 — 는 O01 미확정으로 [미정], 승인 전</span></td></tr>
+            <tr><td class="bw-mono">D7</td><td><b>자료소유조직 목록</b> <span class="bw-tag bw-tag--new">09-06</span><span class="bw-src">초안 34종 작성. 소유 조직 34종 전부 [미정] — 실제 조직 확인이 O26의 본체</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="bw-box">
+        <div class="bw-box-h"><b>없음 — 하라고 했는데 아직 안 한 것</b><span class="bw-mono">4건</span></div>
+        <div class="bw-scroll"><table class="bw-table">
+          <tbody>
+            <tr><td class="bw-mono">A5</td><td><b>구성원 4인 실제 투입 확약</b><span class="bw-src">O01 최상 · D-9 — 10~12월 계획 전체가 허구화</span></td></tr>
+            <tr><td class="bw-mono">C3</td><td><b>실태조사 실제 발송</b><span class="bw-src">O02 — 조사에 4~6주. 9월에 안 나가면 10월 Inventory 불가</span></td></tr>
+            <tr><td class="bw-mono">F4</td><td><b>서버 사양·활용률 실측</b><span class="bw-src">O06 — 증설 근거 작성 불가</span></td></tr>
+            <tr><td class="bw-mono">F6</td><td><b>도구 6종 선정</b><span class="bw-src">O12 — 마스터 9.1은 기능 요건만 정의</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="bw-box">
+      <div class="bw-box-h"><b>있음 — 바로 쓸 수 있다</b><span class="bw-mono">32건</span></div>
+      <div class="bw-rows" id="have"></div>
+    </div>
+  </section>
+
+
+  <section class="bw-sec" id="s03">
+    <h2>2026-09-06에 만든 것<em>03</em></h2>
+    <p class="bw-lede">즉시 제작 가능한 것과 사람이 필요한 것을 분리. 넷 다 선행조건 없어 즉시 제작, <b>넷 다 '있음'이 아니라 '부분'</b>. 양식은 발송해야 데이터, 문안은 원문 삽입해야 반영, 목록은 소유자 기입해야 협의 가능.</p>
+    <div class="bw-box">
+      <div class="bw-box-h"><b>산출물 4건</b><span class="bw-mono">전부 부분</span></div>
+      <div class="bw-scroll"><table class="bw-table">
+        <thead><tr><th>산출물</th><th>내용</th><th>닫은 공백</th><th>남은 단계</th></tr></thead>
+        <tbody>
+          <tr><td class="bw-mono">trackers/실태조사_양식.xlsx</td><td>조사양식 41필드 · 계약조항 검증 9항목×5블록 · Shadow AI 무기명 설문 10문항 · 재무 전표조회 요청문안</td><td class="bw-mono">G11 · G3 · G4</td><td><b>발송</b> — 권역장 명의 · 회신기한 2주</td></tr>
+          <tr><td class="bw-mono">docs/04_공통자산/Template_Problem_Card_v1.md</td><td>부록 D 10항목 + 기준선 6단계 측정기록 + 표46 착수조건 대조</td><td class="bw-mono">G14 · H4</td><td>첫 실사용 후 개정</td></tr>
+          <tr><td class="bw-mono">docs/운영/마스터_개정반영안_v1.1.md</td><td>삽입 10곳 문안 · 신설 부록 C-2(계약조항 9항목)·D-2(측정 프로토콜)</td><td class="bw-mono">G11 · G14</td><td><b>.docx 삽입</b> — 관리자</td></tr>
+          <tr><td class="bw-mono">docs/운영/자료소유조직_목록.md</td><td>데이터 34종 × 6계통 · 17025 직결 13종 · 임시 G3 30종</td><td class="bw-mono">D7 → O26·O27</td><td><b>소유 조직 34종 확인</b> — 전부 [미정]</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <p class="bw-lede"><b>미제작 항목</b> — 규제 축 문안(G6·G7·G8·G9)은 <b>법무·품질 리소스 배정 전</b>이라 AX 단독 작성 보류. 추적기 O31~O33은 <b>기한 미합의</b>로 등록 보류. 임시수칙·창구 개설은 전사 공지·계정 생성 권한 필요.</p>
+  </section>
+
+  <section class="bw-sec" id="s04">
+    <h2>같은 날 2차 갱신 — H4·Track B<em>04</em></h2>
+    <p class="bw-lede">B1·B2(Track B 확정안)와 H4(공통자산 6종 실물)도 선행조건 없음. 마스터 원문(11.2·14.2 표46·표56)의 필요한 표를 그대로 전기 · 신규 창작 내용 0건.</p>
+    <div class="bw-box">
+      <div class="bw-box-h"><b>산출물 6건</b><span class="bw-mono">H4 5건 · Track B 1건</span></div>
+      <div class="bw-scroll"><table class="bw-table">
+        <thead><tr><th>산출물</th><th>내용</th><th>닫은 공백</th><th>남은 단계</th></tr></thead>
+        <tbody>
+          <tr><td class="bw-mono">docs/04_공통자산/Checklist_공통자산_v1.md</td><td>부록 E(표69) 5단계 + 부록 F 7항목 원문</td><td class="bw-mono">H4</td><td>실사용(Track B 착수)</td></tr>
+          <tr><td class="bw-mono">docs/04_공통자산/Eval_Method_카드_v1.md</td><td>표48 성과지표 + 표49 종료판정 연계 양식</td><td class="bw-mono">H4</td><td>첫 실사용 후 개정</td></tr>
+          <tr><td class="bw-mono">docs/04_공통자산/Runbook_템플릿_v1.md</td><td>부록 E "운영 전" 관문 기반</td><td class="bw-mono">H4</td><td>문의처는 O25 확정 후</td></tr>
+          <tr><td class="bw-mono">docs/04_공통자산/Recipe_등록양식_v1.md</td><td>등록기준 + 양식만. <b>등록 0건</b></td><td class="bw-mono">H4</td><td>Track B 첫 사례 발생 후</td></tr>
+          <tr><td class="bw-mono">docs/04_공통자산/Common_Component_등록대장_v1.md</td><td>등록기준 + 대장만. <b>등록 0건</b></td><td class="bw-mono">H4</td><td>표49 "공통화" 판정 이후</td></tr>
+          <tr><td class="bw-mono">docs/운영/후보확정안_v1.md</td><td>벤치마킹 B1·B2 + D7 데이터 지도 통합 — 1순위 지식챗봇 · 2순위 성적서 자동화(노코드 조건)</td><td class="bw-mono">G2(마스터)</td><td>실무팀장·Champion 지정(O01) → Problem Card 작성</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <p class="bw-lede"><b>Recipe·Common Component는 의도적 공란.</b> 마스터 표56 생성원칙이 "실제 사례에서 추출"·"운영책임 확인 후 등록"이므로 Track B 착수 전 기입은 허구 사례. 등록 형식과 기준만 제작.</p>
+  </section>
+
+  <section class="bw-sec" id="s05">
+    <h2>통합에서 발견한 것<em>05</em></h2>
+    <p class="bw-lede">두 체계 대조 없이는 드러나지 않았을 것들.</p>
+
+    <div class="bw-card bw-card--edge">
+      <h3>앞선 실사가 놓친 공백 2건 — 이번 회차 보완</h3>
+      <p><strong>G8 생성형 AI 표시·고지 의무</strong> — 실사의 '규제·인정' 영역은 법령 적용 판정과 인정심사만 포괄, <strong>산출물의 사외 반출 시 표시 의무</strong>는 항목 자체 부재. → <b class="bw-mono">E7</b> 추가</p>
+      <p><strong>G15 사업기회 축(Track C)</strong> — 실사 10개 영역 전부 <strong>내부 운영</strong> 관점 · 사업기회 수용 영역 부재. → <b class="bw-mono">J6</b> 추가</p>
+      <p>실사 단독으로는 60개 완결로 보이나 부모 체계와 대조 시 두 칸 공란. <strong>두 체계를 합친 이유.</strong></p>
+    </div>
+
+    <div class="bw-card bw-card--ok">
+      <h3>이미 답이 준비된 공백 2건 — 이관만 필요</h3>
+      <p><strong>G11 계약조항 체크리스트</strong> — 실행팩 2.2에 <strong>9개 항목 완비</strong>. 실태조사 양식에 필드 추가만으로 종결.</p>
+      <p><strong>G14 기준선 측정 방법론</strong> — 실행팩 2.3에 <strong>6단계 프로토콜 완비</strong>. 마스터 부록 D 반영만으로 종결.</p>
+      <p>공백 17건 중 이 둘은 사실상 해결 상태. <strong>반나절 규모 문서 작업</strong>만 잔존.</p>
+    </div>
+
+    <div class="bw-card bw-card--edge">
+      <h3>문서 충돌 2건 — 관리자 결정으로 해소 <span class="bw-tag bw-tag--new">2026-08-29</span></h3>
+      <p><strong>앞선 분석의 "충돌" 분류는 오판.</strong> 1건은 애초에 충돌이 아니며 나머지 1건은 마스터가 이미 정리한 사안.</p>
+
+      <p style="margin-bottom:6px"><strong>① 데이터 등급 — 충돌이 아니라 양쪽 다 예시</strong> <span class="bw-s bw-s--warn">협의필요</span></p>
+      <p><strong>마스터의 3등급 확정 선언 이력 0건.</strong> 표 33은 데이터 분류를 "AX 책임 = 사용경로 <b>초안</b> / 협업조직 책임 = <b>자료소유조직: 민감도 확인</b>"으로 규정, 표 32는 온프레미스 경로에 "Data Owner 조건 필요", 표 34는 예외 처리를 "Data Owner 확인"에서 시작.</p>
+      <div class="bw-cmp">
+        <div class="bw-cmp-h"><div>항목</div><div>마스터 문서 (SSOT)</div><div>유스케이스 워크북</div></div>
+        <div><div>등급</div><div class="bw-cmp-a">G1 일반 · G2 사내 · G3 제한</div><div class="bw-cmp-b">D1 · D2 · D3 · D4</div></div>
+        <div><div>구획</div><div class="bw-cmp-a">허용경로 Matrix</div><div class="bw-cmp-b">Zone A / B / C</div></div>
+        <div><div>최고 등급</div><div class="bw-cmp-a">G3 제한</div><div class="bw-cmp-b">D4 — 기밀·수출통제 원자료</div></div>
+      </div>
+      <p><strong>결정 —</strong> 위 두 벌은 모두 <strong>예시</strong>. 정식 등급은 <strong>해당 데이터의 실제 관리 조직 + 품질조직 협의로 정의</strong>. 마스터가 이미 지정한 절차이며 미실행 상태. <strong>마스터 수정이 아니라 협의 실행이 과제.</strong></p>
+      <p class="bw-callout bw-callout--key"><strong>이 결정은 O24(D-9 임시수칙)의 차단 요인이 아님.</strong> 부록 F는 <strong>행동 기준 7개 질문</strong>이며 등급 기준이 아님. 임시수칙에 <em>"이 구분은 9~12월 임시이며 정식 등급은 자료소유조직·품질 협의로 확정"</em> 명시 후 그대로 배포. <strong>확정된 것처럼 배포하는 쪽이 더 위험.</strong></p>
+
+      <p style="margin-bottom:6px"><strong>② 90일 실행계획 — 마스터가 이미 하향 조정</strong></p>
+      <div class="bw-cmp">
+        <div class="bw-cmp-h"><div>항목</div><div>마스터 문서 (SSOT)</div><div>유스케이스 워크북</div></div>
+        <div><div>보고 라인</div><div class="bw-cmp-a">권역장</div><div class="bw-cmp-b">CEO 또는 COO 직보고</div></div>
+        <div><div>9월 성격</div><div class="bw-cmp-a">성과가 아니라 조직전환·현황파악</div><div class="bw-cmp-b">W1~W4에 실사·공지·스코어링·과제 3건 확정·Baseline 실측·킥오프</div></div>
+        <div><div>Track B WIP</div><div class="bw-cmp-a">상한 1건</div><div class="bw-cmp-b">과제 1·2·3 스프린트 병행</div></div>
+        <div><div>파일럿</div><div class="bw-cmp-a">"2건 완료를 성과로 보지 않는다"</div><div class="bw-cmp-b">W5~W10에 3건 스프린트</div></div>
+        <div><div>교육</div><div class="bw-cmp-a">L0 안내 수준</div><div class="bw-cmp-b">전직원 2시간 · 이수율 40%</div></div>
+      </div>
+      <p>마스터 <b>표 5</b>(전면 개정 방향)에서 <em>"9월 준비 완료 및 도구·규칙 일괄 구축"</em> → <em>"9월은 조직전환·현황파악"</em>, <em>"Track B 2건 착수·1건 이상 PASS"</em> → <em>"후보 1건·기준선 설계를 필수, PoC는 권고·도전"</em>으로 이미 하향.</p>
+      <p><strong>결정 —</strong> 워크북 90일 계획은 <strong>마스터 이전 구상</strong>이므로 <strong>참고용 초안으로 강등</strong>. 2026년 9~12월의 성격은 <strong>기반 마련 · 인큐베이팅 · 역량 육성 · 목표와 방향성 구체화 · 2027 준비</strong>.</p>
+    </div>
+
+    <div class="bw-card bw-card--edge">
+      <h3>협의 착수 불가 — 상대 미정의 <span class="bw-tag bw-tag--new">D7</span></h3>
+      <p>마스터의 표기는 "<strong>자료소유조직</strong>" 한 낱말뿐. <strong>데이터별 소유자를 적은 표는 73개 중 0건.</strong> 표 33은 영역 단위 협업조직만 수록, 표 34는 소유자 목록이 아니라 절차 흐름.</p>
+      <div class="bw-cmp">
+        <div class="bw-cmp-h"><div>데이터 종류</div><div>소유 조직</div><div>품질 관여</div></div>
+        <div><div>시험 원자료·성적서</div><div class="bw-cmp-a">시험조직</div><div class="bw-cmp-b">17025 직결</div></div>
+        <div><div>교정 원자료·성적서</div><div class="bw-cmp-a">교정조직</div><div class="bw-cmp-b">17025 직결</div></div>
+        <div><div>GLP 원자료</div><div class="bw-cmp-a">GLP 담당</div><div class="bw-cmp-b">규정 직결</div></div>
+        <div><div>기밀·수출통제 자료</div><div class="bw-cmp-a">별도 담당 + 법무</div><div>—</div></div>
+        <div><div>고객 계약·NDA</div><div class="bw-cmp-a">영업·계약 담당</div><div>—</div></div>
+        <div><div>인사·재무 자료</div><div class="bw-cmp-a">인사·재무</div><div>—</div></div>
+      </div>
+      <p><strong>선행 작업은 "데이터 종류 × 소유 조직" 목록.</strong> 반나절~1일 규모 초안이며 부재 시 협의 일정 수립 자체가 불가. 품질조직은 17025 관점에서 <strong>전 건 공통</strong> 참여.</p>
+    </div>
+
+    <div class="bw-card bw-card--edge">
+      <h3>2026년 "역량"을 세는 방법 <span class="bw-tag bw-tag--new">제안</span></h3>
+      <p>기반·인큐베이팅·역량·방향성은 <strong>판정 불가능한 낱말</strong>. 연말 "그래서 뭐가 늘었나" 질의에 답변 근거 부재. 효율 수치가 아니면서 <strong>계수 가능한 수</strong>로 증거를 사전 고정.</p>
+      <div class="bw-cmp bw-cmp--lead">
+        <div class="bw-cmp-h"><div>증거</div><div>현재</div><div>왜 이것인가</div></div>
+        <div><div>Champion이 <b>스스로 작성한</b> Problem Card 수</div><div class="bw-cmp-b">0</div><div>대필 시 역량이 아니라 AX 작업량</div></div>
+        <div><div>공통자산 형식 완성 종수 (전체 6종 중)</div><div class="bw-cmp-a">6</div><div>형식은 6/6. 실사용(등록) 0건 — Recipe·Common Component는 등록대장만 (H4)</div></div>
+        <div><div>Track A <b>L1~L2를 재현 가능한 AX 인원 수</b></div><div class="bw-cmp-b">0</div><div>"핵심영역 최소 2명 재현" 기준과 직결</div></div>
+        <div><div><b>Gate를 실제로 통과시킨 건수</b> (G0→G1 이상)</div><div class="bw-cmp-b">0</div><div>구조는 완비 · 통과 실적 0건</div></div>
+      </div>
+      <p>넷 다 <strong>기준선 없이 보고 가능</strong>하며 "성과 수치를 약속하지 않는다"는 원칙과 무충돌.</p>
+    </div>
+
+    <div class="bw-card bw-card--ok">
+      <h3>전직원 안내 자료 — 초안 완성, 배포는 대기 <span class="bw-tag bw-tag--new">I6</span></h3>
+      <p><span class="bw-mono">decks/전직원_활용원칙.html</span> · 블루 리포트 <span class="bw-mono">training</span> 덱 10장. <strong>핵심은 전산팀 비유.</strong> 마스터 73개 표에 "전산팀" 언급 0건이나 이 비유가 표 63의 전직원 핵심 메시지를 논쟁 없이 전달 — 컴퓨터 도입 당시 전산팀이 전 직원의 엑셀을 대행하지 않았다는 것은 설득이 불필요한 사실.</p>
+      <div class="bw-cmp bw-cmp--lead">
+        <div class="bw-cmp-h"><div>원본에서 고친 것</div><div>이유</div><div>위치</div></div>
+        <div><div><b>데이터 3등급 · 승인 서비스 · 금지사항</b> 추가</div><div class="bw-cmp-b">표 4의 전직원 필수 항목이나 원본 누락</div><div>7장</div></div>
+        <div><div><b>착수조건 5개 → 7개 복원</b></div><div class="bw-cmp-b">5개만 기입해 상신 시 G2 반려</div><div>8장</div></div>
+        <div><div><b>고영향 AI 경고</b> 추가</div><div class="bw-cmp-b">AI 채용을 무단서 예시로 사용 (G7 공백)</div><div>8장</div></div>
+        <div><div>Self-Service / Co-Build / Strategic AX 제거</div><div class="bw-cmp-b">마스터에 없는 어휘 — 세 번째 체계 발생</div><div>9장</div></div>
+      </div>
+      <p><strong>문체</strong> — 슬라이드 본문은 규격대로 개조식, 발표자 존댓말은 <span class="bw-mono">data-notes</span>(N 키)에 분리 수록. 전직원 설득문을 개조식 단독으로 쓰면 냉담하고, 규격 위반 시 검사에 적발.</p>
+      <p><strong>배포 대기 이유</strong> — <span class="bw-mono">[미정]</span> 2개소 잔존. <strong>접수 창구</strong>(G2·B1)와 <strong>승인 서비스 목록</strong>(C3 실태조사). 미기입 상태 배포 시 "그래서 어디로 가져가나"에 답변 부재로 요청이 개인 메신저로 유입 — <strong>이 자료가 차단하려는 바로 그 혼란.</strong></p>
+    </div>
+  </section>
+
+  <section class="bw-sec" id="s06">
+    <h2>지금 무엇부터<em>06</em></h2>
+    <p class="bw-lede">순서 자체가 정보. 1~4는 관리자 전담이며 다른 준비로 대체 불가.</p>
+    <div id="steps"></div>
+  </section>
+
+  <section class="bw-sec" id="s07">
+    <h2>이 점검표의 한계<em>07</em></h2>
+    <div class="bw-card">
+      <ol class="bw-ol">
+        <li><strong>대조 범위는 마스터 문서와 저장소 산출물 한정.</strong> 회사 내부의 IT 인벤토리·보안 규정·품질 문서는 미확인. '없음' 21개 중 일부는 타 조직 기보유 가능성 — 9월 킥오프 확인 항목.</li>
+        <li><strong>63은 이 분석의 분류 기준</strong>이며 절대 수치가 아님. 요점은 개수가 아니라 <strong>공백 대응 21개 중 12개 없음</strong>이라는 비율.</li>
+        <li><strong>'있음'은 "작동 중"과 다른 뜻.</strong> Gate 구조는 문서상 완비 · 통과 실적 0건.</li>
+        <li><strong>G8·G15는 이번 신규 추가 항목</strong>이라 실사 근거 얕음. 세부 점검은 다음 회차 보강 예정.</li>
+        <li>기한(D-Day)은 미확정 항목 등록부 기준이며 본문 D-Day는 <strong>2026-09-06 재산정</strong>분. 등록부의 기한 자체는 미변경.</li>
+        <li><strong>2026-09-06 산출물 4건은 실사용 검증 미실시.</strong> 양식 발송 이력 0건 · Template 의 실제 Problem Card 사용 이력 0건.</li>
+        <li><strong>자료소유조직 34종은 시험인증·교정업 일반과 마스터 언급 기반 초안</strong>이며 회사 실제 보유 데이터 목록의 확인분이 아님.</li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<p class="bw-foot">원문 <span class="bw-mono">docs/운영/실행점검표.md</span> · 부모 <span class="bw-mono">운영_실행팩_v1.md</span> 1장 · 미확정 등록부 30건 전 항목 미해결<br>
+    관리자 개인 기획 초안이며 회사 승인 공식 문서가 아님.</p>
+</main>
+
+<script>
+const GAPS = [
+ ["즉시 반영 — 9월 중", [
+  ["G1","9~12월 AI 사용 규칙 부재","15.1 Phase 0","정식 기준 산출 시점은 12월. 그때까지 <b>4개월간 규칙 공백.</b> 사고 발생 시 \"기준 수립 시간이 있었으나 미수립\"으로 평가.",[["D3","AI 사용 임시수칙 1장","late"],["I6","전직원 안내 — 세미나 자료 초안 완성","warn"]],"urgent"],
+  ["G2","문의·접수 창구 없음","15.1 Phase 0","조직명 미정으로 창구 부재, <b>창구 부재 시 G0 접수 착수 불가.</b> 조직명 확정 대기 없이 진행.",[["B1","접수 창구 개설","late"],["I6","전직원 안내 — G1과 공통","warn"]],"urgent"],
+  ["G3","Shadow AI 실측이 조사범위 밖","7.3 실태조사","7.1의 대상은 회사 비용 구독 한정. <b>개인 계정 사용은 Inventory 미포착.</b> 실제 유출 경로가 바로 그쪽.",[["C4","무기명 설문 양식 10문항 — 작성 완료, 발송 대기","warn"]],""],
+  ["G4","비용 역추적 경로 미설계","7.3","결제가 개인카드·부서카드로 분산된 경우 서비스 관리자 문의로는 확인 불가. <b>가맹점명 키워드 역추적</b>이 최선.",[["C5","전표조회 요청문안·키워드 11종 — 작성 완료, 발송 대기","warn"]],""],
+  ["G5","74건 상태확인 회수 보장 없음","12.1","AX 명의 발송 시 회신율 저조. <b>권역장 명의 발송 + 기한 명시 + 미회신은 확인불가 확정</b> 사전 고지.",[["B7","74건 상태확인","warn"]],""],
+ ]],
+ ["10~12월 반영", [
+  ["G6","법·규제 컴플라이언스 축 전체 부재","신설 10장","AI 기본법·개인정보보호법의 문서 전체 등장 <b>0건.</b> 데이터 G1~G3는 법적 근거 없는 내부 분류.",[["E1","AI 기본법 적용 판정","late"],["E3","계도기간 종료 시점","late"],["E4","생성형 AI 개인정보 처리","late"]],"urgent"],
+  ["G7","고영향 AI 사전판정 없음","6.2 Gate 1","<b>인사평가·채용 AI는 고영향 영역 해당 가능성 높음.</b> Track B 대상업무의 '반복적 사전검토' 항목으로 인사 업무 유입 가능.",[["E2","고영향 판정 절차","late"]],""],
+  ["G8","생성형 AI 표시·고지 의무 미검토","8장","AI 산출물의 <b>고객 전달 시</b>(성적서·보고서·제안서) 표시 또는 고지 의무 검토 필요.",[["E7","표시·고지 의무 검토","late"]],"new"],
+  ["G9","ISO/IEC 17025 조항 매핑표 없음","신설 부록 K","인정심사원의 질의는 \"AI를 썼다\"가 아니라 <b>\"몇 조 몇 항을 어떻게 만족했는가\"</b>. 인정 리스크는 존립 문제.",[["E5","17025 조항 매핑표","late"]],""],
+  ["G10","Track A 계약 검토에 법무 축 없음","10.3, 부록 G","소유권·수정권·2차적저작물 판단은 법무 소관. <b>AX 관리자의 법률 판단은 후행 책임 문제로 직결.</b>",[["E6","법무 검토 체계","warn"],["F3","Track A 계약상 권리","late"]],""],
+  ["G11","AI 서비스 계약조항 체크리스트 없음","7.3","실행팩 2.2에 <b>9개 항목 완비</b> — 학습 미사용·보존기간·데이터 소재지·감사로그·SSO 등. <b>2026-09-06 양식 반영 완료</b>(조사양식 6필드 + 검증 시트). 원문 삽입 문안은 개정반영안 ①~⑤.",[["C6","계약조항 검증 체크리스트","ok"]],"solved"],
+  ["G12","퇴사·인사이동 트리거 프로세스 없음","7.4","입·퇴사 상태 필드는 보유하나 <b>회수 프로세스 부재.</b> 퇴사자 계정 잔존이 최빈 사고 원인.",[["C7","계정회수 프로세스","late"]],""],
+  ["G13","Eval Set의 NDA 목적범위 미검토","9.3","<b>고객 시험자료의 AI 평가 목적 사용이 NDA 목적 범위 내인지</b>는 별개 사안. Data Owner 승인 + NDA 확인을 저장 전 조건으로 설정.",[["D6","Eval Set 저장구조","warn"]],""],
+  ["G14","기준선 측정 방법론 없음","11.2, 부록 D","실행팩 2.3에 <b>6단계 프로토콜 완비</b> — 대상정의→모집단→표본→오류율→편향점검→기록. <b>2026-09-06 Template 실물 완성.</b> 원문 삽입 문안은 개정반영안 ⑥~⑨.",[["G3","기준선 측정 프로토콜","ok"]],"solved"],
+ ]],
+ ["2027 계획에 반영", [
+  ["G15","사업기회 축(Track C) 없음","Part IV","Track A(기술자립) + Track B(내부효율) 두 축 한정. <b>AI 규제 강화는 신규 시험·평가 수요를 창출.</b> 분기 1회 동향 정리만으로도 경영진 보고의 격이 상승.",[["J6","Track C 관찰 체계","late"]],"new"],
+  ["G16","RAPA PBL 투입시간이 Capacity에 없음","15.8 리스크","\"기존 업무 잔존\"은 리스크에 수록되나 <b>PBL 자체의 9~12월 Capacity 잠식</b>은 미포착.",[["H5","PBL 일정·투입 시수","late"]],""],
+  ["G17","관리자 개인 성과 판정기준 없음","15.5 성과판정","조직 성과판정은 존재하나 <b>관리자 본인의 6개월 후 평가 기준</b>은 미합의. 방치 시 연말에 \"그래서 뭘 했나\" 질의 수령.",[["A7","관리자 개인 성과기준","warn"]],""],
+ ]],
+];
+
+const HAVE = [
+ ["조직·권한","A2 미션·운영철학 · A3 하는일/않는일 경계 · A4 5인 역할·백업 · A6 책임 매트릭스(부록 B)"],
+ ["수요·과제","B2 Gate G0~G4 · B3 Gate 체크리스트(부록 E) · B4 Problem Card(부록 D) · B5 WIP·STOP 원칙 · B6 유스케이스 스코어링 28건"],
+ ["서비스 통제","C1 Inventory 양식(부록 C) · C2 실태조사 항목(7.3)"],
+ ["데이터·보안","D2 허용경로 Matrix(8.2) · D4 입력 전 체크리스트(부록 F) · D5 예외·사고 처리(8.4)"],
+ ["기술·인프라","F1 Track A L0~L4(10.2) · F2 외주협의 Agenda(부록 G) · F5 환경분리 원칙(9.2)"],
+ ["실증·성과","G1 Track B 착수조건 7개(11.2) · G4 성과지표 5종(11.4)"],
+ ["확산·역량","H1 Champion 운영원칙(13.3·13.4) · H2 교육체계 L0~L3(14.1) · H3 공통자산 6종 정의(14.2) · H4 공통자산 6종 실물(14.2·표56, 등록 0건 2종 포함)"],
+ ["보고·소통","I1 보고 캘린더 · I2 조립 매트릭스(부록 I) · I3 월별 점검표(부록 H) · I4 경영진 슬라이드 17장 · I5 킥오프 슬라이드 14장"],
+ ["관리 기반","J1 미확정 등록부 30건 · J2 변경 이력 · J3 벤치마킹 · J5 리스크 등록부(15.8)"],
+];
+
+const STEPS = [
+ ["이번 주","now","D-9 · 09-15 기한",[
+  ["구성원 4인 투입 확약 확보","원소속 팀장 4인 개별 통화 → 월별 비율 서면 확보. 구두 약속은 번복 확정","A5 · O01","2~3일"],
+  ["AI 사용 임시수칙 1장 배포","부록 F 그대로 사용. 규칙 공백 4개월 방치 불가","G1 · O24","반나절"],
+  ["접수 창구 개설","임시 메일 별칭 + 메신저 채널. 조직명 확정 대기 없이 진행","G2 · B1","1일"],
+  ["전직원 안내 배포","세미나 자료 완성. 2·3번 종료 시 [미정] 2개소 해소","G1·G2 · I6","반나절"],
+  ["실태조사 3종 발송","양식은 09-06 완성. 남은 것은 권역장 명의 발송뿐","C3 · G3·G4·G11 · O02","반나절"],
+ ]],
+ ["9월 안","","회신 리드타임 장기",[
+  ["Track A 법무 검토 의뢰","11월 1차 협의를 위해 즉시 발송 필요","G10 · O07","반나절"],
+  ["법무·품질·IT보안 킥오프 각 1회","이 셋과의 관계 설정 지연 시 11~12월 전면 병목","G6 · G9","3일"],
+  ["74건 상태확인 발송","권역장 명의 · 회신기한 명시 · 미회신은 확인불가 확정","G5 · B7","반나절"],
+  ["G11·G14 삽입 문안 완성 → .docx 삽입","문안은 09-06 완성. 삽입 위치 10곳 · 신설 부록 C-2·D-2","G11 · G14","반나절"],
+  ["자료소유조직 34종 소유자 확인","초안은 09-06 완성. 34종 전부 [미정] — 각 조직 회신 필요","D7 · O26","1주"],
+ ]],
+ ["10~12월","","규제 축 신설 — 공백 최대 구간",[
+  ["마스터 문서에 「법·규제 대응」 장 신설","현재 이 축의 문서 수록 0건","G6","—"],
+  ["Gate 1에 고영향 AI 판정 항목 추가","인사평가·채용 업무 유입 시 해당","G7","—"],
+  ["표시·고지 의무 확인 항목 추가","산출물이 사외로 나가는 경우 대비","G8","—"],
+  ["부록 K「17025 조항 매핑표」 신설","품질조직 공동작성 + KOLAS 직접 질의","G9","—"],
+  ["Track B 기준선 실측","1·2순위 제안은 09-06 완료. 실무팀장·Champion 지정(O01) 후 착수조건 확인","G2 · G5","—"],
+  ["데이터 등급 협의 결과를 마스터 8.1에 반영","D1 · 예시 → 확정","—","—"],
+  ["도구 6종 선정 · 90일 계획을 참고용 초안으로 강등","F6 · 5.3\u2461","—","—"],
+ ]],
+];
+
+// 상태 낱말 ↔ 알약 색. 색이 아니라 이 낱말이 상태를 말한다
+const LABEL={ok:"있음",warn:"부분",late:"없음"};
+
+document.getElementById('gaps').innerHTML = GAPS.map(([phase, rows]) => `
+  <p class="bw-phase">${phase}</p>
+  <div class="bw-stack">${rows.map(([id,title,loc,why,items,flag]) => `
+    <div class="bw-gap${flag==='solved'?' bw-gap--done':''}${flag==='urgent'?' bw-gap--now':''}">
+      <div class="bw-gap-id bw-mono">${id}</div>
+      <div>
+        <p class="bw-gap-t">${title}${flag==='new'?'<span class="bw-tag bw-tag--new">신규 대응</span>':''}${flag==='solved'?'<span class="bw-tag bw-tag--done">답 준비됨</span>':''}</p>
+        <p class="bw-gap-w">${why}</p>
+        <p class="bw-gap-where">인용 삽입 위치 <code>${loc}</code></p>
+      </div>
+      <div class="bw-gap-items">${items.map(([c,n,s]) =>
+        `<div><span class="bw-s bw-s--${s}">${LABEL[s]}</span><span class="bw-mono bw-src">${c}</span> ${n}</div>`
+      ).join('')}</div>
+    </div>`).join('')}
+  </div>`).join('');
+
+document.getElementById('have').innerHTML = HAVE.map(([area, list]) =>
+  `<div><b class="bw-mono">${area.slice(0,1)}</b><div><b>${area}</b><span class="bw-src">${list}</span></div></div>`
+).join('');
+
+document.getElementById('steps').innerHTML = STEPS.map(([name, cls, note, items]) => `
+  <p class="bw-phase">${name}<em>${note}</em></p>
+  <ol class="bw-steps">${items.map(([t,w,g,d],i) => `
+    <li><span class="bw-stn">${i+1}</span>
+      <div><b>${t}</b><small>${w}</small></div>
+      <span class="bw-stg">${g}</span><span class="bw-stt">${d}</span></li>`).join('')}
+  </ol>`).join('');
+</script>
+</body>
+</html>
