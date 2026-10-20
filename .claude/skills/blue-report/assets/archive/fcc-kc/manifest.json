@@ -1,0 +1,745 @@
+{
+  "manifestVersion": "0.1.0",
+  "brandProfileId": "hct_blue_report",
+  "publisher": "주식회사 에이치시티",
+  "product": "Blue Report FCC/KC Insight",
+  "designSystem": "HCT Blue Report",
+  "note": "수치·순서·순위는 서버가 정한 값을 그대로 옮긴다. 템플릿은 합계·비율·정렬을 다시 계산하지 않는다.",
+  "styleLayer": "assets/fcc-kc/fcc-kc.css",
+  "schema": "assets/fcc-kc/schemas/report-model.schema.json",
+  "selectionRules": [
+    {
+      "when": "보고 목적이 결정·승인이고 대상이 경영진",
+      "use": "fcc-kc-a-executive-editorial"
+    },
+    {
+      "when": "수치 비교·추이·순위 검토가 목적이고 대상이 실무자",
+      "use": "fcc-kc-b-analytical-dashboard"
+    },
+    {
+      "when": "재현성·근거 제출·감사 대응이 목적",
+      "use": "fcc-kc-c-evidence-dossier"
+    },
+    {
+      "when": "분석 종류가 특정되면 아래 특수 템플릿을 우선한다. 없으면 A/B/C 로 되돌아간다",
+      "use": "special/*"
+    }
+  ],
+  "templates": [
+    {
+      "templateId": "fcc-kc-a-executive-editorial",
+      "templateVersion": "0.1.0",
+      "displayName": "A — Executive Editorial",
+      "recommendedReportPurpose": "executive",
+      "recommendedLayoutProfile": "editorial",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 4,
+      "maximumPages": 6,
+      "requiredSections": [
+        "cover",
+        "verified-scope",
+        "key-findings",
+        "decisive-comparison",
+        "interpretation",
+        "recommendations",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "human-note",
+        "approval-block"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "ranked-horizontal-bar",
+        "time-series-line",
+        "partial-period-trend"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "결론 중심이라 원자료 드릴다운을 담지 않는다. 근거 전체는 C 템플릿을 쓴다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/tpl-a-executive.html",
+      "actualPages": 6
+    },
+    {
+      "templateId": "fcc-kc-b-analytical-dashboard",
+      "templateVersion": "0.1.0",
+      "displayName": "B — Analytical Dashboard",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "dashboard",
+      "defaultOrientation": "landscape",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 3,
+      "maximumPages": 8,
+      "requiredSections": [
+        "scope-contract",
+        "kpi-matrix",
+        "period-trend",
+        "cohort-comparison",
+        "composition",
+        "quality-state",
+        "evidence-drilldown"
+      ],
+      "optionalSections": [
+        "taxonomy-heatmap"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "ranked-horizontal-bar",
+        "time-series-line",
+        "cohort-comparison-chart",
+        "product-technology-heatmap"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "가로 지면이라 PPTX 이식 시 여백 계산이 A·C 와 다르다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/tpl-b-dashboard.html",
+      "actualPages": 5
+    },
+    {
+      "templateId": "fcc-kc-c-evidence-dossier",
+      "templateVersion": "0.1.0",
+      "displayName": "C — Evidence Dossier",
+      "recommendedReportPurpose": "evidence",
+      "recommendedLayoutProfile": "dossier",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 4,
+      "maximumPages": 40,
+      "requiredSections": [
+        "document-control",
+        "population-definition",
+        "server-figures-field-map",
+        "quality-exceptions",
+        "evidence-register",
+        "lineage-checksum"
+      ],
+      "optionalSections": [
+        "review-approval-block"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "evidence-coverage-indicator",
+        "entity-identity-resolution-panel"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "분량이 길어 PPTX 전량 이식을 전제하지 않는다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/tpl-c-dossier.html",
+      "actualPages": 6
+    },
+    {
+      "templateId": "fcc-kc-s-certification-trend",
+      "templateVersion": "0.1.0",
+      "displayName": "1. Certification Trend Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "partial-period-trend",
+        "time-series-line"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "부분 기간을 전체 기간과 같은 자로 견주지 않는다. 추세 변화는 인증 상태 변화가 아니다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s01-certification-trend.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-cohort-comparison",
+      "templateVersion": "0.1.0",
+      "displayName": "2. Cohort Comparison Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "cohort-comparison-chart"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "모집단·기간이 다르면 비교 가능 여부를 먼저 표시한다. 총량·변화율·구성 차이를 한 축에 섞지 않는다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s02-cohort-comparison.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-manufacturer-360",
+      "templateVersion": "0.1.0",
+      "displayName": "3. Manufacturer/Applicant 360 Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "entity-identity-resolution-panel",
+        "ranked-horizontal-bar",
+        "public-contact-table"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "관측된 인증 기록이며 시장점유율·매출이 아니다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s03-manufacturer-360.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-test-lab-360",
+      "templateVersion": "0.1.0",
+      "displayName": "4. Test Lab 360 Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "entity-identity-resolution-panel",
+        "ranked-horizontal-bar"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "순위는 모집단과 기준을 함께 적어야 성립한다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s04-test-lab-360.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-lab-flow-reentry",
+      "templateVersion": "0.1.0",
+      "displayName": "5. Lab Flow & Re-entry Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "lab-flow-diagram",
+        "transition-matrix"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "흐름 총합과 고유 엔터티 수는 다른 값이다. 관측 순서를 인과로 읽지 않는다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s05-lab-flow-reentry.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-product-technology-taxonomy",
+      "templateVersion": "0.1.0",
+      "displayName": "6. Product × Technology Taxonomy Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "product-technology-heatmap"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "다중 분류가 있으면 합이 모집단과 맞지 않는다(비가산). 그 사실을 지면에 적는다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s06-product-technology-taxonomy.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-data-quality-count-semantics",
+      "templateVersion": "0.1.0",
+      "displayName": "7. Data Quality & Count Semantics Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "count-semantics-reconciliation-panel",
+        "quality-summary-panel"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "품질 경고를 각주로 축소하지 않는다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s07-data-quality-count-semantics.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-data-version-change-digest",
+      "templateVersion": "0.1.0",
+      "displayName": "8. Data Version Change Digest",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "version-delta-cards"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "데이터셋에서 사라진 항목을 인증 취소로 단정하지 않는다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s08-data-version-change-digest.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-telematics-special",
+      "templateVersion": "0.1.0",
+      "displayName": "9. Telematics Special Analysis Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "telematics-exclusive-class-panel",
+        "telematics-aggregate-group-panel",
+        "independent-ranking-panel"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "상호배타 4분류·집계형 6그룹·독립 순위 3목록은 서로 다른 체계다. 합산하지 않는다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s09-telematics-special.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-batch-entity-review",
+      "templateVersion": "0.1.0",
+      "displayName": "10. Batch Entity Review Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "batch-entity-small-multiples"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "최대 20개. 쪽이 갈리면 열 제목과 엔터티 식별 정보를 반복한다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s10-batch-entity-review.html",
+      "actualPages": 4
+    },
+    {
+      "templateId": "fcc-kc-s-exact-evidence-contacts",
+      "templateVersion": "0.1.0",
+      "displayName": "11. Exact Evidence & Public Contacts Report",
+      "recommendedReportPurpose": "analytical",
+      "recommendedLayoutProfile": "special",
+      "defaultOrientation": "portrait",
+      "supportedFormats": [
+        "html",
+        "pdf",
+        "docx",
+        "pptx"
+      ],
+      "minimumPages": 2,
+      "maximumPages": 12,
+      "requiredSections": [
+        "verified-scope",
+        "analysis-core",
+        "quality-state",
+        "evidence-summary"
+      ],
+      "optionalSections": [
+        "ai-interpretation",
+        "human-note"
+      ],
+      "supportedVisualModules": [
+        "report-cover",
+        "document-control",
+        "verified-scope-band",
+        "server-metric-card",
+        "ai-interpretation-block",
+        "warning-limitation-banner",
+        "recommendation-action-block",
+        "quality-summary-panel",
+        "evidence-register",
+        "lineage-checksum-block",
+        "long-table-continuation",
+        "empty-state",
+        "evidence-register",
+        "public-contact-table",
+        "evidence-coverage-indicator"
+      ],
+      "sampleFixture": "fixtures/fixture-baseline.json",
+      "knownLimitations": [
+        "공개 출처에서 확인된 연락처만 싣는다. 추정 연락처를 만들지 않는다."
+      ],
+      "implementationStatus": "implemented",
+      "source": "templates/special/tpl-s11-exact-evidence-contacts.html",
+      "actualPages": 4
+    }
+  ],
+  "fixtures": [
+    "fixture-all-partial-period.json",
+    "fixture-baseline.json",
+    "fixture-batch-20-entities.json",
+    "fixture-bounded-evidence.json",
+    "fixture-five-cohorts.json",
+    "fixture-incomplete-coverage.json",
+    "fixture-long-identifiers.json",
+    "fixture-long-table.json",
+    "fixture-missing-values.json",
+    "fixture-mixed-text.json",
+    "fixture-no-public-contacts.json",
+    "fixture-single-cohort.json",
+    "fixture-unresolved-entities.json",
+    "fixture-zero-rows.json"
+  ],
+  "builder": "scripts/build_fcc_templates.py",
+  "docs": [
+    "docs/FCC_KC_REPORT_TEMPLATE_SYSTEM.md",
+    "docs/FCC_KC_REPORT_INTEGRATION_GUIDE.md"
+  ]
+}

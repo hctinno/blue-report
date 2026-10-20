@@ -1,0 +1,23 @@
+/* 문서 뷰어 전용 스타일 — 디자인 시스템이 아니라 브라우저에서 읽기 위한 껍데기.
+   문서 자체의 디자인은 blue-doc.css 에만 있다. */
+
+  html,body{margin:0;padding:0;background:#8a8f96}
+  .bd-doc{padding:24px 0 80px}
+  .bd-page{box-shadow:0 2px 14px rgba(0,0,0,.28)}
+
+  #bd-hud{position:fixed;left:0;right:0;bottom:0;display:flex;gap:18px;justify-content:center;
+          align-items:center;padding:10px;background:rgba(0,0,0,.62);color:#cfd8e3;
+          font:500 13px/1 'Barlow',sans-serif;letter-spacing:.08em;z-index:9}
+  #bd-hud button{background:none;border:1px solid #48566b;color:#cfd8e3;border-radius:4px;
+                 padding:6px 12px;font:inherit;cursor:pointer}
+  #bd-hud button:hover{border-color:#8fa4bd;color:#fff}
+
+/* 인쇄 — 지면 1장이 A4 1페이지 */
+@media print {
+  @page { size:A4 portrait; margin:0; }
+  html,body{background:#fff}
+  .bd-doc{padding:0}
+  .bd-page{margin:0;box-shadow:none;page-break-after:always}
+  .bd-page:last-child{page-break-after:auto}
+  #bd-hud{display:none!important}
+}

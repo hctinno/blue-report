@@ -1,0 +1,214 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://hct.example/schemas/h-inno-fcc-kc-report-model.schema.json",
+  "title": "Blue Report FCC/KC Insight — 보고서 fixture 계약",
+  "description": "템플릿이 읽는 값의 계약이다. 수치·순서·순위는 서버가 정한 그대로 옮겨 적는 것이며, 템플릿과 렌더러는 합계·비율·정렬을 다시 계산하지 않는다. 운영 데이터를 이 파일에 넣지 않는다.",
+  "type": "object",
+  "required": ["fixture", "report", "scope", "metrics", "quality", "lineage"],
+  "additionalProperties": false,
+  "properties": {
+    "fixture": {
+      "type": "object",
+      "description": "시안임을 지면에 찍기 위한 표시. 운영 렌더링에서는 통째로 빠진다.",
+      "required": ["isDesignFixture", "label"],
+      "properties": {
+        "isDesignFixture": { "const": true },
+        "label": { "type": "string", "default": "DESIGN FIXTURE · 운영 분석 결과 아님" },
+        "case": { "type": "string", "description": "이 fixture 가 재현하는 경우(정상·부분근거·0건 등)" }
+      }
+    },
+    "report": {
+      "type": "object",
+      "required": ["templateId", "title", "purpose", "issuedAt"],
+      "properties": {
+        "templateId": { "type": "string" },
+        "templateVersion": { "type": "string" },
+        "reportNo": { "type": "string" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "purpose": { "enum": ["executive", "analytical", "evidence"] },
+        "issuedAt": { "type": "string" },
+        "publisher": { "type": "string", "description": "발행사. 기본 HCT" },
+        "product": { "type": "string", "description": "제품 서명. Blue Report FCC/KC Insight" },
+        "audience": { "type": "string" },
+        "preparedFor": { "type": "string" }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "description": "무엇을 센 것인가. 이 계약 없이 아래 수치를 지면에 올리지 않는다.",
+      "required": ["sourceDataVersion", "appliedPeriod", "populationDefinition", "recordGrain", "coverageComplete"],
+      "properties": {
+        "sourceDataVersion": { "type": "string" },
+        "sourceWatermark": { "type": "string" },
+        "appliedPeriod": { "type": "string" },
+        "periodIsPartial": { "type": "boolean" },
+        "partialPeriodNote": { "type": "string" },
+        "appliedFilters": { "type": "array", "items": { "type": "string" } },
+        "populationDefinition": { "type": "string" },
+        "recordGrain": { "enum": ["certification", "record", "entity", "filing"] },
+        "coverageComplete": { "enum": ["complete", "bounded", "none"] },
+        "recordsCoverageComplete": { "type": "boolean" },
+        "coverageNote": { "type": "string" }
+      }
+    },
+    "entityResolution": {
+      "type": "object",
+      "properties": {
+        "resolvedName": { "type": "string" },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "unresolvedCount": { "type": "integer", "minimum": 0 },
+        "ambiguousCount": { "type": "integer", "minimum": 0 },
+        "method": { "type": "string" }
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "description": "서버가 계산한 값. id 로 슬롯에 꽂는다.",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "value"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "value": { "type": ["number", "string"] },
+          "unit": { "type": "string" },
+          "note": { "type": "string" },
+          "state": { "enum": ["normal", "warn"] }
+        }
+      }
+    },
+    "charts": {
+      "type": "array",
+      "description": "차트 사양과 계열. 값의 순서가 곧 지면의 순서다.",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "title", "series"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "enum": ["ranked_bar", "time_series", "cohort_compare", "donut", "heatmap", "transition_matrix", "flow"] },
+          "title": { "type": "string" },
+          "unit": { "type": "string" },
+          "axisNote": { "type": "string" },
+          "partialFromIndex": { "type": "integer", "description": "이 인덱스부터 부분 기간. 점선·음영으로 가른다." },
+          "series": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "points"],
+              "properties": {
+                "name": { "type": "string" },
+                "points": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["label", "value"],
+                    "properties": {
+                      "label": { "type": "string" },
+                      "value": { "type": ["number", "null"] },
+                      "displayValue": { "type": "string" },
+                      "emphasis": { "enum": ["subject", "context"] }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "narrative": {
+      "type": "array",
+      "description": "출처를 반드시 밝힌다. 서버 사실·AI 해석·사람 메모는 지면에서 갈라 보인다.",
+      "items": {
+        "type": "object",
+        "required": ["origin", "title", "paragraphs"],
+        "properties": {
+          "origin": { "enum": ["server_fact", "ai_interpretation", "human_note"] },
+          "title": { "type": "string" },
+          "paragraphs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text"],
+        "properties": {
+          "text": { "type": "string" },
+          "owner": { "type": "string" },
+          "due": { "type": "string" }
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "required": ["summary"],
+      "properties": {
+        "summary": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label": { "type": "string" },
+              "value": { "type": ["number", "string"] },
+              "note": { "type": "string" }
+            }
+          }
+        },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "limitations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "state": { "enum": ["complete", "bounded", "none"] },
+        "returned": { "type": "integer" },
+        "total": { "type": "integer" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["certificationId", "sourceRef"],
+            "properties": {
+              "certificationId": { "type": "string" },
+              "sourceRef": { "type": "string" },
+              "entity": { "type": "string" },
+              "grantedAt": { "type": "string" },
+              "state": { "enum": ["verified", "bounded"] }
+            }
+          }
+        }
+      }
+    },
+    "publicContacts": {
+      "type": "array",
+      "description": "공개 출처에서 확인된 것만. 추정 연락처를 만들지 않는다.",
+      "items": {
+        "type": "object",
+        "required": ["entity", "channel", "value", "source", "verifiedAt"],
+        "properties": {
+          "entity": { "type": "string" },
+          "channel": { "enum": ["email", "phone", "address", "website"] },
+          "value": { "type": "string" },
+          "source": { "type": "string" },
+          "verifiedAt": { "type": "string" }
+        }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "required": ["snapshotChecksum", "reportModelChecksum"],
+      "properties": {
+        "snapshotChecksum": { "type": "string" },
+        "reportModelChecksum": { "type": "string" },
+        "consistencyProjectionChecksum": { "type": "string" },
+        "lineageChecksum": { "type": "string" },
+        "generatedBy": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "_설명": "회사 정보 단일 소스. scripts/apply_brand.py 가 이 값을 덱에 적용한다.",
+
+  "company": "주식회사 예시",
+  "wordmark": "COMPANY NAME",
+  "email": "contact@company.co.kr",
+  "website": "www.company.co.kr",
+  "phone": "02-0000-0000",
+  "copyrightYear": "2026",
+  "docTitle": "2026 상반기 업무 자동화 성과 리포트",
+
+  "logo": null,
+  "logoOnLight": null,
+  "logoHeight": 40,
+
+  "_필드설명": {
+    "company": "회사 정식 명칭. 저작권 표기에 쓴다.",
+    "docTitle": "푸터에 들어가는 문서명. 덱마다 다르므로 --title 로 덮어쓸 수 있다. 쪽번호는 뷰어가 자동으로 매긴다.",
+    "email": "대표 이메일. website 중 하나는 반드시 있어야 한다.",
+    "website": "홈페이지 주소. email이 비어 있으면 이 값이 대신 들어가고 마무리 슬라이드 라벨이 EMAIL에서 WEB으로 바뀐다.",
+    "wordmark": "로고가 없을 때 우측 상단 마크 자리에 들어갈 글자. 라틴 대문자면 Barlow Condensed, 한글이면 Noto Sans KR로 자동 전환한다. 로고를 지정하면 무시된다.",
+    "logo": "다크·코발트 배경용 흰색 녹아웃 로고. PNG·JPG·SVG 파일 경로(이 JSON 기준 상대 경로 또는 절대 경로). 표지·간지·다크 슬라이드에 쓴다. data URI로 덱에 박히므로 파일을 따로 들고 다니지 않아도 된다. null이면 워드마크 텍스트를 유지한다.",
+    "logoOnLight": "밝은 지면용 원색 로고. 일반 슬라이드에 쓴다. 흰색 녹아웃을 흰 배경에 얹으면 보이지 않으므로 두 벌을 따로 둔다. scripts/make_logo_variants.py 가 원본 하나에서 두 벌을 만들어 준다.",
+    "logoHeight": "우측 상단 마크의 높이(px). 1920x1080 캔버스 기준이며 32~48 사이를 권장한다. 상하 여백 띠(일반 84px · 표지 110px) 안에 들어가야 본문과 겹치지 않는다."
+  }
+}
