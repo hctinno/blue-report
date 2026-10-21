@@ -41,7 +41,8 @@ description: "블루 리포트·HCT 회사 양식으로 발표자료·보고서�
 | 수정하며 쓰는 관리보드 | assets/board-manage.html, --deck manage | scripts/check_board.py |
 | 배포용 PDF | 합의한 원본 형식을 PDF로 출력 | 생성된 PDF의 실제 페이지 |
 
-본문에 필요한 부품은 assets/live-catalog.html에서 가져오거나 회사 규격에 맞게 구성한다.
+본문 디자인은 먼저 assets/live-patterns.html(패턴첩 63장, --deck patterns)에서 맞는 장을 찾아 통째로 가져오고 글·수치만 바꾼다. 패턴첩은 사내 발표 덱 최종본의 본문 디자인·연출을 형태 그대로 옮긴 것이며 내용은 가상이다. 패턴 장을 쓰면 덱 머리에 assets/blue-pattern.css를 함께 부르고 장의 xf·pt-이름 클래스를 지우지 않는다.
+작은 부품은 assets/live-catalog.html에서 가져오거나 회사 규격에 맞게 구성한다.
 기준 덱과 카탈로그의 장수는 견본이다. 합의한 발표 시간, 분량, 메시지에 맞게 필요한 장만 구성한다.
 사용자가 PPTX를 요청하면 PPTX 경로로 제작한다. HTML의 효과·상호작용과 다른 형식의 지원 범위를 구분한다.
 
@@ -49,7 +50,8 @@ description: "블루 리포트·HCT 회사 양식으로 발표자료·보고서�
 
 기획이 정리되어 제작으로 넘어갈 때 다음 자료를 읽는다.
 
-- DESIGN.md: 톤, 정보 위계, 내용에 맞는 도해와 움직임 원칙.
+- DESIGN.md: 톤, 정보 위계, 내용에 맞는 도해와 움직임 원칙. 「3」이 내용별로 먼저 볼 패턴첩 장을 가리킨다.
+- MOTION.md: 효과 라이브러리. 사용자가 애니메이션·효과를 요청하면 패턴첩 장의 연출과 단일 효과 22종에서 고른다.
 - references/rules.md 및 assets/blue-report.css: 문체, 색·폰트·간격·차트 규칙.
 - README.md의 해당 형식과 구성 요소 사양.
 - [제작 세부 절차](references/production-workflow.md): 보관 양식, 차트, PDF·PPTX 출력과 검사 명령.

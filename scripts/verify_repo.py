@@ -710,7 +710,7 @@ def check_own_css(log, out_dir):
         ("글자 그림자", "#s9 .x-a { text-shadow: 0 0 .2rem var(--br-navy) }", "글자 그림자"),
         ("곡선 직접 값", "#s9 .x-a { transition: opacity .3s ease-in-out }", "움직임 곡선을 직접"),
         ("곡선 생략", "#s9 .x-a { transition: opacity .3s }", "움직임 곡선이 없다"),
-        ("너무 긴 움직임", "#s9 .x-a { transition: opacity 2s var(--bl-ease) }", "움직임 길이"),
+        ("너무 긴 움직임", "#s9 .x-a { transition: opacity 3s var(--bl-ease) }", "움직임 길이"),
         ("너무 빠른 움직임", "#s9 .x-a { animation-duration: 80ms }", "움직임 길이"),
     ]
     for label, css, want in cases:
@@ -736,14 +736,15 @@ def check_own_css(log, out_dir):
     (log.ok if hit else log.fail)("맞춤 CSS 덱 단위 — 위반이면 check_live 실패",
                                   "" if hit else (r.stdout.strip().splitlines() or [""])[-1])
 
-    # 움직임 절제(30번) — 등장 3종 · 반복 2종이면 주의, 2종 · 1종이면 통과
+    # 움직임 절제(30번) — 등장 4종 · 반복 3종이면 주의, 등장 2종 · 반복 1종이면 통과
     from check_live import check_motion, Report  # noqa: E402
     def motion(body):
         rep = Report()
         check_motion('<section class="bl-sl" id="m">' + body + '</section>', rep)
         return rep
     busy = motion('<i class="bl-a bl-a--up"></i><i class="bl-a bl-a--gx"></i><i class="bl-a bl-a--pop"></i>'
-                  '<i class="bl-a bl-a--pulse"></i><svg><animateMotion/></svg>')
+                  '<i class="bl-a bl-a--left"></i><i class="bl-a bl-a--pulse"></i><i class="bl-a bl-a--spin"></i>'
+                  '<svg><animateMotion/></svg>')
     calm = motion('<i class="bl-a bl-a--up"></i><i class="bl-a bl-a--gx"></i><svg><animateMotion/></svg>')
     (log.ok if busy.warn and not calm.warn else log.fail)(
         "움직임 절제 — 과하면 주의 · 절제면 통과", "; ".join(busy.warn + calm.warn)[:90])
@@ -780,6 +781,57 @@ def check_live_engine(log, out_dir):
             log.fail(label, "파일이 없다")
             continue
         _engine_once(log, label, p)
+
+
+def check_pattern_engine(log):
+    """패턴첩 — 최종본 형태의 장(.xf)이 이 엔진 상태를 최종본 신호로 읽는가.
+
+    패턴 장의 CSS 는 최종본 클래스(html.anim · body.expand · [data-f].on · .dim)를 본다.
+    엔진이 그것을 달지 않으면 지면 검사는 통과해도 발표 중 단계가 열리지 않는다."""
+    sys.path.insert(0, SCRIPTS)
+    from ensure_deps import need_browser
+    from playwright.sync_api import sync_playwright
+    path = os.path.join(ASSETS, _LIVE_FILES["patterns"])
+    bad, errs = [], []
+    with sync_playwright() as pw:
+        br = pw.chromium.launch(executable_path=need_browser())
+        pg = br.new_page(viewport={"width": 1600, "height": 900})
+        pg.on("pageerror", lambda e: errs.append(str(e).splitlines()[0]))
+        pg.goto("file://" + os.path.abspath(path))
+        pg.wait_for_timeout(900)
+        J = pg.evaluate
+        n = J("document.querySelectorAll('#deck > .bl-sl.xf').length")
+        if n < 60:
+            bad.append(f"패턴 장 {n}개 — 63개여야 한다")
+        if not J("document.documentElement.classList.contains('anim')"):
+            bad.append("html.anim 없음")
+        if not J("document.body.classList.contains('expand')"):
+            bad.append("펼침 보기인데 body.expand 없음")
+        sid = "pt-lanes3"
+        J(f"blDeck.go([...document.querySelectorAll('#deck > .bl-sl')].findIndex(s => s.id === '{sid}'))")
+        pg.wait_for_timeout(400)
+        pg.keyboard.press("Shift+F5")
+        pg.wait_for_timeout(600)
+        J(f"document.getElementById('{sid}').setAttribute('data-dim', '')")
+        on0 = J(f"document.querySelectorAll('#{sid} [data-f].on').length")
+        for _ in range(3):
+            pg.keyboard.press("ArrowRight")
+            pg.wait_for_timeout(300)
+        on3 = J(f"document.querySelectorAll('#{sid} [data-f].on').length")
+        dim = J(f"document.querySelectorAll('#{sid} [data-f].dim').length")
+        if J("document.body.classList.contains('expand')"):
+            bad.append("발표 중인데 body.expand 가 남음")
+        if not (on0 == 0 and on3 > 0):
+            bad.append(f"단계 → .on 미연결 ({on0} → {on3})")
+        if dim == 0:
+            bad.append("data-dim 인데 지난 단계 .dim 없음")
+        br.close()
+    if errs:
+        bad.append("스크립트 예외 " + " · ".join(errs[:3]))
+    if bad:
+        log.fail("패턴첩 엔진 연결", " · ".join(bad))
+    else:
+        log.ok("패턴첩 엔진 연결", f"패턴 장 {n}개 · anim · expand · 단계 .on · 흐리게 .dim")
 
 
 def _engine_once(log, label, path):
@@ -1358,6 +1410,7 @@ def main():
             check_icons(log)
             check_own_css(log, tmp)
             check_live_engine(log, tmp)
+            check_pattern_engine(log)
         if "fcc" in only:
             print("\n── Blue Report FCC/KC 템플릿 ──")
             check_fcc(log)

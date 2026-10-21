@@ -501,6 +501,8 @@ body.present #bl-prog { opacity: 0 }
    열었을 때 본문이 빈 화면이 된다. */
 .bl-deck--staged [data-f] { opacity: 0 }
 .bl-deck--staged [data-f].is-shown { opacity: 1 }
+/* 지난 단계 흐리게 — 장에 data-dim. 지금 열린 단계만 또렷하고 앞 단계는 28% 로 물러난다 */
+.bl-deck--staged .bl-sl[data-dim] [data-f].is-shown.is-past { opacity: .28 }
 @media (prefers-reduced-motion: no-preference) {
   .bl-deck--staged [data-f] { transform: translateY(.3rem);
         transition: opacity .28s ease, transform .28s ease }

@@ -55,9 +55,9 @@ check_deck.py 를 그대로 쓸 수 없다. 저쪽은 1920x1080 고정 지면과
        클래스로 범위를 묶고, 색은 --br-* · --bl-* 토큰만, 치수는 rem 만, bl-·br- 이름은
        새로 짓지 않는가. 형태 · 움직임도 계통 눈금만 — 글꼴 var(--br-font-*), 모서리
        var(--bl-r-*) · 0 · 50%, 그림자 var(--bl-shadow*), 곡선 var(--bl-ease*) · linear,
-       길이 0.15~1.2s(무한 반복 12s). 인라인 style= 도 형태 · 움직임을 본다 (1.48.0)
+       길이 0.15~2.4s(무한 반복 12s). 인라인 style= 도 형태 · 움직임을 본다 (1.48.0)
    29. 본문 표현 — 내용 장 중 글 · 표만 있는 장이 절반을 넘지 않는가 (주의만, 실패 아님)
-   30. 움직임 절제 — 장마다 등장 계열 2종 · 반복 움직임 1종을 넘지 않는가 (주의만). DESIGN.md 「4」
+   30. 움직임 절제 — 장마다 등장 계열 3종 · 반복 움직임 2종을 넘지 않는가 (주의만). MOTION.md
 
 왜 rem 으로 판정하는가
   px 로 재면 창 크기에 따라 결과가 달라져 같은 파일이 통과했다 떨어졌다 한다.
@@ -191,6 +191,8 @@ INK_PROBE = r"""() => {
 # 전부 열린 최대 모습을 잰다. 고르지 않은 장면(.bl-scene)은 겹쳐 놓인 판이라 뺀다.
 FIT_PROBE = r"""() => {
   const out = [];
+  // 투명(opacity 0)한 조상 아래는 보이지 않는 쪽이다 — 패턴 장의 숨은 두 번째 화면 같은 것
+  const faded = (el, s) => { for (let e = el; e && e !== s; e = e.parentElement) if (getComputedStyle(e).opacity === '0') return true; return false; };
   document.querySelectorAll('#deck > .bl-sl, main > .bl-sl').forEach((s, k) => {
     const r = s.getBoundingClientRect(), bd = s.querySelector('.bl-bd');
     const hd = s.querySelector('.bl-hd'), rf = s.querySelector('.bl-rf');
@@ -201,6 +203,7 @@ FIT_PROBE = r"""() => {
       const cs = getComputedStyle(el);
       if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'fixed') return;
       if (el.closest('.bl-scene:not(.is-cur)')) return;
+      if (faded(el, s)) return;
       const b = el.getBoundingClientRect();
       if (!b.width || !b.height) return;
       const o = Math.max(b.bottom - bot, top - b.top, b.right - r.right, r.left - b.left);
@@ -217,6 +220,8 @@ FIT_PROBE = r"""() => {
 # 장 밖으로 밀려 다음 장에 가려진 일이 있었다. 가로는 보지 않는다(넓은 부품은 옆으로 스크롤한다).
 NARROW_PROBE = r"""() => {
   const out = [];
+  // 투명(opacity 0)한 조상 아래는 보이지 않는 쪽이다 — 패턴 장의 숨은 두 번째 화면 같은 것
+  const faded = (el, s) => { for (let e = el; e && e !== s; e = e.parentElement) if (getComputedStyle(e).opacity === '0') return true; return false; };
   document.querySelectorAll('#deck > .bl-sl, main > .bl-sl').forEach((s, k) => {
     const R = s.getBoundingClientRect(), rf = s.querySelector('.bl-rf');
     if (!rf) return;
@@ -226,6 +231,7 @@ NARROW_PROBE = r"""() => {
       const cs = getComputedStyle(el);
       if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'fixed') return;
       if (el.closest('.bl-scene:not(.is-cur)')) return;
+      if (faded(el, s)) return;
       const b = el.getBoundingClientRect();
       if (!b.width || !b.height) return;
       if (b.bottom - F.top > worst) { worst = b.bottom - F.top; who = (el.className && el.className.baseVal === undefined ? el.className : el.tagName) || el.tagName; }
@@ -242,6 +248,9 @@ def check_links(html, rep):
     """두 CSS 를 함께 불렀는가. blue-live.css 는 색을 선언하지 않는다."""
     has_base = re.search(r'href="[^"]*blue-report\.css"', html) or "--br-page:" in html
     has_live = re.search(r'href="[^"]*blue-live\.css"', html) or "--bl-fs-body:" in html
+    if re.search(r'<section[^>]*class="[^"]*\bbl-sl\b[^"]*\bxf\b', html) and not (
+            re.search(r'href="[^"]*blue-pattern\.css"', html) or _PAT_SIG in html):
+        rep.f("패턴 장(.xf)이 있는데 blue-pattern.css 를 부르지 않았다 — 본문 그림이 통째로 빠진다")
     if has_base and has_live:
         rep.o("CSS — blue-report.css 와 blue-live.css 를 함께 부른다")
     elif has_live:
@@ -252,7 +261,7 @@ def check_links(html, rep):
 
 def check_raw_hex(html, rep):
     """본문에 토큰 밖 hex 를 직접 적지 않았는가. 규칙 문장과 CSS 는 뺀다."""
-    body = _blank(html, r"<style[^>]*>.*?</style>")
+    body = _blank(_pattern_blank(html), r"<style[^>]*>.*?</style>")
     body = _blank(body, r"<!--.*?-->")
     found = {}
     for m in re.finditer(r"#[0-9a-fA-F]{3,8}\b", body):
@@ -279,7 +288,7 @@ def check_literal_px(html, rep, path_hint=None):
     테두리 1px 는 실선 한 줄이라 배율을 따라갈 이유가 없다. 미디어 질의의
     분기점도 뷰포트 자체의 값이라 예외다."""
     css = "\n".join(b for b in re.findall(r"<style[^>]*>(.*?)</style>", html, re.S)
-                    if any(sig in b for sig in _SYS_SIGS))       # 맞춤 블록은 28번이 본다
+                    if any(sig in b for sig in _SYS_SIGS) and _PAT_SIG not in b)  # 맞춤 블록은 28번 · 패턴 CSS 는 계통 파일
     # 원본 형태에서는 blue-live.css 가 외부 파일이라 <style> 이 비어 있다. 그대로
     # 두면 묶은 판에서만 검사가 돌고 원본은 무사통과한다 — 고치는 자리는 원본인데.
     # 링크를 따라가 디스크에서 읽어 함께 본다.
@@ -318,7 +327,7 @@ def check_literal_px(html, rep, path_hint=None):
     # br-logo · br-wordmark 는 예외다. 로고 높이와 글자 로고 크기는 brand.json 을 읽어
     # apply_brand.py 가 넣은 값이라 이 파일이 적은 치수가 아니다. 글자 로고만 쓰는
     # 브랜드(로고 그림 없음)로 묶으면 장마다 실패가 났다.
-    for tag in re.findall(r"<[^>]*\sstyle=\"[^\"]*\"[^>]*>", html):
+    for tag in re.findall(r"<[^>]*\sstyle=\"[^\"]*\"[^>]*>", _pattern_blank(html)):
         if "br-logo" in tag or "br-wordmark" in tag:
             continue
         m = re.search(r'style="([^"]*)"', tag)
@@ -347,7 +356,25 @@ def _slices(html):
 # ---------------------------------------------------------------- 본문 맞춤 CSS
 
 # 계통 CSS 를 덱 안에 묶어 넣은 블록인지 — 토큰 정의가 있으면 계통 것이다.
-_SYS_SIGS = ("--br-page:", "--bl-fs-body:")
+_SYS_SIGS = ("--br-page:", "--bl-fs-body:", "--bl-pattern:")
+# 패턴 장 — 패턴첩(live-patterns.html)에서 옮겨 온 최종본 형태의 장. 장 태그에 xf 클래스가 있다.
+# 그 장의 본문 CSS 는 계통 파일(blue-pattern.css)이 맡아 색 · 치수 판정(2 · 4 · 28번)에서 뺀다.
+# 머리띠 · 꼬리띠 · 노트 · 단계 · 문체는 똑같이 본다.
+_PAT_SIG = "--bl-pattern:"
+
+
+def _is_pattern(tag):
+    m = re.search(r'class="([^"]*)"', tag)
+    return bool(m) and "xf" in m.group(1).split()
+
+
+def _pattern_blank(html):
+    """패턴 장 본문을 같은 길이의 공백으로 지운다 — 위치를 보존해 다른 판정과 어긋나지 않게."""
+    for tag, chunk in _slices(html):
+        if _is_pattern(tag):
+            i = html.find(chunk)
+            html = html[:i] + " " * len(chunk) + html[i + len(chunk):]
+    return html
 # 어느 자리에 나와도 안 되는 고정 영역. 이 이름이 선택자에 있으면 고정 영역을 건드린다.
 FIXED_ANY = ("bl-hd", "bl-rf", "bl-rf-name", "bl-pg", "bl-code", "br-mark", "br-watermark",
              "br-wordmark", "br-logo", "bl-hud", "bl-hud-sep", "bl-title",
@@ -477,7 +504,7 @@ _RADIUS_OK = re.compile(r"^(?:0|50%|var\(--bl-r-(?:xs|s|m|l|pill)\)|inherit)$")
 _SHADOW_TOKEN = re.compile(r"^(?:none|var\(--bl-shadow(?:-up)?\)|inherit|"
                            r"inset 0 0 0 [\d.]+rem var\(--b[rl]-[\w-]+\))$")
 _EASE_WORD = re.compile(r"\b(?:ease(?:-in|-out|-in-out)?|step-start|step-end)\b|cubic-bezier\(|steps\(")
-DUR_MIN, DUR_MAX, LOOP_MAX = 0.15, 1.2, 12.0     # 초. 무한 반복(흐르는 점 · 도는 표식)만 길게
+DUR_MIN, DUR_MAX, LOOP_MAX = 0.15, 2.4, 12.0     # 최종본: 등장 .5~.6s · 그리기 .8~2.4s     # 초. 무한 반복(흐르는 점 · 도는 표식)만 길게
 
 
 def _secs(t):
@@ -553,7 +580,7 @@ def check_own_css(html, rep, path):
     <style> 을 피해 속성에 적으면 같은 결과가 나기 때문이다."""
     own = own_css_blocks(html)
     inline_bad = []
-    body = _blank(html, r"<style[^>]*>.*?</style>")
+    body = _blank(_pattern_blank(html), r"<style[^>]*>.*?</style>")
     body = _blank(body, r"<script[^>]*>.*?</script>")
     for tag in re.findall(r"<[^>]*\sstyle=\"[^\"]*\"[^>]*>", body):
         if "br-logo" in tag or "br-wordmark" in tag:
@@ -611,7 +638,7 @@ _FRAME_CLS = ("bl-sl--cover", "bl-sl--chapter", "bl-sl--apxdiv", "bl-fin", "bl-q
 
 # 등장(한 번) · 반복(계속) 계열. 반복은 읽는 동안 눈을 끌어 장마다 한 종만 둔다.
 LOOP_FAM = ("flow", "blink", "pulse", "ripple", "glow", "run", "spin")
-ENTER_MAX, LOOP_KINDS_MAX = 2, 1
+ENTER_MAX, LOOP_KINDS_MAX = 3, 2      # 최종본(2026-10 사내 발표 덱) 장별 연출 기준
 
 
 def check_motion(html, rep):
@@ -662,7 +689,7 @@ def check_visual(html, rep):
         cls = set(" ".join(re.findall(r'class="([^"]*)"', body)).split())
         has_media = bool(re.search(r"<(svg|canvas|video)\b", body)) or bool(
             re.search(r"<img\b(?![^>]*br-logo)", body.split("bl-rf")[0]))
-        if has_media or cls & set(VISUAL_CLS) or cls & own_cls:
+        if has_media or cls & set(VISUAL_CLS) or cls & own_cls or _is_pattern(tag):
             continue
         m = re.search(r'id="([^"]+)"', tag)
         plain.append(f"{k:02d}" + (f"({m.group(1)})" if m else ""))
@@ -949,7 +976,7 @@ def check_render(path, rep, shots=None, seen_style=()):
     from playwright.sync_api import sync_playwright
 
     url = "file://" + os.path.abspath(path)
-    overflow, tiny, body_small, marks, drawn = [], [], [], [], ""
+    overflow, tiny, body_small, marks, drawn, pat = [], [], [], [], "", []
     style, need = None, sentinels(open(path, encoding="utf-8").read())
     edge, hud_hits, errors, dead = None, [], [], []
     ink, fit, narrow = [], [], []
@@ -964,7 +991,7 @@ def check_render(path, rep, shots=None, seen_style=()):
 
             data = pg.evaluate(r"""(NOTE) => {
               const root = parseFloat(getComputedStyle(document.documentElement).fontSize);
-              const out = {root, tiny: [], body: [], marks: [], over: 0, html: ''};
+              const out = {root, tiny: [], body: [], pat: [], marks: [], over: 0, html: ''};
               out.over = Math.max(0, document.documentElement.scrollWidth
                                    - document.documentElement.clientWidth);
               out.html = document.body.innerText;
@@ -983,6 +1010,7 @@ def check_render(path, rep, shots=None, seen_style=()):
                 const isNote = NOTE.some(c => el.closest('.' + c));
                 const rec = {rem: +rem.toFixed(3), cls: el.className || el.tagName,
                              txt: txt.slice(0, 40)};
+                if (el.closest('.xf')) { if (rem < 0.9995) out.pat.push(rec); return; }
                 if (rem < 0.7795) out.tiny.push(rec);
                 else if (!isNote && rem < 0.9995) out.body.push(rec);
               });
@@ -1021,6 +1049,8 @@ def check_render(path, rep, shots=None, seen_style=()):
                 dead.append(f"{w}px")
             tiny += [dict(r, view=w) for r in data["tiny"]]
             body_small += [dict(r, view=w) for r in data["body"]]
+            if w == VIEWS[0][0]:
+                pat += data["pat"]
             if w != VIEWS[0][0]:
                 narrow += [dict(r, view=w) for r in pg.evaluate(NARROW_PROBE)]
             if w == VIEWS[0][0]:
@@ -1064,6 +1094,10 @@ def check_render(path, rep, shots=None, seen_style=()):
     else:
         rep.o(f"글자 크기 — {MIN_REM}rem 미만 없음")
 
+    if pat:
+        # 패턴 장은 최종본(2026-10 사내 발표 덱) 밀도 그대로다 — 막지 않고 알린다.
+        rep.w(f"패턴 장 작은 글자 {len(pat)}건 — 1.0rem 미만(최소 {min(t['rem'] for t in pat)}rem). "
+              "최종본 밀도 그대로 옮긴 장 — 발표 화면에서 읽히는지 본다")
     if body_small:
         rep.f(f"본문 하한 미만 {len(body_small)}건 — {BODY_REM}rem 보다 작다")
         for t in body_small[:6]:

@@ -28,7 +28,7 @@ ASSETS = os.path.join(ROOT, "assets")
 # 고르는 양식은 넷이다. 나머지는 assets/archive/ 에 보관한다 — 이름으로 계속 부를 수 있고
 # 검사도 그대로 받지만, 안내·목록에는 나오지 않는다. 고정 지면 덱 12종은 PPTX 빌드
 # (pptx/content.js)가 내용을 맞춰 보는 원본이라 지우지 않고 보관만 했다.
-SELECTABLE = ("standard", "livecatalog", "minutes", "manage")
+SELECTABLE = ("standard", "livecatalog", "patterns", "minutes", "manage")
 ARCHIVE = "archive/"
 
 # 용도별 덱(보관). 이름으로 고르거나 --deck 에 파일 경로를 직접 준다.
@@ -79,6 +79,9 @@ LIVE = {
     # 부품 견본첩. 기준 덱에 없는 부품·위젯·애니메이션을 장 단위로 복사해 쓴다.
     # 발표물이 아니라 견본이지만 검사는 똑같이 받는다 — 복사해 간 장이 그대로 통과해야 한다.
     "livecatalog": "live-catalog.html",  # 라이브 부품 카탈로그 (52장)
+    # 패턴첩. 사내 발표 덱 최종본의 본문 연출 63종을 형태만 옮겼다(내용은 가상).
+    # 장째 복사해 쓰고, 덱 머리에 blue-pattern.css 를 함께 부른다.
+    "patterns": "live-patterns.html",
 }
 
 # 네 표의 이름이 겹치면 뒤에 오는 쪽이 통째로 묻힌다. 불러오는 순간 걸리게 둔다.
