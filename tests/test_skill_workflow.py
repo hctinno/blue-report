@@ -34,7 +34,8 @@ class InstallTests(unittest.TestCase):
                 self.assertIsNone(archive.testzip())
                 names = archive.namelist()
                 for file in ("SKILL.md", "agents/openai.yaml", "scripts/check_pptx.py",
-                             "references/quality-and-delivery.md", "brand/hct/brand.json"):
+                             "references/quality-and-delivery.md", "references/page-style-selection.md",
+                             "brand/hct/brand.json"):
                     self.assertIn("blue-report/" + file, names)
                 self.assertFalse(any("/.claude-plugin/" in p or "/node_modules/" in p for p in names))
                 moved = Path(temporary) / "unrelated-project"
@@ -52,6 +53,7 @@ class InstallTests(unittest.TestCase):
             self.assertTrue((target / "brand/hct/brand.json").is_file())
             self.assertTrue((target / "scripts/style_previews.py").is_file())
             self.assertTrue((target / "references/visual-style-selection.md").is_file())
+            self.assertTrue((target / "references/page-style-selection.md").is_file())
             self.assertFalse((target / ".claude-plugin").exists())
             brand = json.loads((target / "brand/hct/brand.json").read_text(encoding="utf-8"))
             for key in ("logo", "logoOnLight", "watermark", "watermarkOnLight"):

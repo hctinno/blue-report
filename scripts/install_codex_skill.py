@@ -36,7 +36,8 @@ def install(target, update=False):
     if target.exists() and (not target.is_dir() or not update):
         raise FileExistsError("기존 설치본을 보존했습니다. 갱신은 --update로 명시하세요.")
     required = ("SKILL.md", "DESIGN.md", "references/business-presentation-intake.md",
-                "references/visual-style-selection.md", "scripts/style_previews.py")
+                "references/visual-style-selection.md", "references/page-style-selection.md",
+                "scripts/style_previews.py")
     for relative in required:
         if not (SOURCE / relative).is_file():
             raise FileNotFoundError("원본 파일 누락: " + relative)
