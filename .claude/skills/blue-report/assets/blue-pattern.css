@@ -8,6 +8,29 @@
  * 장 안 <style data-own> 으로 덮는다(DESIGN.md · MOTION.md).
  * 장 선택자는 :is(#pt-이름,.pt-이름) — id 를 바꿔도 클래스 pt-이름 이 남아 있으면 그대로 그린다.
  */
+/* 디자인 언어 토큰 — 사내 발표 덱 최종본의 색 역할. 패턴 장도, 이 언어로 새로 짜는 장(<style data-own>)도
+ * 이 이름으로 쓴다. 역할은 references/design-language.md 「1」. */
+:root {
+  --bl-pt-paper:   #f7f8f6;   /* 지면 */
+  --bl-pt-frame:   #e6e8ec;   /* 무대 · 판 바탕 */
+  --bl-pt-ink:     #151b2e;   /* 본문 잉크 · 굵은 선 */
+  --bl-pt-ink-3:   #3a4257;   /* 보조 글 */
+  --bl-pt-mute:    #6b7385;   /* 주석 · 축 */
+  --bl-pt-line:    #c9cdd8;   /* 칸선 */
+  --bl-pt-line-2:  #e2e5ec;   /* 옅은 칸선 */
+  --bl-pt-brand:   #2f4a9c;   /* 코발트 — 기본 강조 */
+  --bl-pt-brand-2: #1d2f6b;   /* 딥네이비 — 번호 머리 · 큰 수치 */
+  --bl-pt-blue:    #3d6bff;   /* 밝은 파랑 — 진행 · 지금 */
+  --bl-pt-tint:    #e8edf8;   /* 옅은 파랑 바탕 · 결론 띠 */
+  --bl-pt-hi:      #bcd4fb;   /* 제목 형광 */
+  --bl-pt-orange:  #d07a1f;   /* 주황 — 당사 · 결과 · 화살 */
+  --bl-pt-orange-d:#b4610f;   /* 짙은 주황 — 주황 위 글자 */
+  --bl-pt-gray:    #9aa4bb;   /* 비교 대상 · 맥락 막대 */
+  --bl-pt-ok:      #1f7a4d;   /* 진행 · 완료 */
+  --bl-pt-no:      #b3261e;   /* 문제 · 기한 · 오늘 */
+  --bl-pt-amber:   #8f5500;   /* 주의 */
+  --bl-pt-band:    #071b45;   /* 짙은 띠 · 표지 */
+}
 .xf { --bl-pattern: 1; --kr: var(--br-font-kr); --mono: var(--br-font-num) }
 .xf > .xf-bd { padding: 0; align-items: center; gap: 0; position: relative }
 .xf > .xf-bd > .wrap { height: 100% }
@@ -16,7 +39,7 @@
 #deck :is(#pt-process5,.pt-process5).xf .r39-live { top: .4rem }
 #deck :is(#pt-governance-a,.pt-governance-a).xf .r43-pp { height: 100% !important }
 #deck :is(#pt-governance-a,.pt-governance-a).xf .r43-pc .pz-fig { flex: 1 1 0; height: auto; min-height: 0 }
-.xf{--paper:#f7f8f6;--frame:#e6e8ec;--ink:#151b2e;--ink2:#151b2e;--ink3:#262d44;--line:#c9cdd8;--line2:#e2e5ec;--brand:#2f4a9c;--brand2:#1d2f6b;--tint:#e8edf8;--hi:#bcd4fb;--hi2:#8fb6f6;--ok:#1f7a4d;--no:#b3261e;--amber:#8f5500;--kr:var(--br-font-kr);--mono:var(--br-font-kr);--ease:cubic-bezier(.2,.7,.2,1);--dark:#16203f;--ops:#4d6b66;--opsbg:#e4eeeb;--band:#071b45;--band-ink:#fff;--band-sub:#c7d2ea;--band-line:rgba(255,255,255,.16);--band-inv:#fcfdff;--band-inv-ink:#0b1f3a;--band-inv-sub:#44567a;--ok:#2f4a9c;--or:#6a45b8;--ol:#1f7a4d;--dtc:#8f5500}
+.xf{--paper:#f7f8f6;--frame:#e6e8ec;--ink:#151b2e;--ink2:#151b2e;--ink3:#262d44;--line:#c9cdd8;--line2:#e2e5ec;--brand:#2f4a9c;--brand2:#1d2f6b;--tint:#e8edf8;--hi:#bcd4fb;--hi2:#8fb6f6;--ok:#1f7a4d;--no:#b3261e;--amber:#8f5500;--kr:var(--br-font-kr);--mono:var(--br-font-kr);--ease:cubic-bezier(.2,.7,.2,1);--dark:#16203f;--ops:#4d6b66;--opsbg:#e4eeeb;--band:#071b45;--band-ink:#fff;--band-sub:#c7d2ea;--band-line:rgba(255,255,255,.16);--band-inv:#fcfdff;--band-inv-ink:#0b1f3a;--band-inv-sub:#44567a;--orgk:#2f4a9c;--orgr:#6a45b8;--orgl:#1f7a4d;--dtc:#8f5500}
 .xf-bd * { box-sizing:border-box }
 .xf-bd b, .xf-bd strong { font-weight:800 }
 .xf-bd em { font-style:normal }
@@ -655,8 +678,8 @@ html.anim body:not(.expand) :is(#pt-timeline-cluster,.pt-timeline-cluster) .v77-
 :is(#pt-peer-tabs,.pt-peer-tabs) .bm-evc[hidden] { display:none }
 :is(#pt-peer-tabs,.pt-peer-tabs) .bm-ev0 { align-items:center;justify-content:center;font:600 1.05rem/1.4 var(--kr);color:var(--ink3);text-align:center;background:var(--paper) }
 :is(#pt-peer-tabs,.pt-peer-tabs) .bd { justify-content:flex-start!important;margin-top:1.5rem!important;gap:1rem!important }
-:is(#pt-peer-tabs,.pt-peer-tabs) .ok-video-open { margin-left:auto;min-height:42px;padding:7px 16px;border:1px solid var(--brand);border-radius:5px;background:var(--brand);color:#fff;font:800 .82rem/1.2 var(--kr);cursor:pointer;white-space:nowrap }
-:is(#pt-peer-tabs,.pt-peer-tabs) .ok-video-open:hover, :is(#pt-peer-tabs,.pt-peer-tabs) .ok-video-open:focus-visible { background:var(--brand2);outline:2px solid var(--brand);outline-offset:2px }
+:is(#pt-peer-tabs,.pt-peer-tabs) .orgk-video-open { margin-left:auto;min-height:42px;padding:7px 16px;border:1px solid var(--brand);border-radius:5px;background:var(--brand);color:#fff;font:800 .82rem/1.2 var(--kr);cursor:pointer;white-space:nowrap }
+:is(#pt-peer-tabs,.pt-peer-tabs) .orgk-video-open:hover, :is(#pt-peer-tabs,.pt-peer-tabs) .orgk-video-open:focus-visible { background:var(--brand2);outline:2px solid var(--brand);outline-offset:2px }
 :is(#pt-peer-tabs,.pt-peer-tabs) .bd { margin-top:1.5rem }
 #deck :is(#pt-peer-tabs,.pt-peer-tabs) .bm-mk { position:absolute;width:0;height:0;opacity:0 }
 #deck :is(#pt-peer-tabs,.pt-peer-tabs) .bm-tl { width:100%;height:auto;flex:1 1 auto;min-height:0;border:1px solid var(--line2);border-radius:3px;background:#fff;padding:.4rem }
@@ -2698,7 +2721,7 @@ body.expand .v22h .v22h-src{opacity:0}
 #deck :is(#pt-peer-tabs,.pt-peer-tabs) .g71-kpi{display:flex;align-items:baseline;gap:.8rem;flex:1;min-width:0;padding:.65rem 1rem;background:var(--gs);border-left:7px solid var(--gc);border-radius:3px}
 #deck :is(#pt-peer-tabs,.pt-peer-tabs) .g71-kpi em{font:900 2.4rem/1 var(--kr);font-style:normal;color:var(--gc);white-space:nowrap}
 #deck :is(#pt-peer-tabs,.pt-peer-tabs) .g71-kpi span{font:700 1.02rem/1.3 var(--kr);color:#262d44;word-break:keep-all}
-#deck :is(#pt-peer-tabs,.pt-peer-tabs) .g71-hd .ok-video-open{margin-left:0}
+#deck :is(#pt-peer-tabs,.pt-peer-tabs) .g71-hd .orgk-video-open{margin-left:0}
 #deck :is(#pt-peer-tabs,.pt-peer-tabs) .g71-shot{position:relative;flex:1;min-height:0;margin:0;display:flex;align-items:flex-start;justify-content:center;background:#eef0f4;border:1px solid #d9dde6;border-radius:4px;padding:.7rem;overflow:hidden}
 #deck :is(#pt-peer-tabs,.pt-peer-tabs) .g71-shot>img{display:block;max-width:100%;max-height:100%;object-fit:contain;box-shadow:0 6px 20px rgba(21,27,46,.18);background:#fff}
 #deck :is(#pt-peer-tabs,.pt-peer-tabs) .g71-in{position:absolute;right:1rem;bottom:1rem;width:44%;margin:0;background:#fff;border:3px solid var(--gc);border-radius:4px;box-shadow:0 10px 26px rgba(21,27,46,.28);animation:g71Pop .45s .55s cubic-bezier(.2,.8,.2,1) both}
@@ -4714,3 +4737,6 @@ body.expand .q104 .fr,body.expand .q104 .fr *{animation:none!important;transitio
 .q41 text{letter-spacing:-.01em}
 body.expand .q41 .fr,body.expand .q41 .fr *{animation:none!important;transition:none!important}
 #deck .k96bd{display:flex;flex-direction:column;justify-content:center;gap:.4rem}
+/* 패턴 장 변수를 디자인 언어 토큰에 묶는다 — 색을 한 곳에서 바꾼다 */
+.xf { --paper: var(--bl-pt-paper); --frame: var(--bl-pt-frame); --ink: var(--bl-pt-ink); --ink2: var(--bl-pt-ink); --line: var(--bl-pt-line); --line2: var(--bl-pt-line-2); --brand: var(--bl-pt-brand); --brand2: var(--bl-pt-brand-2); --tint: var(--bl-pt-tint); --hi: var(--bl-pt-hi); --no: var(--bl-pt-no); --amber: var(--bl-pt-amber); --band: var(--bl-pt-band) }
+

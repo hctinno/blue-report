@@ -16,10 +16,12 @@ claude plugin marketplace update blue-tools   # 최신판 받기
 
 ## 1.12.0 — 2026-10-21
 
-**패턴첩 — 사내 발표 덱 최종본의 본문 디자인 63종.** 표지 · 간지 · 쉐브론 · 연표 · 간트 · 콤보 차트 ·
+**디자인 언어와 패턴첩.** 회사 발표 덱의 색 역할 · 글자 위계 · 배치 문법 · 연출 순서를
+`references/design-language.md` 와 토큰 `--bl-pt-*` 로 정리했다. 에이전트는 이것을 기준으로 내용에 맞게 응용해 짠다.
+패턴첩은 그 용례다. 표지 · 간지 · 쉐브론 · 연표 · 간트 · 콤보 차트 ·
 격차 3패널 · 칸반 · 여정 노선 · 허브 · 도넛 · 워터폴 · 화면 시연 같은 본문 연출을 형태 · 움직임 그대로
-`assets/live-patterns.html`(`--deck patterns`)에 담았다. 내용은 전부 가상이다. 장째 가져와 글 · 수치만 바꾸고
-덱 머리에 `assets/blue-pattern.css` 를 부른다. 효과 라이브러리 `MOTION.md` 를 더했고, `DESIGN.md` 「3」 이
+`assets/live-patterns.html`(`--deck patterns`)에 담았다. 내용은 전부 가상이다. 베끼지 않고 내용에 맞게
+고쳐 쓰거나 문법을 빌려 새로 짠다(응용 견본 `pt-applied`). 덱 머리에 `assets/blue-pattern.css` 를 부른다. 효과 라이브러리 `MOTION.md` 를 더했고, `DESIGN.md` 「3」 이
 내용별로 먼저 볼 패턴첩 장을 가리킨다. 엔진은 패턴 장 단계와 지난 단계 흐리게(`data-dim`)를 지원하고,
 `check_live.py` 는 패턴 장의 작은 글자를 주의로, `blue-pattern.css` 누락을 실패로 잡는다.
 페이지별 3안 시안은 패턴첩 장에서 배치 후보를 고를 수 있다. 기획 · 시안 선택 · Codex 설치 흐름은 그대로다.

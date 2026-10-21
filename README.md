@@ -166,7 +166,7 @@ python scripts/install_blue_report_skill.py --target <프로젝트경로>   # �
 | 무엇을 만드나 | `--deck` | 파일 |
 |---|---|---|
 | 보고서 · 발표 덱 (기본) | `standard` | `live-standard.html` — 기준 덱 15장 |
-| 본문 디자인 기준 | `patterns` | `live-patterns.html` — 패턴첩 63장(사내 발표 덱 최종본 형태 · 내용 가상) |
+| 본문 디자인 기준 | `patterns` | `live-patterns.html` — 디자인 언어 용례 63장 + 응용 견본 · 문법은 `references/design-language.md` |
 | 기준 덱에 없는 부품 | `livecatalog` | `live-catalog.html` — 부품 카탈로그 52장, 재사용·참고 |
 | 회의록 (A4 인쇄) | `minutes` | `doc-minutes.html` |
 | 고쳐 가며 쓰는 현황판 | `manage` | `board-manage.html` — 관리보드 |
@@ -196,7 +196,7 @@ html { font-size: clamp(10.5px, min(1vw, 1.78vh), 20px) }
 | 파일 | `--deck` 이름 | 용도 |
 |---|---|---|
 | `live-standard.html` | `standard` | **기준 덱 — 새 보고서의 출발점.** 15장 · 표지 · 목차 · 장 간지 · 마무리 · 부록 간지 · 예상 질문까지 사내 발표 덱 짜임새 |
-| `live-patterns.html` | `patterns` | **패턴첩 63장.** 사내 발표 덱 최종본의 본문 디자인 · 연출을 형태 그대로 옮겼다(내용은 가상). 장째 가져와 쓰고 덱 머리에 `blue-pattern.css` 를 부른다. |
+| `live-patterns.html` | `patterns` | **패턴첩 — 디자인 언어 용례.** 사내 발표 덱 최종본의 본문 디자인 · 연출 63장(내용은 가상)과 응용 견본. 베끼지 않고 문법(`references/design-language.md`)으로 내용에 맞게 짠다. 덱 머리에 `blue-pattern.css`. |
 | `live-catalog.html` | `livecatalog` | **라이브 부품 카탈로그 52장.** 부품 38종 · 애니메이션 12계열 · 위젯 · 근거 · 원문 · 영상 겹창 · 아이콘 135종 · 맞춤 본문 견본(`own`). 그대로 · 고쳐 · 참고해 쓴다 — 본문은 내용에 맞게 새로 짜도 된다 |
 
 카탈로그는 사내 발표 덱 56장을 렌더해 뽑은 장 짜임새 · 부품 · 움직임 · 발표 기능을 옮긴 것이다.

@@ -4,10 +4,13 @@
 `scripts/check_live.py` 가 판정한다. 이 문서는 그 사이 — **무엇을 어떻게 그릴지 판단하는 기준**이다.
 구체적인 도식 · 효과는 만드는 에이전트가 내용을 보고 고른다. 아래는 그 판단의 틀이다.
 
-출발점은 셋이다. 틀은 `assets/live-standard.html`(기준 덱), **본문 디자인 기준은
-`assets/live-patterns.html`(패턴첩 — 사내 발표 덱 최종본의 본문 연출 63종, 내용은 가상)**, 작은 부품은
-`assets/live-catalog.html`(카탈로그). 패턴첩 장은 통째로 가져와 글 · 수치만 바꾼다(덱 머리에
-`blue-pattern.css`). 맞는 것이 없으면 장 안 `<style data-own>` 으로 새로 짠다.
+출발점은 셋이다. 틀은 `assets/live-standard.html`(기준 덱), **본문 디자인 기준은 사내 발표 덱 최종본의
+디자인 언어** — 문법은 `references/design-language.md`, 용례는 `assets/live-patterns.html`(패턴첩 63장,
+내용은 가상) — 작은 부품은 `assets/live-catalog.html`(카탈로그).
+**패턴첩은 베낄 원본이 아니라 기준이다.** 내용을 먼저 보고, 그 문법(색 역할 · 위계 · 배치 · 연출)으로
+내용에 맞는 장을 짠다 — 꼭 맞는 용례가 있으면 가져와 고쳐 쓰고, 없으면 문법을 빌려 장 안
+`<style data-own>` 으로 새로 짜고, 둘을 섞어도 된다. 덱 머리에 `blue-pattern.css` 를 부른다.
+고정 영역(「6」)은 어느 경우에도 그대로다.
 
 ---
 
@@ -33,7 +36,7 @@
 
 ## 3. 무엇을 그릴까 — 내용이 모양을 정한다
 
-| 내용 | 그린다 | 먼저 볼 패턴첩 장 | 카탈로그 장 |
+| 내용 | 그린다 | 용례(패턴첩 장) — 문법을 보고 내용에 맞게 짠다 | 카탈로그 장 |
 |---|---|---|---|
 | 표지 · 간지 · 목차 · 마무리 | 상승 곡선 표지 · 큰 번호 간지 · 결론 한 문장 | `pt-cover` · `pt-index` · `pt-chapter` · `pt-closing` | — |
 | 흐름 · 경로 · 유입 | 허브 · 시스템 지도 · 깔때기 · 노선 | `pt-hub` · `pt-system-map` · `pt-api-first` · `pt-ai-draft-flow` · `pt-journey` | `flow` · `own` · `route` |
@@ -64,9 +67,10 @@
 
 | 무엇 | 토큰 |
 |---|---|
+| 디자인 언어 색 | `--bl-pt-*` — 지면 · 잉크 · 선 · 코발트 · 딥네이비 · 진행 파랑 · 당사 주황 · 비교 회색 · 상태 · 결론 띠. 역할은 `references/design-language.md` 「1」 |
 | 색 | `--br-navy` · `--br-cobalt` · `--br-text*` · `--br-tint` · `--br-cat-1~6` · 상태 `--br-ok-* · --br-warn-* · --br-alert-*` · 부품은 `data-c` |
 | 글꼴 | `--br-font-kr` · `--br-font-num`(수치) · `--bl-font-mono`(세는 숫자) |
-| 패턴 장 | `blue-pattern.css` 가 그린다 — 장 안 색 · 치수는 손대지 않고 글 · 수치만 바꾼다. 패턴 장 글자는 최종본 밀도(1.0rem 미만 허용, 검사기 주의) |
+| 패턴 장 | 패턴첩에서 가져온 용례 장(`xf`)은 `blue-pattern.css` 가 그린다 — 고쳐 써도 되지만 새로 짜는 장에 `xf` 를 달지 않는다. 용례 장의 작은 글자는 최종본 밀도라 주의만 뜬다 — 새 장은 하한을 지킨다 |
 | 글자 크기 | `--bl-fs-title` · `--bl-fs-lede` · `--bl-fs-body`(본문 1.0rem 이상) · `--bl-fs-kpi` · `--bl-fs-kpi-l` · 라벨 `--bl-fs-lbl` |
 | 간격 | `--bl-sp-1~5` · 판 너비 `--bl-max` |
 | 모서리 | `--bl-r-xs · s · m · l · pill` · `0` · `50%` |

@@ -180,8 +180,8 @@ d = k × √value
 부품 38종(카드 · 시간 · 조직 · 차트 · 흐름 · 화면 목업 · 위젯)은 `assets/live-catalog.html` 에 장마다
 하나씩 있다. 색인과 위젯 속성 · 데이터 형식은 `README.md` 「6-3. 라이브 덱」.
 
-본문 디자인 기준은 패턴첩 `assets/live-patterns.html`(63장 · 사내 발표 덱 최종본 형태 · 내용 가상)이다.
-장째 가져와 글 · 수치만 바꾸고 덱 머리에 `blue-pattern.css` 를 부른다. 패턴 장(`.xf`)은 계통 CSS 가 그려
+본문 디자인 기준은 사내 발표 덱 최종본의 디자인 언어다 — 문법 `references/design-language.md`, 용례
+`assets/live-patterns.html`(63장 · 내용 가상). 베끼지 않고 내용에 맞게 응용한다. 덱 머리에 `blue-pattern.css`. 패턴 장(`.xf`)은 계통 CSS 가 그려
 색 · 치수 검사(2 · 4 · 28번)에서 빠지고, 글자는 최종본 밀도라 1.0rem 미만이 주의로 뜬다.
 
 세는 숫자(쪽번호·장 번호·서수·연도)는 고정폭 `--bl-font-mono`(IBM Plex Mono)다. 본문 안에서

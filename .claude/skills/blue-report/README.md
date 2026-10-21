@@ -32,7 +32,7 @@ blue-report/
 │  ├─ blue-live.css            라이브 계통 — 배율 · 띠 · 부품 38종 · 움직임 12계열 · 아이콘 135종
 │  ├─ live-viewer.js           라이브 엔진 — 넘김 · 단계 · 쪽 이동 · 발표 · 레이저 · 대본 창 · 겹창 · 위젯
 │  ├─ live-standard.html       기준 덱 15장 — 새 보고서의 출발점
-│  ├─ live-patterns.html       패턴첩 63장 — 사내 발표 덱 최종본의 본문 디자인 · 연출(내용은 가상)
+│  ├─ live-patterns.html       패턴첩 63장 + 응용 견본 — 디자인 언어 용례(내용은 가상)
 │  ├─ blue-pattern.css         패턴 장(.xf) 본문 CSS — 패턴첩 장을 쓰는 덱이 함께 부른다
 │  ├─ live-catalog.html        라이브 부품 카탈로그 52장 — 그대로 · 고쳐 · 참고해 쓴다
 │  ├─ archive/                 보관 양식 — 고정 지면 덱 12종(PPTX 원본) · A4 3종 · 보드 4종 · 브리핑 · FCC/KC
@@ -71,7 +71,7 @@ blue-report/
 | 무엇을 만드나 | `--deck` | 파일 |
 |---|---|---|
 | 보고서 · 발표 덱 (기본) | `standard` | `assets/live-standard.html` — 「6-3」 |
-| 본문 디자인 기준 | `patterns` | `assets/live-patterns.html` — 패턴첩 63장 · `DESIGN.md` 「3」 |
+| 본문 디자인 기준 | `patterns` | 문법 `references/design-language.md` · 용례 `assets/live-patterns.html` — 베끼지 않고 응용 |
 | 부품 재사용 · 참고 | `livecatalog` | `assets/live-catalog.html` — 「6-3」 |
 | 회의록 (A4) | `minutes` | `assets/doc-minutes.html` |
 | 고쳐 가며 쓰는 현황판 | `manage` | `assets/board-manage.html` |
@@ -1023,7 +1023,7 @@ rot  = 누적pct × 3.6 − 90              12시에서 시작
 | 파일 | `--deck` | 장 | 쓰는 법 |
 |---|---|---|---|
 | `assets/live-standard.html` | `standard` | 15 | **출발점.** 표지 · 목차 · 보고 요지 · 장 간지 · 본문 · 로드맵 · 결정 요청 · 마무리 · 부록 간지 · 예상 질문 · 용어 |
-| `assets/live-patterns.html` | `patterns` | 63 | 패턴첩. 사내 발표 덱 최종본의 본문 디자인 · 연출 63종(내용은 가상). 장째 가져와 글 · 수치만 바꾼다 — 덱 머리에 `blue-pattern.css` |
+| `assets/live-patterns.html` | `patterns` | 63 | 패턴첩. 사내 발표 덱 최종본의 디자인 언어 용례 63장 + 응용 견본(내용은 가상). 문법(`references/design-language.md`)으로 내용에 맞게 짠다 — 맞는 장은 고쳐 쓰고 아니면 새로 짠다 · 덱 머리에 `blue-pattern.css` |
 | `assets/live-catalog.html` | `livecatalog` | 52 | 부품첩. 맞는 장을 복사해 그대로 · 고쳐 쓰거나, 참고해 새로 짠다. `own` 장(X01)이 맞춤 본문 견본 |
 
 ```bash

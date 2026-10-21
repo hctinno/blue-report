@@ -251,6 +251,9 @@ def check_links(html, rep):
     if re.search(r'<section[^>]*class="[^"]*\bbl-sl\b[^"]*\bxf\b', html) and not (
             re.search(r'href="[^"]*blue-pattern\.css"', html) or _PAT_SIG in html):
         rep.f("패턴 장(.xf)이 있는데 blue-pattern.css 를 부르지 않았다 — 본문 그림이 통째로 빠진다")
+    elif "var(--bl-pt-" in "\n".join(own_css_blocks(html)) and not (
+            re.search(r'href="[^"]*blue-pattern\.css"', html) or _PAT_SIG in html):
+        rep.f("맞춤 CSS 가 디자인 언어 토큰(--bl-pt-*)을 쓰는데 blue-pattern.css 를 부르지 않았다 — 색이 빈다")
     if has_base and has_live:
         rep.o("CSS — blue-report.css 와 blue-live.css 를 함께 부른다")
     elif has_live:
@@ -400,6 +403,8 @@ _SHADOW_OK = re.compile(r"rgba?\(\s*(?:0\s*,\s*0\s*,\s*0|255\s*,\s*255\s*,\s*255
 def own_css_blocks(html):
     """덱이 스스로 적은 <style> 블록. 계통 CSS 를 묶어 넣은 블록은 뺀다."""
     out = []
+    # 스크립트 안 문자열의 「<style」 이 진짜 블록과 짝지어지지 않게 지우고, 패턴 장(계통 CSS 몫)은 뺀다
+    html = _blank(_blank(_pattern_blank(html), r"<script[^>]*>.*?</script>"), r"<!--.*?-->")
     for m in re.finditer(r"<style[^>]*>(.*?)</style>", html, re.S):
         body = m.group(1)
         if any(sig in body for sig in _SYS_SIGS):

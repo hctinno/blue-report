@@ -52,9 +52,11 @@
   없는 덱이 나온다. `--single-file` 을 붙이면 CSS·폰트·로고가 한 파일에 박힌다.
   안 붙이면 스크립트가 CSS · 뷰어 JS · `fonts/` 를 결과물 옆에 같이 복사한다 — CSS 를 떼어
   옮기면 지면이 통째로 Times New Roman 이 되고, JS 를 떼어 옮기면 넘김 · 발표 기능이 죽는다.
-- **본문 디자인 기준은 패턴첩 `assets/live-patterns.html`(`--deck patterns`)이다** — 사내 발표 덱 최종본의
-  본문 연출 63종을 형태 그대로 옮겼다(내용은 가상). 맞는 장을 통째로 가져와 글 · 수치만 바꾸고, 덱 머리에
-  `blue-pattern.css` 를 더한다. 장의 `xf` · `pt-이름` 클래스는 지우지 않는다(`check_live.py` 가 CSS 누락을 실패로 잡는다).
+- **본문 디자인 기준은 사내 발표 덱 최종본의 디자인 언어다** — 문법은 `.claude/skills/blue-report/references/design-language.md`,
+  용례는 패턴첩 `assets/live-patterns.html`(`--deck patterns`, 63장 · 내용은 가상). **베끼지 않는다** — 보고서 내용을
+  먼저 보고 그 문법(색 역할 · 위계 · 배치 · 연출)으로 내용에 맞게 짠다. 맞는 용례는 가져와 고쳐 쓰고, 없으면 문법을
+  빌려 `<style data-own>` 으로 새로 짠다(색 `--bl-pt-*`). 덱 머리에 `blue-pattern.css` 를 더한다(누락은 `check_live.py` 가 실패로 잡는다).
+  고정 영역(머리띠 · 꼬리띠 · 로고 · 워터마크 · 진행선 · 발표 기능)은 그대로다.
 - 부품은 `assets/live-catalog.html`(`--deck livecatalog`)에서 찾는다 — 장째 복사해도, 고쳐 써도,
   참고만 해도 된다. 계통 이름(`bl-`·`br-`)은 새로 짓지 않는다 — 맞춤 클래스는 `x-` 같은 다른 접두어로
   짓는다. 색인은 `.claude/skills/blue-report/README.md` 「6-3. 라이브 덱」.
