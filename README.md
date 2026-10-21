@@ -101,6 +101,14 @@ claude.ai → Settings → Capabilities → Skills 에서 이 zip 을 올린다.
 
 ### 3. Codex — 네이티브 스킬 설치
 
+**권장: Codex 대화창에 한 줄로 설치하고 바로 시작한다.**
+
+```text
+블루 리포트를 설치하고 이 대화에서 바로 발표자료 만들기를 시작해 줘. 설치 지침: https://github.com/hctinno/blue-report/blob/main/INSTALL.md
+```
+
+Codex가 공개 설치본 다운로드·기존 설치본 백업·설치 확인을 수행하고, 같은 대화에서 기획 질문으로 이어간다. 주제나 자료 경로를 뒤에 덧붙여도 된다.
+
 **직원용 빠른 설치:** [최신 Codex 스킬 ZIP](https://github.com/hctinno/blue-report/releases/latest/download/blue-report-codex.zip)을 받아 Codex에 파일을 제공하고 “이 ZIP을 개인 스킬로 설치해 줘”라고 요청한다.
 설치 후 `/skills`에서 블루 리포트를 선택하거나 `$blue-report`로 시작한다. 기존 설치본이 있으면 백업한 뒤 갱신한다.
 

@@ -1,5 +1,13 @@
 # Codex 및 다른 에이전트의 발표자료 제작 진입점
 
+## Codex 대화창에서 한 줄로 시작
+
+```text
+블루 리포트를 설치하고 이 대화에서 바로 발표자료 만들기를 시작해 줘. 설치 지침: https://github.com/hctinno/blue-report/blob/main/INSTALL.md
+```
+
+에이전트가 [설치·시작 지침](../INSTALL.md)에 따라 다운로드·백업·설치 확인을 수행하고 현재 대화에서 기획 질문으로 이어간다. 사용자가 ZIP을 직접 내려받을 필요는 없다. 뒤에 주제·자료 경로를 추가할 수도 있다.
+
 ## 한 번 설치하고 호출
 
 저장소 루트에서 `python scripts/install_codex_skill.py`를 실행한다. macOS·Linux는 `python3`를 사용한다.
