@@ -1,7 +1,7 @@
 {
   "name": "blue-report",
-  "description": "블루 리포트 디자인 시스템 — 사내 공용 보고서 템플릿. 고르는 양식은 넷이다 — **보고서·발표는 기준 덱(standard)**, 기준 덱에 없는 부품은 라이브 부품 카탈로그(livecatalog, 51장), 회의록(minutes, A4), 관리보드(manage). 머리띠·꼬리띠·로고·워터마크를 검사기가 강제한다. 고정 지면 덱 12종(PPTX 원본)·A4 3종·보드 4종·FCC/KC 는 assets/archive/ 에 보관 — 이름으로 부르거나 PowerPoint 가 필요할 때만 쓴다. HTML·PDF·PPTX 출력.",
-  "version": "1.9.0",
+  "description": "비즈니스 목적·청중·형식·애니메이션을 대화로 정하고 같은 내용의 스타일 후보를 PNG로 보여준 뒤 회사 양식으로 제작하는 블루 리포트. HTML·PDF·PPTX 지원.",
+  "version": "1.10.0",
   "author": {
     "name": "주식회사 에이치시티"
   },

@@ -4,9 +4,18 @@
 
 This repository is the HCT shared presentation design system, called **Blue Report**. One source produces HTML, PDF, PowerPoint, and DOCX output, and the rules are enforced by a script rather than by eye.
 
-`docs/CODEX_DECK_PROMPT.md` is the full step-by-step work order, written for agents that cannot load `.claude/skills/`. **Read it before starting any deck, document, or board work** — it carries the complete asset tables with their `--deck` names. The rules below are its summary.
+`docs/CODEX_DECK_PROMPT.md` is the entrypoint for agents that cannot load `.claude/skills/`. **Read it before starting deck, document, or board work**; it routes to the canonical skill, business intake and visual selection instructions. The rules below are its summary.
 
 `docs/AGENT_WIRING.md` explains how to reach this repository from an agent session that started somewhere else.
+
+## Business intake and visual direction
+
+For new presentation work, follow `.claude/skills/blue-report/SKILL.md` first.
+Clarify the business purpose, audience, delivery, content, output format, length and motion preferences.
+Render cover and body samples of the same content into actual PNGs, explain the differences,
+and get a style choice or explicit delegation before producing the full deck.
+See `references/business-presentation-intake.md` and `references/visual-style-selection.md` inside the skill.
+Template routing does not bypass these content and style decisions. Preserve an already chosen style for targeted edits.
 
 ## What is in here
 
@@ -30,7 +39,7 @@ Four separate lineages. They are not interchangeable: different page size, diffe
 
 **Every report or presentation is built from the standard deck** — executive reports, weekly
 reports, strategy reports, decision requests, Q&A and appendices included. Those slide types are all
-in the standard deck and the parts catalog. Pick from the request without asking: minutes → `minutes`,
+in the standard deck and the parts catalog. Route the output family from the request without repeating known facts: minutes → `minutes`,
 dashboard / status board → `manage`, everything else → `standard`.
 
 ### Archived templates — `assets/archive/`
@@ -121,7 +130,7 @@ Separate family under the same design system. See `docs/FCC_KC_REPORT_TEMPLATE_S
 
 - Work in the current checkout root. Paths here are relative to it — never assume a specific drive or directory.
 - Read `.claude/skills/blue-report/README.md` first. It is the self-contained spec: color tokens, type scale, spacing, chart rules, and writing style. `.claude/skills/blue-report/references/rules.md` is the condensed rule list.
-- Start from a finished asset above, replacing content only. Do not invent a new visual style.
+- Start from a finished asset above, replacing content only. Preserve house tokens and chrome; compare the supported content-layout directions before full production.
 - Ask the user which purpose applies before choosing when the request does not make it obvious. Deck, A4 document, board, and live deck are four different answers — do not guess between them. When the request is simply "a report" or "a deck" with no further constraint, the answer is the live standard deck.
 - Example figures, department names, and wording in the assets are usage samples, not placeholders. Replace them with real content.
 - Hard rules: use `--br-*` CSS custom properties only and add no raw hex; donut charts only, never pie, and generate them with `scripts/donut.py` rather than computing angles by hand; Korean copy in 개조식 (noun-ending) form — neither polite endings (`~합니다`) nor plain declaratives (`~한다`, `~없다`); speaker notes in `data-notes` are exempt; slides are exactly 1920x1080; no slide text below 24px; data marks keep at least 2:1 contrast against the backdrop they actually sit on; the brand mark stays in the top-right margin band and body content never intrudes there.

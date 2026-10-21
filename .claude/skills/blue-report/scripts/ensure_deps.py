@@ -16,7 +16,9 @@
     python3 ensure_deps.py --check    # 무엇이 있고 없는지만 본다
     python3 ensure_deps.py --all      # 전부 미리 갖춘다
 """
+import argparse
 import importlib
+import importlib.util
 import os
 import shutil
 import subprocess
@@ -42,9 +44,13 @@ def _say(msg):
     print(f"[준비] {msg}", file=sys.stderr)
 
 
-def _run(cmd, what):
+def _run(cmd, what, cwd=None):
     _say(f"{what} — {' '.join(cmd)}")
-    r = subprocess.run(cmd, capture_output=True, text=True)
+    try:
+        r = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", timeout=300)
+    except (OSError, subprocess.TimeoutExpired) as error:
+        sys.exit(f"[준비 실패] {what}: {error}")
     if r.returncode != 0:
         tail = (r.stderr or r.stdout or "").strip().splitlines()[-3:]
         sys.exit(f"[준비 실패] {what}\n  " + "\n  ".join(tail) +
@@ -134,11 +140,18 @@ def need_node_modules(directory=PPTX_DIR):
     """PPTX 생성에 필요한 npm 패키지를 갖춘다."""
     if os.path.isdir(os.path.join(directory, "node_modules", "pptxgenjs")):
         return
-    if not shutil.which("npm"):
+    npm = shutil.which("npm")
+    if not npm:
         sys.exit("[준비 필요] npm 이 없다. Node.js 를 설치한다 — https://nodejs.org")
     if _no_install():
         sys.exit(f"[준비 필요] PPTX 생성기 의존성이 없다.\n  실행: cd {directory} && npm install")
-    _run(["npm", "install", "--silent", "--prefix", directory], "PPTX 생성기 의존성 설치")
+    # Run from the package directory: Windows npm wrappers may lose --prefix.
+    # Prefer npm's JS entrypoint so paths with spaces do not cross a shell.
+    node = shutil.which("node")
+    cli = os.path.join(os.path.dirname(npm), "node_modules", "npm", "bin", "npm-cli.js")
+    command = [node, cli] if node and os.path.isfile(cli) else [npm]
+    _run(command + ["install", "--silent", "--ignore-scripts", "--no-audit",
+                    "--no-fund", "--no-package-lock"], "PPTX 생성기 의존성 설치", cwd=directory)
     if not os.path.isdir(os.path.join(directory, "node_modules", "pptxgenjs")):
         sys.exit(f"[준비 실패] npm install 후에도 pptxgenjs 가 없다: {directory}")
 
@@ -152,16 +165,39 @@ STATUS = [
 ]
 
 
+def required_status(output):
+    """Only the requested format's dependencies; no installation or inference."""
+    required = [STATUS[0], STATUS[2], STATUS[3]]
+    if output == "pptx":
+        required += [("Node.js (PPTX)", lambda: shutil.which("node") is not None),
+                     ("npm (PPTX)", lambda: shutil.which("npm") is not None), STATUS[4]]
+    return required
+
+
 def main():
-    import importlib.util  # noqa: F401  (STATUS 에서 쓴다)
-    args = sys.argv[1:]
-    if "--all" in args:
+    parser = argparse.ArgumentParser(description="필요한 형식의 로컬 도구 확인·준비")
+    parser.add_argument("--for", dest="output", choices=("html", "pdf", "pptx"))
+    parser.add_argument("--prepare", action="store_true", help="요청 형식에 필요한 것만 준비")
+    parser.add_argument("--check", action="store_true", help="설치 없이 현재 상태만 확인")
+    parser.add_argument("--all", action="store_true", help="모든 제작 도구 준비")
+    args = parser.parse_args()
+    if args.check and (args.prepare or args.all):
+        parser.error("--check는 설치 옵션과 함께 사용할 수 없습니다.")
+    if args.prepare and not args.output:
+        parser.error("--prepare에는 --for html, pdf 또는 pptx가 필요합니다.")
+    if args.all:
         need_pillow(); need_fonttools(); need_browser(); need_node_modules()
         print("전부 준비됨")
         return
+    if args.prepare:
+        need_pillow(); need_browser()
+        if args.output == "pptx":
+            need_node_modules()
+        print(f"{args.output.upper()} 제작 도구 준비됨")
+        return
     print("의존성 상태")
     missing = 0
-    for name, ok in STATUS:
+    for name, ok in required_status(args.output) if args.output else STATUS:
         try:
             good = ok()
         except Exception:
@@ -170,7 +206,7 @@ def main():
         print(f"  {'있음' if good else '없음'}  {name}")
     if missing:
         print(f"\n{missing}개가 없다. 스크립트를 실행하면 필요한 것만 알아서 받는다.")
-        print("미리 다 받으려면: python3 ensure_deps.py --all")
+        print(f"필요한 형식만 준비: python scripts/ensure_deps.py --for {args.output or 'html'} --prepare")
     sys.exit(1 if missing else 0)
 
 

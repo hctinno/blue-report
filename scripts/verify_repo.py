@@ -288,6 +288,16 @@ def check_pptx(log, out_dir):
         return
     log.ok("PPTX 생성", f"{len(made)}종 — " + ", ".join(made))
     check_pptx_integrity(log, out_dir, made)
+    failures = []
+    for name in made:
+        checked = run([sys.executable, os.path.join(SKILL, "scripts/check_pptx.py"),
+                       os.path.join(out_dir, name)])
+        if checked.returncode:
+            failures.append(name + ": " + (checked.stdout or checked.stderr).strip()[-350:])
+    if failures:
+        log.fail("PPTX 내장 검사기", "; ".join(failures))
+    else:
+        log.ok("PPTX 내장 검사기", f"{len(made)}종 — XML·관계 파일·슬라이드 연결·오류 텍스트 검사 통과")
 
 
 def check_pptx_integrity(log, out_dir, made):
@@ -1296,17 +1306,29 @@ def check_version(log):
         log.ok("버전 올림", f"{before} → {now} · 스킬 파일 {len(changed)}개 변경 · 기준 {base}")
 
 
+def check_skill_workflow(log):
+    """Native installation, backup preservation and real style-preview PNGs."""
+    r = run([sys.executable, "-X", "utf8", "-m", "unittest", "discover",
+             "-s", os.path.join(ROOT, "tests"), "-p", "test_skill_workflow.py", "-v"])
+    print(r.stdout, end="")
+    print(r.stderr, end="")
+    if r.returncode:
+        log.fail("기획·스타일 선택·Codex 설치", "워크플로 회귀 검사 실패")
+    else:
+        log.ok("기획·스타일 선택·Codex 설치", "설치·백업 보존·실제 PNG 회귀 검사 통과")
+
+
 # ------------------------------------------------------------------------ main
 
 def main():
     ap = argparse.ArgumentParser(description="블루 리포트 저장소 점검")
     ap.add_argument("--shots", metavar="폴더", help="슬라이드별 PNG 를 남길 폴더")
-    ap.add_argument("--only", choices=["decks", "docs", "boards", "live", "fcc", "viewer", "pptx", "dist", "encoding", "plugin", "sync", "version", "palette"],
+    ap.add_argument("--only", choices=["decks", "docs", "boards", "live", "fcc", "viewer", "pptx", "dist", "encoding", "plugin", "sync", "version", "palette", "workflow"],
                     action="append", help="일부만 돌린다. 여러 번 줄 수 있다")
     ap.add_argument("--keep", metavar="폴더", help="만든 덱·PPTX 를 여기에 남긴다")
     a = ap.parse_args()
 
-    only = set(a.only or ["decks", "docs", "boards", "live", "fcc", "viewer", "pptx", "dist", "encoding", "plugin", "sync", "version", "palette"])
+    only = set(a.only or ["decks", "docs", "boards", "live", "fcc", "viewer", "pptx", "dist", "encoding", "plugin", "sync", "version", "palette", "workflow"])
     log = Log()
 
     if a.shots:
@@ -1315,6 +1337,9 @@ def main():
     tmp = a.keep or tempfile.mkdtemp(prefix="blue-report-verify-")
     os.makedirs(tmp, exist_ok=True)
     try:
+        if "workflow" in only:
+            print("── 기획·시각 선택·네이티브 스킬 설치 ──")
+            check_skill_workflow(log)
         if "palette" in only:
             print("── 계열색 ──")
             check_palette(log)
