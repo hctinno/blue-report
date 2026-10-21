@@ -6,6 +6,18 @@
 
 ---
 
+## 발표자료 제작 흐름
+
+주제·목적·청중·사용 환경·형식·분량·효과를 한 가지씩 대화로 구체화한다.
+같은 내용으로 **정돈된 보고형 · 도식 중심 설명형 · 메시지 강조형**의 표지와 본문을 실제 PNG로 렌더링한다.
+비교 이미지를 보고 스타일을 선택한 뒤 목차와 디자인 방향에 맞춰 전체 자료를 만든다.
+
+[시각적 스타일 선택과 입력 예시](docs/STYLE_PREVIEWS.md) · [Codex 설치·호출](docs/CODEX_DECK_PROMPT.md)
+
+처음 쓰는 직원은 자료를 주고 “이걸로 발표자료를 만들어 줘”라고 시작한다.
+에이전트가 자료 읽기·기획 기록·도구 준비·시안 입력·검수를 맡으며, 사용자는 중요한 선택을 한다.
+“잘 모르겠다”에는 추천과 이유를 설명하고, “나머지는 추천대로”에는 위임한 범위를 맡아 진행한다.
+
 ## 쓰는 법 — 다섯 가지
 
 다섯 다 같은 규격을 뜨게 하지만 **미치는 범위와 갱신 방식이 다르다.**
@@ -87,22 +99,45 @@ claude.ai → Settings → Capabilities → Skills 에서 이 zip 을 올린다.
 **판올림하면 묶음을 다시 떠서 다시 올린다.** 계정 스킬은 저장소를 보고 있지 않다.
 자동으로 최신판이 되는 것은 1번 플러그인 쪽뿐이다(`plugin marketplace update`).
 
-### 3. Codex 등 다른 에이전트 — 클론
+### 3. Codex — 네이티브 스킬 설치
 
-Codex 는 `.claude/skills/` 를 인식하지 못한다. 파일이 디스크에 있어야 한다.
+**직원용 빠른 설치:** [최신 Codex 스킬 ZIP](https://github.com/hctinno/blue-report/releases/latest/download/blue-report-codex.zip)을 받아 Codex에 파일을 제공하고 “이 ZIP을 개인 스킬로 설치해 줘”라고 요청한다.
+설치 후 `/skills`에서 블루 리포트를 선택하거나 `$blue-report`로 시작한다. 기존 설치본이 있으면 백업한 뒤 갱신한다.
+
+저장소에서 직접 설치하려면:
 
 ```bash
 git clone https://github.com/hctinno/blue-report.git
 cd blue-report
+python scripts/install_codex_skill.py
 ```
 
-그 폴더에서 에이전트를 띄우고 한 줄 친다.
+macOS·Linux에서는 `python3`를 사용한다. 기본 설치 위치는 `~/.agents/skills/blue-report`이며,
+`CODEX_HOME`을 지정한 경우에는 그 아래 `skills/blue-report`다. 로고·폰트·규격·렌더 스크립트가 함께 설치된다.
+전역 AGENTS.md나 실행 중인 세션을 변경하지 않는다.
 
-```
-docs/CODEX_DECK_PROMPT.md 를 읽고 그대로 수행해라. 용도는 사내 보고, 주제는 8월 월간 업무 보고.
+Codex CLI에서 `/skills` → `blue-report`를 선택하거나 다음처럼 호출한다.
+
+```text
+$blue-report 발표자료를 만들고 싶어.
 ```
 
-용도와 주제를 빼도 된다. 그 경우 에이전트가 먼저 묻는다.
+다른 직원에게 저장소 없이 전달할 독립 ZIP도 만들 수 있다. 받는 사람의 PC에 별도 디자인·PPTX 검사 스킬이 필요하지 않다.
+
+```bash
+python scripts/install_codex_skill.py --bundle decks-out/blue-report-codex.zip
+```
+
+ZIP 설치 방법과 실행 환경은 [Codex 시작 안내](docs/CODEX_DECK_PROMPT.md)에 있다.
+
+기존 설치본을 갱신하려면 저장소의 변경사항을 확인하고 최신 소스를 받은 뒤 실행한다.
+기존 설치본은 스킬 탐색 폴더 밖에 백업된다. 자동 갱신이나 실행 중 세션의 재시작은 하지 않는다.
+
+```bash
+python scripts/install_codex_skill.py --update
+```
+
+설치하지 않고 저장소에서 작업하는 다른 에이전트는 `docs/CODEX_DECK_PROMPT.md`를 읽으면 같은 기획·시각 선택 절차로 들어간다.
 
 ### 4. 그 PC 안에서만 복사
 

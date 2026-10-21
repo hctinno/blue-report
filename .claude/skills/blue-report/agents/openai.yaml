@@ -1,0 +1,4 @@
+interface:
+  display_name: "블루 리포트"
+  short_description: "자료를 주면 기획 대화·이미지 시안 선택·발표자료 제작과 검수까지 안내"
+  default_prompt: "$blue-report 내 자료로 발표자료를 만들고 싶어. 필요한 것부터 쉽게 물어보고, 추천안과 이미지 시안을 보여줘."
