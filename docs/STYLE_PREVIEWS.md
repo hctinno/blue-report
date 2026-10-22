@@ -9,9 +9,9 @@
 
 | 번호 | 방향 | 원본 이미지 |
 |---|---|---|
-| 01 | 정돈된 보고형: 밝은 지면, 결론과 근거의 좌우 배치 | [표지](previews/report-cover.png) · [본문](previews/report-body.png) |
-| 02 | 도식 중심 설명형: 큰 글씨, 단계 흐름, 여백 | [표지](previews/explain-cover.png) · [본문](previews/explain-body.png) |
-| 03 | 메시지 강조형: 네이비 지면, 큰 메시지, 강한 위계 | [표지](previews/proposal-cover.png) · [본문](previews/proposal-body.png) |
+| 01 | 정돈된 보고형: 밝은 지면, 3구역 편집과 결론 띠 | [표지](previews/report-cover.png) · [본문](previews/report-body.png) |
+| 02 | 도식 중심 설명형: 노선 — 번호 역 흐름, 결과 역 강조 | [표지](previews/explain-cover.png) · [본문](previews/explain-body.png) |
+| 03 | 메시지 강조형: 짙은 띠 지면, 큰 메시지, 쉐브론 단계 | [표지](previews/proposal-cover.png) · [본문](previews/proposal-body.png) |
 
 회사 로고·폰트·팔레트·머리말·꼬리말은 공통이다. 번호로 고르거나 원하는 조합·수정 방향을 설명한다.
 스킬은 선택 결과를 제작 방향에 반영한 다음 전체 자료를 만든다. 선택을 위임할 수도 있다.
@@ -35,7 +35,7 @@ python .claude/skills/blue-report/scripts/style_previews.py --content brief.json
 ```
 
 예시 내용으로 기능을 확인하려면 --content를 생략한다. 기존 선택 자료를 보존하므로 재생성할 때는 새 출력 폴더를 사용한다.
-이 생성기는 전체 스타일 비교용이다. 생성 파일은 후보별 표지·본문 PNG 6개, comparison.png, index.html, 개별 HTML, styles.json이다. 페이지별 3안은 에이전트가 각 장의 실제 내용에 맞춰 별도로 제작한다.
+세 방향은 회사 발표 덱의 디자인 언어(`.claude/skills/blue-report/references/design-language.md`)의 배치 문법과 색 토큰으로 그린다. 이 생성기는 전체 스타일 비교용이다. 생성 파일은 후보별 표지·본문 PNG 6개, comparison.png, index.html, 개별 HTML, styles.json이다. 페이지별 3안은 에이전트가 각 장의 실제 내용에 맞춰 별도로 제작한다.
 파일을 실제로 열고 글자·로고·배치를 확인한 뒤 사용자에게 비교 이미지를 보여준다.
 
 ## 효과와 출력 형식

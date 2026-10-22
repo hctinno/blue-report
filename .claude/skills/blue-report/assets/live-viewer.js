@@ -6,6 +6,7 @@
 //
 //   넘김      ← → ↑ ↓ · PgUp PgDn · Space · Home End · 발표 중 화면 클릭 · 가로 보기 휠 · 밀기
 //   단계      data-f="1" 부터. 같은 번호는 함께 열린다. 번호를 건너뛰어도 된다
+//             장에 data-dim 을 달면 지난 단계는 흐려진다(.is-past)
 //   쪽 이동   숫자 + Enter = 그 쪽번호. 0 = 표지. a(ㅁ) 를 먼저 누르면 부록 쪽번호
 //   단축키    파워포인트 슬라이드 쇼를 따른다 — F5 처음부터 · Shift+F5 이 장부터 · Alt+F5 발표자
 //             보기 · B 검은 화면 · W 흰 화면 · P(Ctrl+P) 펜 · Ctrl+I 형광펜 · Ctrl+E 지우개 ·
@@ -43,6 +44,10 @@
   function reduced() { return !!mqReduce.matches; }
   // 숨김 상태(장에 들어오기 전 모습)는 이 표시가 있을 때만 건다. JS 가 없으면 전부 보인다
   R.classList.add('bl-anim');
+  // 패턴 장(.xf — 패턴첩에서 옮겨 온 최종본 형태)은 최종본의 연출 신호를 읽는다.
+  // html.anim · body.expand · [data-f].on · .dim 을 이 엔진 상태에 맞춰 같이 단다.
+  var hasPat = !!D.querySelector('.bl-sl.xf');
+  if (hasPat) R.classList.add('anim');
 
   // ── 도구 ──────────────────────────────────────────────────────────────
   function $(sel, el) { return (el || D).querySelector(sel); }
@@ -157,13 +162,19 @@
   function paintSteps() {
     var st = staged();
     deck.classList.toggle('bl-deck--staged', st);
+    if (hasPat) B.classList.toggle('expand', !st);
     slides.forEach(function (s, k) {
       var lv = levels(s);
       if (!lv.length) return;
       var th = st ? threshold(k) : Infinity;
+      // data-dim 을 단 장은 지난 단계를 흐리게 둔다 — 지금 말하는 단계만 또렷하다(최종본의 .fr.dim).
+      var dim = st && s.hasAttribute('data-dim');
+      var pat = s.classList.contains('xf');
       $$('[data-f]', s).forEach(function (el) {
         var n = parseFloat(el.getAttribute('data-f')) || 0;
         el.classList.toggle('is-shown', n <= th);
+        el.classList.toggle('is-past', dim && n < th);
+        if (pat) { el.classList.toggle('on', n <= th); el.classList.toggle('dim', dim && n < th); }
       });
       s.setAttribute('data-step', st ? stepAt[k] : lv.length);
     });

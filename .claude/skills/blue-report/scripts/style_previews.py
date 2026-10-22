@@ -19,9 +19,9 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
 sys.path.insert(0, str(ROOT / "scripts"))
 STYLES = (
-    ("report", "01", "정돈된 보고형", "회의 보고 · 비교와 판단 근거", "밝은 지면 · 결론과 근거의 좌우 배치"),
-    ("explain", "02", "도식 중심 설명형", "교육 · 절차와 개념 설명", "큰 글씨 · 단계별 흐름 · 넉넉한 여백"),
-    ("proposal", "03", "메시지 강조형", "제안 · 핵심 메시지 전달", "네이비 지면 · 큰 메시지 · 선명한 위계"),
+    ("report", "01", "정돈된 보고형", "회의 보고 · 비교와 판단 근거", "밝은 지면 · 3구역 편집(번호 머리 · 구역별 근거) · 결론 띠"),
+    ("explain", "02", "도식 중심 설명형", "교육 · 절차와 개념 설명", "노선 — 번호 역을 잇는 흐름 · 결과 역 강조 · 넉넉한 여백"),
+    ("proposal", "03", "메시지 강조형", "제안 · 핵심 메시지 전달", "짙은 띠 지면 · 큰 메시지 · 쉐브론 단계 · 다음 행동 강조"),
 )
 EXAMPLE = {
     "title": "조사 결과를 실행으로 연결",
@@ -35,29 +35,50 @@ EXAMPLE = {
 }
 
 # Scoped to preview content. The house chrome and tokens remain untouched.
+# 세 방향 모두 회사 발표 덱의 디자인 언어(references/design-language.md)로 그린다 —
+# 색은 --bl-pt-* 토큰, 01 = 3구역 편집 + 결론 띠, 02 = 노선, 03 = 짙은 띠 + 쉐브론.
 CSS = """
-.x-preview-k { color: var(--br-cobalt); font-size: 1.1rem; font-weight: 700; margin: 0; }
-.x-preview-cover { display: grid; grid-template-columns: 1.25fr .75fr; align-items: center; gap: 4rem; }
-.x-preview-title { font-size: 4.6rem; line-height: 1.2; font-weight: 850; margin: 1.2rem 0; }
-.x-preview-message { font-size: 1.8rem; line-height: 1.6; margin: 0; }
-.x-preview-side { display: grid; gap: 1rem; }
-.x-preview-point { padding: 1.4rem 1.6rem; background: var(--br-card); border-radius: var(--bl-r-m); box-shadow: var(--bl-shadow); }
-.x-preview-point b { color: var(--br-cobalt); font-size: 1.6rem; }
-.x-preview-point p { font-size: 1.2rem; line-height: 1.6; margin: .6rem 0 0; }
-.x-preview-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.4rem; }
-.x-preview-report { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
-.x-preview-key { font-size: 3rem; line-height: 1.4; font-weight: 800; margin: 0; }
-.x-preview-number { font-family: var(--bl-font-mono); color: var(--br-cobalt); font-size: 2rem; margin-bottom: 1rem; }
-.x-preview-stage { padding: 2rem; border-top: .25rem solid var(--br-cobalt); background: var(--br-card); border-radius: var(--bl-r-m); box-shadow: var(--bl-shadow); }
-.x-preview-stage h3 { font-size: 1.8rem; margin: 0 0 1rem; }
-.x-preview-stage p { font-size: 1.25rem; line-height: 1.7; margin: 0; }
-.x-preview-track { height: .2rem; margin: 1rem 0 2rem; background: var(--br-cobalt); }
-.x-preview-statement { font-size: 4rem; line-height: 1.35; font-weight: 850; margin: 0 0 2rem; }
-.x-preview-dark-text { color: var(--br-on-dark-2); }
-.x-preview-dark-key { color: var(--br-accent-on-dark); }
-.x-preview-dark-item { padding: 1.3rem 0; border-bottom: 1px solid var(--br-dark-line); }
-.x-preview-dark-item b { color: var(--br-on-dark); font-size: 1.6rem; }
-.x-preview-dark-item p { color: var(--br-on-dark-2); font-size: 1.2rem; margin: .5rem 0 0; }
+.x-pv-k { color: var(--bl-pt-brand); font-size: 1.1rem; font-weight: 700; margin: 0; }
+.x-pv-title { font-size: 4.4rem; line-height: 1.2; font-weight: 850; margin: 1rem 0; color: var(--bl-pt-ink); letter-spacing: -.02em; }
+.x-pv-title em { font-style: normal; box-shadow: inset 0 -.38em 0 var(--bl-pt-hi); }
+.x-pv-msg { font-size: 1.7rem; line-height: 1.6; margin: 0; color: var(--bl-pt-ink-3); }
+.x-pv-cover { display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 4rem; }
+.x-pv-no { display: inline-grid; place-items: center; min-width: 2.4rem; padding: .1rem .45rem; border-radius: var(--bl-r-xs);
+  background: var(--bl-pt-brand-2); color: var(--bl-pt-paper); font: 700 1.1rem/1.4 var(--bl-font-mono); }
+.x-pv-list { display: grid; gap: 0; border-top: .2rem solid var(--bl-pt-ink); }
+.x-pv-li { display: grid; grid-template-columns: auto 1fr; gap: .4rem 1rem; align-items: center; padding: 1.1rem 0; border-bottom: 1px solid var(--bl-pt-line); }
+.x-pv-li b { font-size: 1.5rem; color: var(--bl-pt-ink); }
+.x-pv-li p { grid-column: 2; margin: 0; font-size: 1.15rem; color: var(--bl-pt-ink-3); }
+.x-pv-zones { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); border-top: .2rem solid var(--bl-pt-ink); }
+.x-pv-zone { display: grid; gap: 1rem; align-content: start; padding: 1.6rem 2rem 1.6rem 0; }
+.x-pv-zone + .x-pv-zone { padding-left: 2rem; border-left: 1px solid var(--bl-pt-line); }
+.x-pv-zone h3 { display: flex; align-items: center; gap: .7rem; margin: 0; font-size: 1.8rem; color: var(--bl-pt-ink); }
+.x-pv-zone p { margin: 0; font-size: 1.3rem; line-height: 1.6; color: var(--bl-pt-ink-3); }
+.x-pv-band { margin-top: 2.2rem; padding: 1.2rem 2rem; border-radius: var(--bl-r-s); background: var(--bl-pt-tint);
+  color: var(--bl-pt-brand-2); font-size: 1.6rem; font-weight: 800; text-align: center; }
+.x-pv-band b { color: var(--bl-pt-orange-d); }
+.x-pv-route { position: relative; display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); margin-top: 2rem; }
+.x-pv-route::before { content: ""; position: absolute; left: 0; right: 0; top: 1.6rem; height: .35rem; border-radius: var(--bl-r-pill); background: var(--bl-pt-brand-2); }
+.x-pv-st { position: relative; display: grid; justify-items: center; gap: .8rem; text-align: center; padding: 0 1.2rem; }
+.x-pv-dot { display: grid; place-items: center; width: 3.6rem; height: 3.6rem; border-radius: 50%; background: var(--bl-pt-paper);
+  border: .35rem solid var(--bl-pt-brand-2); color: var(--bl-pt-brand-2); font: 800 1.3rem/1 var(--bl-font-mono); }
+.x-pv-st:last-child .x-pv-dot { background: var(--bl-pt-orange); border-color: var(--bl-pt-orange); color: var(--bl-pt-paper); }
+.x-pv-st b { font-size: 1.7rem; color: var(--bl-pt-ink); }
+.x-pv-st:last-child b { color: var(--bl-pt-orange-d); }
+.x-pv-st p { margin: 0; font-size: 1.25rem; line-height: 1.6; color: var(--bl-pt-ink-3); }
+.x-pv-dark .x-pv-title { color: var(--br-on-dark); }
+.x-pv-dark .x-pv-title em { box-shadow: none; color: var(--bl-pt-orange); }
+.x-pv-dark .x-pv-msg { color: var(--br-on-dark-2); }
+.x-pv-dark .x-pv-k { color: var(--br-accent-on-dark); }
+.x-pv-chev { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: .5rem; margin-top: 2rem; }
+.x-pv-ch { padding: 1.4rem 2.6rem 1.4rem 2rem; background: var(--bl-pt-brand); color: var(--br-on-dark);
+  clip-path: polygon(0 0, calc(100% - 1.4rem) 0, 100% 50%, calc(100% - 1.4rem) 100%, 0 100%, 1.4rem 50%); }
+.x-pv-ch:first-child { clip-path: polygon(0 0, calc(100% - 1.4rem) 0, 100% 50%, calc(100% - 1.4rem) 100%, 0 100%); }
+.x-pv-ch:last-child { background: var(--bl-pt-orange); }
+.x-pv-ch b { display: block; font-size: 1.6rem; }
+.x-pv-ch p { margin: .5rem 0 0; font-size: 1.15rem; line-height: 1.5; color: var(--br-on-dark); }
+.x-pv-statement { font-size: 3.6rem; line-height: 1.35; font-weight: 850; margin: 0; color: var(--br-on-dark); }
+.x-pv-statement em { font-style: normal; color: var(--bl-pt-orange); }
 """
 
 
@@ -107,21 +128,35 @@ def make_html(data, style):
     escape = html.escape
     title, message = escape(data["title"]), escape(data["message"])
     points = [(escape(p["label"]), escape(p["detail"])) for p in data["points"]]
+    n = len(points)
     label = "스타일 비교용 예시 · 실제 업무 수치 미사용" if data.get("example") else "제공 자료를 활용한 디자인 비교"
-    rows = "".join(f'<div class="x-preview-point"><b>{a}</b><p>{b}</p></div>' for a, b in points)
-    cover = f'<div class="x-preview-cover"><div><p class="x-preview-k">{label}</p><h1 class="x-preview-title">{title}</h1><p class="x-preview-message">{message}</p></div><div class="x-preview-side">{rows}</div></div>'
+    heads = "".join(f'<div class="x-pv-li"><span class="x-pv-no">{i:02}</span><b>{a}</b><p>{b}</p></div>'
+                    for i, (a, b) in enumerate(points, 1))
     if style == "report":
-        body = f'<h2 class="bl-title">조사 내용 — <em>결론과 근거</em></h2><div class="x-preview-report"><p class="x-preview-key">{message}</p><div class="x-preview-side">{rows}</div></div>'
+        # 3구역 편집 + 결론 띠 — 굵은 윗선 · 번호 머리 · 구역별 근거
+        cover = (f'<div class="x-pv-cover"><div><p class="x-pv-k">{label}</p><h1 class="x-pv-title">{title}</h1>'
+                 f'<p class="x-pv-msg">{message}</p></div><div class="x-pv-list">{heads}</div></div>')
+        zones = "".join(f'<div class="x-pv-zone"><h3><span class="x-pv-no">{i:02}</span>{a}</h3><p>{b}</p></div>'
+                        for i, (a, b) in enumerate(points, 1))
+        body = (f'<h2 class="bl-title">조사 내용 — <em>결론과 근거</em></h2><p class="bl-lede">{label}</p>'
+                f'<div class="x-pv-zones" style="--n: {n}">{zones}</div><p class="x-pv-band">결론 → <b>{message}</b></p>')
         slides = section("preview-cover", cover) + section("preview-body", body)
     elif style == "explain":
-        stages = "".join(f'<div class="x-preview-stage"><div class="x-preview-number">{i:02}</div><h3>{a}</h3><p>{b}</p></div>' for i, (a, b) in enumerate(points, 1))
-        cover = f'<p class="x-preview-k">{label}</p><h1 class="x-preview-title">{title}</h1><p class="x-preview-message">{message}</p><div class="x-preview-track"></div><div class="x-preview-grid">{stages}</div>'
-        body = f'<h2 class="bl-title">함께 이해할 내용 — <em>핵심 흐름</em></h2><p class="bl-lede">{message}</p><div class="x-preview-track"></div><div class="x-preview-grid">{stages}</div>'
+        # 노선 — 번호 역을 잇는 굵은 선 · 마지막 역(결과)만 주황
+        stations = "".join(f'<div class="x-pv-st"><span class="x-pv-dot">{i:02}</span><b>{a}</b><p>{b}</p></div>'
+                           for i, (a, b) in enumerate(points, 1))
+        cover = (f'<p class="x-pv-k">{label}</p><h1 class="x-pv-title">{title}</h1><p class="x-pv-msg">{message}</p>'
+                 f'<div class="x-pv-route" style="--n: {n}">{stations}</div>')
+        body = (f'<h2 class="bl-title">함께 이해할 내용 — <em>핵심 흐름</em></h2><p class="bl-lede">{message}</p>'
+                f'<div class="x-pv-route" style="--n: {n}">{stations}</div>')
         slides = section("preview-cover", cover) + section("preview-body", body)
     else:
-        dark_rows = "".join(f'<div class="x-preview-dark-item"><b>{a}</b><p>{b}</p></div>' for a, b in points)
-        cover = f'<div class="x-preview-cover"><div><p class="x-preview-k x-preview-dark-key">{label}</p><h1 class="x-preview-title">{title}</h1><p class="x-preview-message x-preview-dark-text">{message}</p></div><div>{dark_rows}</div></div>'
-        body = f'<h2 class="bl-title">전달할 메시지 — <em>다음 행동</em></h2><div class="x-preview-report"><p class="x-preview-statement">{message}</p><div>{dark_rows}</div></div>'
+        # 짙은 띠 + 쉐브론 — 큰 메시지 · 마지막 단(다음 행동)만 주황
+        chev = "".join(f'<div class="x-pv-ch"><b>{a}</b><p>{b}</p></div>' for a, b in points)
+        cover = (f'<div class="x-pv-dark"><p class="x-pv-k">{label}</p><h1 class="x-pv-title">{title}</h1>'
+                 f'<p class="x-pv-msg">{message}</p><div class="x-pv-chev" style="--n: {n}">{chev}</div></div>')
+        body = (f'<h2 class="bl-title">전달할 메시지 — <em>다음 행동</em></h2><div class="x-pv-dark">'
+                f'<p class="x-pv-statement">{message}</p><div class="x-pv-chev" style="--n: {n}">{chev}</div></div>')
         slides = section("preview-cover", cover, True) + section("preview-body", body, True)
     template = (ASSETS / "live-standard.html").read_text(encoding="utf-8")
     main = f'<main class="bl-deck" id="deck" data-deck-title="{title}" tabindex="0" aria-label="디자인 비교">{slides}</main>'
@@ -131,6 +166,9 @@ def make_html(data, style):
     # The source deck's sample evidence is unrelated to this preview.
     result = re.sub(r'<script type="application/json" id="bl-evidence">.*?</script>', '', result, flags=re.S)
     result = re.sub(r'<title>.*?</title>', lambda _: f'<title>{title} · 디자인 비교</title>', result, count=1, flags=re.S)
+    # 디자인 언어 토큰(--bl-pt-*)은 blue-pattern.css 에 있다 — 실제 덱과 같은 파일을 부른다.
+    if 'blue-pattern.css' not in result:
+        result = result.replace('</head>', '<link rel="stylesheet" href="blue-pattern.css">\n</head>', 1)
     return result.replace('</head>', '<style data-own>\n' + CSS + '\n</style>\n</head>', 1)
 
 
